@@ -64,12 +64,14 @@ img.infoReload {
 #borderTable thead th {
   text-align: center;
 }
+#borderTable .centering {
+    text-align: center;
+}
 #borderTable .head th {
   background-color: #d7e2f4;
 }
 #borderTable th,
 #borderTable td {
-  text-align: center;
   vertical-align: middle;
   border: 2px #eeeeee solid;
 }
