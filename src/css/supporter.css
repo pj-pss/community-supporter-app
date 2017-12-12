@@ -1,8 +1,6 @@
 html, body, .contents, main { height:100%; }
 
-//header {
-//  background-color: #008F00;
-//}
+#editor {overflow:scroll; max-height:300px}
 
 button#logout {
     margin: 0 16px 0 0;
