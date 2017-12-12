@@ -78,3 +78,18 @@ img.infoReload {
 #borderTable tr:nth-child(odd) {
   background-color: #f7fbff;
 }
+
+
+#editModal ul {
+    list-style-type: square;
+}
+#editModal table {
+    width: 100%;
+    background-color: #ffffff;
+    border: 0px;
+}
+#editModal th {
+    width: 50%;
+    background-color: #ffffff;
+    border: 0px;
+}

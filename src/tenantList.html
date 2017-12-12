@@ -1,25 +1,3 @@
-<script type="text/javascript">
-function openEditModal_TaroFujitsu() {
-    $('#modal-edit_TaroFujitsu').modal('show');
-}
-</script>
-
-<style type="text/css">
-#editModal ul {
-    list-style-type: square;
-}
-#editModal table {
-    width: 100%;
-    background-color: #ffffff;
-    border: 0px;
-}
-#editModal th {
-    width: 50%;
-    background-color: #ffffff;
-    border: 0px;
-}
-</style>
-
 <div>
   <input id="infoSearchKeyword" type="text" name="infoSearchKeyword" size="32">
 </div>
@@ -37,7 +15,7 @@ function openEditModal_TaroFujitsu() {
         <td class="centering">A型</td>
         <td>デュオセーヌ 柏の葉キャンパスA棟 201号室</td>
         <td class="centering">単身</td>
-        <td><button class="btn btn-default" onclick="openEditModal_TaroFujitsu();return false;"><nobr>編集</nobr></button></td>
+        <td><button class="btn btn-default" onclick="openEditModal('TaroFujitsu');return false;"><nobr>編集</nobr></button></td>
       </tr>
       <tr>
         <td><nobe>富士通 桜子</nobe></td>
@@ -47,7 +25,7 @@ function openEditModal_TaroFujitsu() {
         <td class="centering">O型</td>
         <td>デュオセーヌ 柏の葉キャンパスB棟 301号室</td>
         <td class="centering">単身</td>
-        <td><button class="btn btn-default" onclick="openEditModal_SakurakoFujitsu();return false;"><nobr>編集</nobr></button></td>
+        <td><button class="btn btn-default" onclick="openEditModal('SakurakoFujitsu');return false;"><nobr>編集</nobr></button></td>
       </tr>
       <tr>
         <td>富士通 花子</td>
@@ -153,4 +131,8 @@ function openEditModal_TaroFujitsu() {
     <tfoot>
     </tfoot>
   </table>
+</div>
+
+
+<div id="editModal">
 </div>
