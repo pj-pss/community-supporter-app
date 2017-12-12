@@ -20,22 +20,29 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+  <script src="./js/bootstrap-wysiwyg.js"></script>
+
 <script type="text/javascript">
 
 // Function ID currently displayed
 var nowViewFunction = "proviedInfoList";
 // Switch the screen to be displayed
 function view(functionId) {
-	$("#" + nowViewFunction).addClass('hidden');
-	$("#" + functionId).removeClass('hidden');
-	nowViewFunction = functionId;
+    $("#" + nowViewFunction).addClass('hidden');
+    $("#" + functionId).removeClass('hidden');
+    nowViewFunction = functionId;
 
-	$('.side-nav').find('.current').removeClass('current');
-	$('#menu_' + functionId).addClass('current');
+    $('.side-nav').find('.current').removeClass('current');
+    $('#menu_' + functionId).addClass('current');
+}
+
+// Open Information Edit Dialog
+function openInfoEditor() {
+    $('#modal-infoEditor').modal('show');
 }
 
 $(function() {
-     $("#proviedInfoList").load("proviedInfoList.html");
+     $("#proviedInfoList").load("proviedInfoList.html", null, function() {$('#editor').wysiwyg();});
      $("#operationHistory").load("operationHistory.html");
      $("#disclosureInfotList").load("disclosureInfotList.html");
      $("#tenantList").load("tenantList.html");
