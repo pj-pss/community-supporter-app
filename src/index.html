@@ -11,21 +11,16 @@
   <link href="https://fonts.googleapis.com/css?family=Raleway:400,200" rel="stylesheet" type="text/css">
 
   <link href="./css/pc.css" rel="stylesheet">
+  <link href="./css/supporter.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
   <script src="https://unpkg.com/i18next-xhr-backend/i18nextXHRBackend.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
-
-  <link rel="apple-touch-icon" href="http://mindmup.s3.amazonaws.com/lib/img/apple-touch-icon.png" />
-  <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
-  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
-  <script src="./js/bootstrap-wysiwyg.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-$('#editor').wysiwyg();
 
 // 現在表示中の機能ID
 var nowViewFunction = "proviedInfoList";
@@ -39,66 +34,17 @@ function view(functionId) {
 	$('#menu_' + functionId).addClass('current');
 }
 
-// 提供情報編集ダイアログ
-function openInfoEditor() {
-    $('#modal-infoEditor').modal('show');
-}
+$(function() {
+     $("#proviedInfoList").load("proviedInfoList.html");
+     $("#operationHistory").load("operationHistory.html");
+     $("#disclosureInfotList").load("disclosureInfotList.html");
+     $("#tenantList").load("tenantList.html");
+});
 
 </script>
 
 <style type="text/css">
-html, body, .contents, main { height:100%; }
 
-#editor {overflow:scroll; max-height:300px}
-
-button#logout {
-	margin: 0 16px 0 0;
-}
-
-.functionArea {
-	border: 1px solid #f2f2f2;
-	width: 100%;
-	height: 100%;
-}
-
-#infoSearchKeyword {
-	background: #fff url("./img/parts_ico_search.png") no-repeat;
-	background-size: contain;
-	padding-left: 32px;
-	margin: 2px;
-	border-radius: 10px;
-}
-
-#createInfo {
-	color: #FFFFFF;
-	background-color: #00B0F0;
-	margin: 2px;
-	float: right;
-}
-
-img.infoReload {
-	width: 32px;
-	height: 32px;
-	float: right;
-}
-
-#proviedInfoTable {
-	width: 100%;
-	margin: 2px;
-}
-#proviedInfoTable thead th {
-	text-align: center;
-}
-#proviedInfoTable .centering {
-	text-align: center;
-}
-#proviedInfoTable .title {
-	width: 30%;
-}
-#proviedInfoTable th,
-#proviedInfoTable td {
-	vertical-align: middle;
-}
 </style>
 
 </head>
@@ -129,224 +75,17 @@ img.infoReload {
     <main>
       <!-- 提供情報一覧 -->
       <div id="proviedInfoList" class="functionArea">
-        <div>
-          <input id="infoSearchKeyword" type="text" name="infoSearchKeyword" size="32">
-          <button id="createInfo" data-target="#modal-infoEditor" data-toggle="modal">新規作成</button>
-          <img class="infoReload" src="./img/parts_ico_reload.png" onclick="return false;">
-        </div>
-        <div>
-          <table id="proviedInfoTable">
-            <thead>
-              <tr><th>日時</th><th>掲載先</th><th class="title">タイトル</th><th>参加する!</th><th>検討中</th><th>コメント</th></tr>
-            </thead>
-            <tbody>
-              <tr><td class="centering">2017/11/07<br>13:46:48</td><td class="centering">みんなの掲示板</td><td><a href="" target="_blank">共有フロアの清掃を次の日程で実施します。</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">0</a></td></tr>
-              <tr><td class="centering">2017/11/08<br>13:23:50</td><td class="centering">みんなの掲示板</td><td><a href="" target="_blank">まちのみんなでお祝いしよう！ UDCK設立11周年記念パーティ</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">3</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">2</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">3</a></td></tr>
-              <tr><td class="centering">2017/11/07<br>13:24:18</td><td class="centering">みんなの掲示板</td><td><a href="" target="_blank">【配信協力】留学⽣×市⺠ みんなで楽しもう！INTERNATIONAL CURRY PARTY</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">11</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">4</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">1</a></td></tr>
-              <tr><td class="centering">2017/11/07 13:23:48</td><td class="centering">みんなの掲示板</td><td><a href="" target="_blank">11月のレストランメニューが決まりました</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td class="centering"><a href="#modal-situationAggregate" data-toggle="modal">13</a></td></tr>
-            </tbody>
-            <tfoot>
-            </tfoot>
-          </table>
-        </div>
       </div>
       <!-- 入居者一覧 -->
       <div id="tenantList" class="functionArea hidden">
-        入居者一覧
       </div>
       <!-- 緊急時情報開示先登録 -->
       <div id="disclosureInfotList" class="functionArea hidden">
-        緊急時情報開示先登録
       </div>
       <!-- 操作履歴 -->
       <div id="operationHistory" class="functionArea hidden">
-        操作履歴
       </div>
     </main>
-
-    <div id="modal-infoEditor" class="modal fade">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>提供情報：編集</h2>
-          </div>
-          <div class="modal-body">
-            <table style="width: 100%;">
-              <tr><th colspan="2">■記事区分</th><th colspan="2">■記事掲載期間</th></tr>
-              <tr>
-                <td colspan="2">
-                  <select>
-                    <option>イベント</option>
-                  </select>
-                </td>
-                <td colspan="2">
-                  <input type="text" maxlength="4" style="width: 60px">年&nbsp;<input type="text" maxlength="2" style="width: 40px">月&nbsp;<input type="text" maxlength="2" style="width: 40px">日&nbsp;<img src="./img/parts_ico_calendar.png" style="width 24px; height: 24px;">まで
-                </td>
-              </tr>
-              <tr><th colspan="4">■記事配信対象者</th></tr>
-              <tr>
-                <td style="width: 25%;">
-                   入居フロア<br>
-                  &nbsp;&nbsp;<select>
-                    <option>全入居者</option>
-                  </select>
-                </td>
-                <td style="width: 25%;">
-                  性別<br>
-                  &nbsp;&nbsp;<select>
-                    <option>全て</option>
-                    <option>男性</option>
-                    <option>女性</option>
-                  </select>
-                </td>
-                <td style="width: 25%;">
-                  年代<br>
-                  &nbsp;&nbsp;<select>
-                    <option>全年代</option>
-                    <option>80代</option>
-                    <option>70代</option>
-                    <option>60代</option>
-                    <option>50代以下</option>
-                  </select>
-                </td>
-                <td style="width: 25%;">
-                  居住形態<br>
-                  &nbsp;&nbsp;<select>
-                    <option>全て</option>
-                  </select>
-                </td>
-              </tr>
-              <tr><th colspan="4">■記事タイトル</th></tr>
-              <tr><td colspan="4"><input type="text" style="width: 100%"></td></tr>
-              <tr><th colspan="4">■記事本文</th></tr>
-              <tr><td colspan="4">
-                <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
-                  <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="icon-font"></i><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    </ul>
-                  </div>
-                  <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                      <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
-                      <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
-                      <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
-                    </ul>
-                  </div>
-                  <div class="btn-group">
-                    <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
-                    <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
-                    <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="icon-strikethrough"></i></a>
-                    <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
-                  </div>
-                  <div class="btn-group">
-                    <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="icon-list-ul"></i></a>
-                    <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="icon-list-ol"></i></a>
-                    <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="icon-indent-left"></i></a>
-                    <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
-                  </div>
-                  <div class="btn-group">
-                    <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
-                    <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
-                    <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
-                    <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
-                  </div>
-                  <div class="btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="icon-link"></i></a>
-                    <div class="dropdown-menu input-append">
-                      <input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
-                      <button class="btn" type="button">Add</button>
-                    </div>
-                    <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
-                  </div>
-                  <div class="btn-group">
-                    <a class="btn" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="icon-picture"></i></a>
-                    <!-- <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" /> -->
-                  </div>
-                  <div class="btn-group">
-                    <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
-                    <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
-                  </div>
-                </div>
-              </div>
-              <div id="editor" style="height: 200px;"></div>
-              </td></tr>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" data-dismiss="modal">保存</button>
-            <button class="btn" data-dismiss="modal">キャンセル</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="modal-situationAggregate" class="modal fade">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>提供情報：状況集計</h2>
-          </div>
-          <div class="modal-body">
-            <table style="width: 100%;">
-              <tr><th colspan="2">■タイトル</th></tr>
-              <tr><td colspan="2">【配信協力】留学⽣×市⺠ みんなで楽しもう！INTERNATIONAL CURRY PARTY</td></tr>
-              <tr><th>■参加する!リスト</th><th>■検討中リスト</th</tr>
-              <tr>
-                <td style="width: 50%">
-                  <table>
-                    <thead>
-                      <tr><th>No</th><th>日時</th><th>氏名</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>1</td><td>2017/11/07 13:45:18</td><td>富士通　太郎</td></tr>
-                      <tr><td>2</td><td>2017/11/07 13:31:50</td><td>富士通　桜子</td></tr>
-                      <tr><td>3</td><td>2017/11/07 13:24:32</td><td>富士通　花子</td></tr>
-                      <tr><td>4</td><td>2017/11/07 13:23:46</td><td>富士通　次郎</td></tr>
-                      <tr><td>5</td><td>2017/11/07 13:21:18</td><td>富士通　三郎</td></tr>
-                      <tr><td>6</td><td>2017/11/07 13:18:50</td><td>富士通　四郎</td></tr>
-                      <tr><td>7</td><td>2017/11/07 13:15:32</td><td>富士通　五郎</td></tr>
-                      <tr><td>8</td><td>2017/11/07 13:12:46</td><td>富士通　梅子</td></tr>
-                      <tr><td>9</td><td>2017/11/07 13:09:50</td><td>富士通　竹子</td></tr>
-                      <tr><td>10</td><td>2017/11/07 13:06:32</td><td>富士通　緑郎</td></tr>
-                      <tr><td>11</td><td>2017/11/07 13:03:46</td><td>富士通　月子</td></tr>
-                    </tbody>
-                  </table>
-                </td>
-                <td style="width: 50%">
-                  <table>
-                    <thead>
-                      <tr><th>No</th><th>日時</th><th>氏名</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>1</td><td>2017/11/07 13:54:18</td><td>富士通　綾子</td></tr>
-                      <tr><td>2</td><td>2017/11/07 13:43:50</td><td>富士通　彩子</td></tr>
-                      <tr><td>3</td><td>2017/11/07 13:43:32</td><td>富士通　文子</td></tr>
-                      <tr><td>4</td><td>2017/11/07 13:42:46</td><td>富士通　絢子</td></tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-              <tr><td colspan="2">
-                <table>
-                  <thead>
-                    <tr><th>No</th><th>日時</th><th>氏名</th><th style="width: 40%">コメント</th><th>通報</th><th></th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>1</td><td>2017/11/07 13:46:48</td><td>富士通　太郎</td><td>ヨガ体験ができて、柏の野菜を使ったカレーも食べれるので非常に楽しみです</td><td>0</td><td></td></tr>
-                  </tbody>
-                </table>
-              </td></tr>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" data-dismiss="modal">OK</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
-
 </body>
 </html>
