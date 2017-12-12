@@ -22,9 +22,9 @@
 
 <script type="text/javascript">
 
-// 現在表示中の機能ID
+// Function ID currently displayed
 var nowViewFunction = "proviedInfoList";
-// 表示する画面を切り替える
+// Switch the screen to be displayed
 function view(functionId) {
 	$("#" + nowViewFunction).addClass('hidden');
 	$("#" + functionId).removeClass('hidden');
@@ -73,16 +73,16 @@ $(function() {
       </ul>
     </nav>
     <main>
-      <!-- 提供情報一覧 -->
+      <!-- Provieded Information List -->
       <div id="proviedInfoList" class="functionArea">
       </div>
-      <!-- 入居者一覧 -->
+      <!-- Tenant List -->
       <div id="tenantList" class="functionArea hidden">
       </div>
-      <!-- 緊急時情報開示先登録 -->
+      <!-- Emergency Information List-->
       <div id="disclosureInfotList" class="functionArea hidden">
       </div>
-      <!-- 操作履歴 -->
+      <!-- Operation History -->
       <div id="operationHistory" class="functionArea hidden">
       </div>
     </main>
