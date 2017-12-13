@@ -20,38 +20,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script type="text/javascript">
-
-// 現在表示中の機能ID
-var nowViewFunction = "proviedInfoList";
-// 表示する画面を切り替える
-function view(functionId) {
-	$("#" + nowViewFunction).addClass('hidden');
-	$("#" + functionId).removeClass('hidden');
-	nowViewFunction = functionId;
-
-	$('.side-nav').find('.current').removeClass('current');
-	$('#menu_' + functionId).addClass('current');
-}
-
-$(function() {
-  $("#proviedInfoList").load("proviedInfoList.html");
-  $("#operationHistory").load("operationHistory.html");
-  $("#disclosureInfotList").load("disclosureInfotList.html");
-  $("#tenantList").load("tenantList.html");
-});
-
-function openEditModal(name) {
-    $("#editModal").load("personalData.html #modal-edit_" + name, function(response){
-        $('#modal-edit_' + name).modal('show');
-    });
-}
-
-</script>
-
-<style type="text/css">
-
-</style>
+  <script src="./js/supporters.js"></script>
 
 </head>
 <body>
@@ -79,19 +48,15 @@ function openEditModal(name) {
       </ul>
     </nav>
     <main>
-      <!-- 提供情報一覧 -->
+      <!-- expand destination of html. -->
       <div id="proviedInfoList" class="functionArea">
       </div>
-      <!-- 入居者一覧 -->
       <div id="tenantList" class="functionArea hidden">
       </div>
-      <!-- 緊急時情報開示先登録 -->
       <div id="disclosureInfotList" class="functionArea hidden">
       </div>
-      <!-- 操作履歴 -->
       <div id="operationHistory" class="functionArea hidden">
       </div>
-
       <div id="editModal">
       </div>
     </main>
