@@ -5,52 +5,52 @@ html, body, .contents, main { height:100%; }
 //}
 
 button#logout {
-    margin: 0 16px 0 0;
+  margin: 0 16px 0 0;
 }
 
 .functionArea {
-    border: 1px solid #f2f2f2;
-    width: 100%;
-    height: 100%;
+  border: 1px solid #f2f2f2;
+  width: 100%;
+  height: 100%;
 }
 
 #infoSearchKeyword {
-    background: #fff url("../img/parts_ico_search.png") no-repeat;
-    background-size: contain;
-    padding-left: 32px;
-    margin: 2px;
-    border-radius: 10px;
+  background: #fff url("../img/parts_ico_search.png") no-repeat;
+  background-size: contain;
+  padding-left: 32px;
+  margin: 2px;
+  border-radius: 10px;
 }
 
 #createInfo {
-    color: #FFFFFF;
-    background-color: #00B0F0;
-    margin: 2px;
-    float: right;
+  color: #FFFFFF;
+  background-color: #00B0F0;
+  margin: 2px;
+  float: right;
 }
 
 img.infoReload {
-    width: 32px;
-    height: 32px;
-    float: right;
+  width: 32px;
+  height: 32px;
+  float: right;
 }
 
 #proviedInfoTable {
-    width: 100%;
-    margin: 2px;
+  width: 100%;
+  margin: 2px;
 }
 #proviedInfoTable thead th {
-    text-align: center;
+  text-align: center;
 }
 #proviedInfoTable .centering {
-    text-align: center;
+  text-align: center;
 }
 #proviedInfoTable .title {
-    width: 30%;
+  width: 30%;
 }
 #proviedInfoTable th,
 #proviedInfoTable td {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 
@@ -65,7 +65,7 @@ img.infoReload {
   text-align: center;
 }
 #borderTable .centering {
-    text-align: center;
+  text-align: center;
 }
 #borderTable .head th {
   background-color: #d7e2f4;
@@ -82,15 +82,15 @@ img.infoReload {
 
 
 #editModal ul {
-    list-style-type: square;
+  list-style-type: square;
 }
 #editModal table {
-    width: 100%;
-    background-color: #ffffff;
-    border: 0px;
+  width: 100%;
+  background-color: #ffffff;
+  border: 0px;
 }
 #editModal th {
-    width: 50%;
-    background-color: #ffffff;
-    border: 0px;
+  width: 50%;
+  background-color: #ffffff;
+  border: 0px;
 }
