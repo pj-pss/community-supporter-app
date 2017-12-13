@@ -14,6 +14,21 @@ button#logout {
   height: 100%;
 }
 
+.searchIcon {
+  float: left;
+  position: relative;
+  padding-left: 7px;
+  margin-right: -40px;
+  margin-top: 5px;
+  font-size: 24px;
+}
+
+.refleshIcon {
+  position: relative;
+  margin-top: 1px;
+  font-size: 32px;
+}
+
 #infoSearchKeyword {
   background: #fff url("../img/parts_ico_search.png") no-repeat;
   background-size: contain;
@@ -93,4 +108,11 @@ img.infoReload {
   width: 50%;
   background-color: #ffffff;
   border: 0px;
+}
+
+#searchKeywordBox {
+  background-size: contain;
+  padding-left: 32px;
+  margin: 2px;
+  border-radius: 10px;
 }
