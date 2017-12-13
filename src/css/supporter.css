@@ -69,29 +69,26 @@ img.infoReload {
 }
 
 
-#borderTable .description {
+.borderTable .description {
   width: 70%;
 }
-#borderTable {
+.borderTable {
   width: 100%;
   margin: 2px;
 }
-#borderTable thead th {
+.borderTable thead th {
   text-align: center;
 }
-#borderTable .centering {
-  text-align: center;
-}
-#borderTable .head th {
+.borderTable .head th {
   background-color: #d7e2f4;
 }
-#borderTable th,
-#borderTable td {
+.borderTable th,
+.borderTable td {
   text-align: center;
   vertical-align: middle;
   border: 2px #eeeeee solid;
 }
-#borderTable tr:nth-child(odd) {
+.borderTable tr:nth-child(odd) {
   background-color: #f7fbff;
 }
 
