@@ -93,8 +93,10 @@ img.infoReload {
 }
 
 
-#editModal ul {
+#editModal ul li {
   list-style-type: square;
+  padding-top: 10px;
+  padding-bottom: 2px;
 }
 #editModal table {
   width: 100%;
