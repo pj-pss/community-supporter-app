@@ -72,6 +72,7 @@ img.infoReload {
 }
 #borderTable th,
 #borderTable td {
+  text-align: center;
   vertical-align: middle;
   border: 2px #eeeeee solid;
 }
