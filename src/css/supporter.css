@@ -79,6 +79,9 @@ img.infoReload {
 .borderTable thead th {
   text-align: center;
 }
+.borderTable .flushleft {
+  text-align: left;
+}
 .borderTable .head th {
   background-color: #d7e2f4;
 }
