@@ -123,3 +123,13 @@ img.infoReload {
   text-align: center;
   font-size: 50px;
 }
+
+.successMessage {
+  text-align: center;
+  color: blue;
+}
+
+.faildMessage {
+  text-align: center;
+  color: red;
+}
