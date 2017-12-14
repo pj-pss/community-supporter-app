@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
   <link href="https://fonts.googleapis.com/css?family=Raleway:400,200" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-te/1.4.0/jquery-te.min.css" />
 
   <link href="./css/pc.css" rel="stylesheet">
   <link href="./css/supporter.css" rel="stylesheet">
@@ -19,40 +20,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-te/1.4.0/jquery-te.min.js"></script>
 
-  <script src="./js/bootstrap-wysiwyg.js"></script>
-
-<script type="text/javascript">
-
-// Function ID currently displayed
-var nowViewFunction = "proviedInfoList";
-// Switch the screen to be displayed
-function view(functionId) {
-    $("#" + nowViewFunction).addClass('hidden');
-    $("#" + functionId).removeClass('hidden');
-    nowViewFunction = functionId;
-
-    $('.side-nav').find('.current').removeClass('current');
-    $('#menu_' + functionId).addClass('current');
-}
-
-// Open Information Edit Dialog
-function openInfoEditor() {
-    $('#modal-infoEditor').modal('show');
-}
-
-$(function() {
-     $("#proviedInfoList").load("proviedInfoList.html", null, function() {$('#editor').wysiwyg();});
-     $("#operationHistory").load("operationHistory.html");
-     $("#disclosureInfotList").load("disclosureInfotList.html");
-     $("#tenantList").load("tenantList.html");
-});
-
-</script>
-
-<style type="text/css">
-
-</style>
+  <script src="./js/supporters.js"></script>
 
 </head>
 <body>
@@ -80,17 +50,16 @@ $(function() {
       </ul>
     </nav>
     <main>
-      <!-- Provieded Information List -->
+      <!-- expand destination of html. -->
       <div id="proviedInfoList" class="functionArea">
       </div>
-      <!-- Tenant List -->
       <div id="tenantList" class="functionArea hidden">
       </div>
-      <!-- Emergency Information List-->
       <div id="disclosureInfotList" class="functionArea hidden">
       </div>
-      <!-- Operation History -->
       <div id="operationHistory" class="functionArea hidden">
+      </div>
+      <div id="editModal">
       </div>
     </main>
   </div>
