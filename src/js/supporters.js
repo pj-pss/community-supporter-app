@@ -36,13 +36,14 @@ $(document).on('change', ':file', function() {
   // show loading modal for 3sec
   setTimeout(function(){
     $('#modal-loading').modal('hide');
+
     // check only file type
     if(fileName.match(/.*\.csv/)){
       $('#modal-success').modal('show');
     }else{
       $('#modal-faild').modal('show');
       // clear input file
-      $('#inputFile').replaceWith($('#inputFile').clone(true));
+      $("#inputFile").val("");
     }
   },3000);
 
