@@ -124,3 +124,7 @@ img.infoReload {
   max-height: 150px;
   resize: none;
 }
+
+#infoDatepicker {
+  vertical-align: middle;
+}
