@@ -1,1 +1,46 @@
-緊急時情報開示先登録
+<div>
+  <label>
+    <span class="btn btn-info">
+      csvファイルのアップロード
+      <input id="inputFile" type="file" style="display:none" accept=".csv">
+    </span>
+  </label>
+</div>
+
+
+<div id="modal-loading" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">loading...</div>
+      <div class="modal-body">
+        <p class="loadingIcon"><i class="fa fa-refresh fa-5x fa-fw fa-spin" aria-hidden="true"></i></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-success" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>upload success</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-faild" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>upload faild</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
