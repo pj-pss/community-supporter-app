@@ -58,6 +58,12 @@ function openInfoEdit(id){
   });
 }
 
+function openComment(id){
+  $("#modal-situationAggregate").load("comment.html #modal-situationAggregate_" + id, null, function(){
+    $('#modal-situationAggregate').modal('show');
+  });
+}
+
 // load personal data and show modal window
 function openEditModal(name) {
   $("#editModal").load("personalData.html #modal-edit_" + name, function(response){
