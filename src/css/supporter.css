@@ -133,3 +133,11 @@ img.infoReload {
   text-align: center;
   color: red;
 }
+
+.inputFile p {
+  display: inline;
+}
+
+#errorMessage i {
+  color: red;
+}

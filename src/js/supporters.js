@@ -30,21 +30,15 @@ $(document).on('change', ':file', function() {
   var input = $(this),
   // delete file path
   fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+  document.getElementById('fileName').innerHTML = "<strong>" + fileName + "</strong>";
 
-  $('#modal-loading').modal('show');
-
-  // show loading modal for 3sec
-  setTimeout(function(){
-    $('#modal-loading').modal('hide');
-
-    // check only file type
-    if(fileName.match(/.*\.csv/)){
-      $('#modal-success').modal('show');
-    }else{
-      $('#modal-faild').modal('show');
-      // clear input file
-      $("#inputFile").val("");
-    }
-  },3000);
-
+  if(fileName.match(/.*\.csv/)){
+    document.getElementById('uploadButton').style.display = "";
+    document.getElementById('errorMessage').style.display = "none";
+  }else{
+    document.getElementById('uploadButton').style.display = "none";
+    document.getElementById('errorMessage').style.display = "";
+    // clear input file
+    $("#inputFile").val("");
+  }
 });
