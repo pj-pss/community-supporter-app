@@ -130,3 +130,18 @@ img.infoReload {
 #errorMessage i {
   color: red;
 }
+
+.loadingIcon {
+  text-align: center;
+  font-size: 50px;
+}
+
+.successMessage {
+  text-align: center;
+  color: blue;
+}
+
+.faildMessage {
+  text-align: center;
+  color: red;
+}

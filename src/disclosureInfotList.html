@@ -6,9 +6,60 @@
       <input id="inputFile" type="file" style="display:none" accept=".csv">
     </span>
   </label>
-  <!-- <span id="uploadButton" class="btn btn-info" onclick="showConfirm()" style="display:none"> -->
-  <span id="uploadButton" class="btn btn-info" style="display:none">
+  <span id="uploadButton" class="btn btn-info" onclick="showConfirm()" style="display:none">
+  <!-- <span id="uploadButton" class="btn btn-info" style="display:none"> -->
     アップロード
   </span>
   <div id="errorMessage" style="display:none"><i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i><p>csvファイルを選択してください</p></div>
+</div>
+
+<div id="modal-confirm" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>選択したcsvを登録します。よろしいですか?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" onclick="submitFile()"><nobr>はい</nobr></button>
+        <button class="btn btn-default" data-dismiss="modal"><nobr>いいえ</nobr></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-loading" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">loading...</div>
+      <div class="modal-body">
+        <p class="loadingIcon"><i class="fa fa-refresh fa-5x fa-fw fa-spin" aria-hidden="true"></i></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-success" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="successMessage">登録が完了しました</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-faild" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="faildMessage">登録に失敗しました</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
 </div>

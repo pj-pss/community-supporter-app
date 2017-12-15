@@ -45,3 +45,25 @@ $(document).on('change', ':file', function() {
     document.getElementById('errorMessage').style.display = "none";
   }
 });
+
+function showConfirm() {
+  $('#modal-confirm').modal('show');
+}
+
+function submitFile() {
+  var fileName = document.getElementById('fileName').innerHTML;
+
+  $('#modal-loading').modal('show');
+
+  // show loading modal for 1.5sec
+  setTimeout(function(){
+    $('#modal-loading').modal('hide');
+
+    // check only file type
+    if(fileName.match(/.*\.csv/)){
+      $('#modal-success').modal('show');
+    }else{
+      $('#modal-faild').modal('show');
+    }
+  },1500);
+}
