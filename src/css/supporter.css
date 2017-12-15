@@ -75,19 +75,19 @@ img.infoReload {
   background-color: #f7fbff;
 }
 
-.box0 {
+.bottomMarginBox {
   display: block;
   overflow: hidden;
   margin-bottom: 20px;
 }
 
-.box1 {
+.leftFloatBox {
   float: left;
   margin-left: 5%;
   margin-bottom: 20px;
 }
 
-.box2 {
+.rightFloatBox {
   float: right;
   margin-right: 5%;
   margin-bottom: 20px;
