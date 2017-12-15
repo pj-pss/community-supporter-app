@@ -119,6 +119,10 @@ img.infoReload {
   border-radius: 10px;
 }
 
+.inputFile {
+  margin: 15px;
+}
+
 .inputFile p {
   display: inline;
 }
