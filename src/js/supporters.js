@@ -34,13 +34,11 @@ $(document).on('change', ':file', function() {
 
   if(fileName){
     if(fileName.match(/.*\.csv/)){
-    document.getElementById('uploadButton').style.display = "";
-    document.getElementById('errorMessage').style.display = "none";
+      document.getElementById('uploadButton').style.display = "";
+      document.getElementById('errorMessage').style.display = "none";
     }else{
       document.getElementById('uploadButton').style.display = "none";
       document.getElementById('errorMessage').style.display = "";
-      // clear input file
-      $("#inputFile").val("");
     }
   }else{
     document.getElementById('uploadButton').style.display = "none";
