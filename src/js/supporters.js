@@ -12,7 +12,24 @@ function view(functionId) {
 
 // load html
 $(function() {
-  $("#proviedInfoList").load("proviedInfoList.html");
+  $("#proviedInfoList").load("proviedInfoList.html", null, function() {
+    // Set up wisywig editor
+    $("#editor").jqte();
+
+    // Set up date picker
+    $("#infoDatepicker").datepicker({
+      format: "yyyy/mm/dd",
+      autoclose: true,
+      todayHighlight: true,
+    }).on({
+      changeDate: function(e) {
+        var selected_date = e["date"];
+        $("#infoYear").val(selected_date.getFullYear());
+        $("#infoMonth").val(selected_date.getMonth() + 1);
+        $("#infoDay").val(selected_date.getDate());
+      }
+    })
+  });
   $("#operationHistory").load("operationHistory.html");
   $("#disclosureInfotList").load("disclosureInfotList.html");
   $("#tenantList").load("tenantList.html");
