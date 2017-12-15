@@ -75,6 +75,27 @@ img.infoReload {
   background-color: #f7fbff;
 }
 
+.box0 {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.box1 {
+  float: left;
+  margin-left: 5%;
+  margin-bottom: 20px;
+}
+
+.box2 {
+  float: right;
+  margin-right: 5%;
+  margin-bottom: 20px;
+}
+
+.boxTable {
+  display: table;
+}
 
 #modal-infoEditor table {
   width: 100%;
@@ -82,12 +103,18 @@ img.infoReload {
   border: 0px;
 }
 
-#modal-infoEditor table th,
-#modal-infoEditor table td {
+#modal-infoEditor table th{
   background-color: #ffffff;
   border: 0px;
-  padding: 0px 0px 5px 0px;
+  padding: 15px 0px 5px 0px;
 }
+
+#modal-infoEditor table td {
+  border: 0px;
+  padding: 0px 0px 0px 0px;
+}
+
+.editor {overflow:scroll; max-height:300px}
 
 
 #editModal ul li {

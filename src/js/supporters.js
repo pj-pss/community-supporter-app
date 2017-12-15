@@ -13,6 +13,30 @@ function view(functionId) {
 // load html
 $(function() {
   $("#proviedInfoList").load("proviedInfoList.html", null, function() {
+    // // Set up wisywig editor
+    // $("#editor").jqte();
+
+    // // Set up date picker
+    // $("#infoDatepicker").datepicker({
+    //   format: "yyyy/mm/dd",
+    //   autoclose: true,
+    //   todayHighlight: true,
+    // }).on({
+    //   changeDate: function(e) {
+    //     var selected_date = e["date"];
+    //     $("#infoYear").val(selected_date.getFullYear());
+    //     $("#infoMonth").val(selected_date.getMonth() + 1);
+    //     $("#infoDay").val(selected_date.getDate());
+    //   }
+    // })
+  });
+  $("#operationHistory").load("operationHistory.html");
+  $("#disclosureInfotList").load("disclosureInfotList.html");
+  $("#tenantList").load("tenantList.html");
+});
+
+function openInfoEdit(id){
+  $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
     // Set up wisywig editor
     $("#editor").jqte();
 
@@ -29,11 +53,16 @@ $(function() {
         $("#infoDay").val(selected_date.getDate());
       }
     })
+
+    $('#modal-infoEditor').modal('show');
   });
-  $("#operationHistory").load("operationHistory.html");
-  $("#disclosureInfotList").load("disclosureInfotList.html");
-  $("#tenantList").load("tenantList.html");
-});
+}
+
+function openComment(id){
+  $("#modal-situationAggregate").load("comment.html #modal-situationAggregate_" + id, null, function(){
+    $('#modal-situationAggregate').modal('show');
+  });
+}
 
 // load personal data and show modal window
 function openEditModal(name) {
