@@ -93,8 +93,8 @@ img.infoReload {
   margin-bottom: 20px;
 }
 
-.boxTable {
-  display: table;
+#modal-situationAggregate table td{
+  padding: 5px 5px 5px 5px;
 }
 
 #modal-infoEditor table {
