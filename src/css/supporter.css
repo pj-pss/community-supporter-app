@@ -119,21 +119,6 @@ img.infoReload {
   border-radius: 10px;
 }
 
-.loadingIcon {
-  text-align: center;
-  font-size: 50px;
-}
-
-.successMessage {
-  text-align: center;
-  color: blue;
-}
-
-.faildMessage {
-  text-align: center;
-  color: red;
-}
-
 .inputFile p {
   display: inline;
 }
