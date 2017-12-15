@@ -22,9 +22,10 @@ button#logout {
 }
 
 .refleshIcon {
+  float: right;
   position: relative;
-  margin-top: 1px;
-  font-size: 32px;
+  margin-top: 4px;
+  font-size: 30px;
 }
 
 #infoSearchKeyword {
