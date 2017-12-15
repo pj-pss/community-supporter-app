@@ -32,13 +32,18 @@ $(document).on('change', ':file', function() {
   fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
   document.getElementById('fileName').innerHTML = "<strong>" + fileName + "</strong>";
 
-  if(fileName.match(/.*\.csv/)){
+  if(fileName){
+    if(fileName.match(/.*\.csv/)){
     document.getElementById('uploadButton').style.display = "";
     document.getElementById('errorMessage').style.display = "none";
+    }else{
+      document.getElementById('uploadButton').style.display = "none";
+      document.getElementById('errorMessage').style.display = "";
+      // clear input file
+      $("#inputFile").val("");
+    }
   }else{
     document.getElementById('uploadButton').style.display = "none";
-    document.getElementById('errorMessage').style.display = "";
-    // clear input file
-    $("#inputFile").val("");
+    document.getElementById('errorMessage').style.display = "none";
   }
 });
