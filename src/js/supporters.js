@@ -47,7 +47,7 @@ $(document).on('change', ':file', function() {
   var input = $(this),
   // delete file path
   fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-  document.getElementById('fileName').innerHTML = "<strong>" + fileName + "</strong>";
+  document.getElementById('fileName').innerHTML = fileName;
 
   if(fileName){
     if(fileName.match(/.*\.csv/)){

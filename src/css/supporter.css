@@ -168,3 +168,9 @@ img.infoReload {
   padding-bottom: 50px;
   color: red;
 }
+
+#fileName {
+  font-size: 20px;
+  font-weight: bolder;
+  vertical-align: -5px;
+}
