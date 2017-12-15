@@ -51,15 +51,15 @@ $(document).on('change', ':file', function() {
 
   if(fileName){
     if(fileName.match(/.*\.csv/)){
-      document.getElementById('uploadButton').style.display = "";
-      document.getElementById('errorMessage').style.display = "none";
+      showFileFormButton(true, true);
+      showFileFormErrorMessage(false);
     }else{
-      document.getElementById('uploadButton').style.display = "none";
-      document.getElementById('errorMessage').style.display = "";
+      showFileFormButton(true, false);
+      showFileFormErrorMessage(true);
     }
   }else{
-    document.getElementById('uploadButton').style.display = "none";
-    document.getElementById('errorMessage').style.display = "none";
+    showFileFormButton(false, false);
+    showFileFormErrorMessage(false);
   }
 });
 
@@ -83,4 +83,20 @@ function submitFile() {
       $('#modal-faild').modal('show');
     }
   },3000);
+}
+
+function clearInputFile() {
+  showFileFormButton(false, false);
+  showFileFormErrorMessage(false);
+  $("#inputFile").val("");
+  document.getElementById('fileName').innerHTML = "";
+}
+
+function showFileFormButton(clear, upload){
+  document.getElementById('clearButton').style.display = clear ? "" : "none";
+  document.getElementById('uploadButton').style.display = upload ? "" : "none";
+}
+
+function showFileFormErrorMessage(errorMessage){
+  document.getElementById('errorMessage').style.display = errorMessage ? "" : "none";
 }
