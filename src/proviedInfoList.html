@@ -1,6 +1,6 @@
 <div>
   <input id="searchKeywordBox" type="text" name="searchKeywordBox" size="32"><i class="fa fa-search fa-2x searchIcon" aria-hidden="true"></i>
-  <button id="createInfo" data-target="#modal-infoEditor" data-toggle="modal">新規作成</button>
+  <button id="createInfo" onclick="openInfoEdit(0)">新規作成</button>
   <i class="fa fa-repeat fa-2x fa-fw refleshIcon" aria-hidden="true"></i>
 </div>
 <div>
@@ -9,80 +9,17 @@
       <tr class="head"><th>日時</th><th>掲載先</th><th>タイトル</th><th>参加する!</th><th>検討中</th><th>コメント</th></tr>
     </thead>
     <tbody>
-      <tr><td>2017/11/07<br>13:46:48</td><td>みんなの掲示板</td><td class="flushleft"><a href="" target="_blank">共有フロアの清掃を次の日程で実施します。</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">0</a></td></tr>
-      <tr><td>2017/11/08<br>13:23:50</td><td>みんなの掲示板</td><td class="flushleft"><a href="" target="_blank">まちのみんなでお祝いしよう！ UDCK設立11周年記念パーティ</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">3</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">2</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">3</a></td></tr>
-      <tr><td>2017/11/07<br>13:24:18</td><td>みんなの掲示板</td><td class="flushleft"><a href="" target="_blank">【配信協力】留学⽣×市⺠ みんなで楽しもう！INTERNATIONAL CURRY PARTY</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">11</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">4</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">1</a></td></tr>
-      <tr><td>2017/11/07 13:23:48</td><td>みんなの掲示板</td><td class="flushleft"><a href="" target="_blank">11月のレストランメニューが決まりました</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">13</a></td></tr>
+      <tr><td>2017/11/07<br>13:46:48</td><td>みんなの掲示板</td><td class="flushleft"><a href="javascript:openInfoEdit(1)">共有フロアの清掃を次の日程で実施します。</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">0</a></td></tr>
+      <tr><td>2017/11/08<br>13:23:50</td><td>みんなの掲示板</td><td class="flushleft"><a href="javascript:openInfoEdit(2)">まちのみんなでお祝いしよう！ UDCK設立11周年記念パーティ</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">3</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">2</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">3</a></td></tr>
+      <tr><td>2017/11/07<br>13:24:18</td><td>みんなの掲示板</td><td class="flushleft"><a href="javascript:openInfoEdit(3)">【配信協力】留学⽣×市⺠ みんなで楽しもう！INTERNATIONAL CURRY PARTY</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">11</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">4</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">1</a></td></tr>
+      <tr><td>2017/11/07 13:23:48</td><td>みんなの掲示板</td><td class="flushleft"><a href="javascript:openInfoEdit(4)">11月のレストランメニューが決まりました</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">-</a></td><td><a href="#modal-situationAggregate" data-toggle="modal">13</a></td></tr>
     </tbody>
     <tfoot>
     </tfoot>
   </table>
 </div>
 
-<div id="modal-infoEditor" class="modal fade">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        提供情報：編集
-      </div>
-      <div class="modal-body">
-        <table>
-          <tr><th colspan="2">■記事区分</th><th colspan="2">■記事掲載期間</th></tr>
-          <tr>
-            <td colspan="2">
-              <select>
-                <option>イベント</option>
-              </select>
-            </td>
-            <td colspan="2">
-              <input id="infoYear" type="text" maxlength="4" style="width: 60px" />年&nbsp;<input id="infoMonth" type="text" maxlength="2" style="width: 40px" />月&nbsp;<input id="infoDay" type="text" maxlength="2" style="width: 40px" />日&nbsp;<i class="fa fa-calendar fa-2x" aria-hidden="true" id="infoDatepicker"></i>&nbsp;まで
-            </td>
-          </tr>
-          <tr><th colspan="4">■記事配信対象者</th></tr>
-          <tr>
-            <td style="width: 25%;">
-               入居フロア<br>
-              &nbsp;&nbsp;<select>
-                <option>全入居者</option>
-              </select>
-            </td>
-            <td style="width: 25%;">
-              性別<br>
-              &nbsp;&nbsp;<select>
-                <option>全て</option>
-                <option>男性</option>
-                <option>女性</option>
-              </select>
-            </td>
-            <td style="width: 25%;">
-              年代<br>
-              &nbsp;&nbsp;<select>
-                <option>全年代</option>
-                <option>80代</option>
-                <option>70代</option>
-                <option>60代</option>
-                <option>50代以下</option>
-              </select>
-            </td>
-            <td style="width: 25%;">
-              居住形態<br>
-              &nbsp;&nbsp;<select>
-                <option>全て</option>
-              </select>
-            </td>
-          </tr>
-          <tr><th colspan="4">■記事タイトル</th></tr>
-          <tr><td colspan="4"><input type="text" style="width: 100%" /></td></tr>
-          <tr><th colspan="4">■記事本文</th></tr>
-          <tr><td colspan="4"><textarea id="editor" /></td></tr>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal">保存</button>
-        <button class="btn" data-dismiss="modal">キャンセル</button>
-      </div>
-    </div>
-  </div>
+<div id="modal-infoEditor" class="modal fade modal-infoEditor">
 </div>
 
 <div id="modal-situationAggregate" class="modal fade">
