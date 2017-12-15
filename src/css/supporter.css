@@ -75,6 +75,27 @@ img.infoReload {
   background-color: #f7fbff;
 }
 
+.box0 {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.box1 {
+  float: left;
+  margin-left: 5%;
+  margin-bottom: 20px;
+}
+
+.box2 {
+  float: right;
+  margin-right: 5%;
+  margin-bottom: 20px;
+}
+
+.boxTable {
+  display: table;
+}
 
 #modal-infoEditor table {
   width: 100%;
