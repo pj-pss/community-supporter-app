@@ -127,4 +127,14 @@ img.infoReload {
 
 #infoDatepicker {
   vertical-align: middle;
+.inputFileForm {
+  margin: 15px;
+}
+
+.inputFileForm p {
+  display: inline;
+}
+
+#errorMessage i {
+  color: red;
 }
