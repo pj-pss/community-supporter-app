@@ -118,3 +118,15 @@ img.infoReload {
   margin: 2px;
   border-radius: 10px;
 }
+
+.inputFileForm {
+  margin: 15px;
+}
+
+.inputFileForm p {
+  display: inline;
+}
+
+#errorMessage i {
+  color: red;
+}

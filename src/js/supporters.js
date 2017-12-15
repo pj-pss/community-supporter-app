@@ -24,3 +24,24 @@ function openEditModal(name) {
     $('#modal-edit_' + name).modal('show');
   });
 }
+
+// when select file
+$(document).on('change', ':file', function() {
+  var input = $(this),
+  // delete file path
+  fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+  document.getElementById('fileName').innerHTML = "<strong>" + fileName + "</strong>";
+
+  if(fileName){
+    if(fileName.match(/.*\.csv/)){
+      document.getElementById('uploadButton').style.display = "";
+      document.getElementById('errorMessage').style.display = "none";
+    }else{
+      document.getElementById('uploadButton').style.display = "none";
+      document.getElementById('errorMessage').style.display = "";
+    }
+  }else{
+    document.getElementById('uploadButton').style.display = "none";
+    document.getElementById('errorMessage').style.display = "none";
+  }
+});

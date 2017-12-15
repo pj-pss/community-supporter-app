@@ -1,1 +1,14 @@
-緊急時情報開示先登録
+<div class="inputFileForm">
+  <p id="fileName"></p>
+  <label>
+    <span class="btn btn-default">
+      csvファイル選択
+      <input id="inputFile" type="file" style="display:none" accept=".csv">
+    </span>
+  </label>
+  <!-- <span id="uploadButton" class="btn btn-info" onclick="showConfirm()" style="display:none"> -->
+  <span id="uploadButton" class="btn btn-info" style="display:none">
+    アップロード
+  </span>
+  <div id="errorMessage" style="display:none"><i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i><p>csvファイルを選択してください</p></div>
+</div>
