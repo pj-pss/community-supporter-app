@@ -47,18 +47,56 @@ $(document).on('change', ':file', function() {
   var input = $(this),
   // delete file path
   fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-  document.getElementById('fileName').innerHTML = "<strong>" + fileName + "</strong>";
+  document.getElementById('fileName').innerHTML = fileName;
 
   if(fileName){
     if(fileName.match(/.*\.csv/)){
-      document.getElementById('uploadButton').style.display = "";
-      document.getElementById('errorMessage').style.display = "none";
+      showFileFormButton(true, true);
+      showFileFormErrorMessage(false);
     }else{
-      document.getElementById('uploadButton').style.display = "none";
-      document.getElementById('errorMessage').style.display = "";
+      showFileFormButton(true, false);
+      showFileFormErrorMessage(true);
     }
   }else{
-    document.getElementById('uploadButton').style.display = "none";
-    document.getElementById('errorMessage').style.display = "none";
+    showFileFormButton(false, false);
+    showFileFormErrorMessage(false);
   }
 });
+
+function showConfirm() {
+  $('#modal-confirm').modal('show');
+}
+
+function submitFile() {
+  var fileName = document.getElementById('fileName').innerHTML;
+
+  $('#modal-loading').modal('show');
+
+  // show loading modal for 3sec
+  setTimeout(function(){
+    $('#modal-loading').modal('hide');
+
+    // check only file type
+    if(fileName.match(/.*\.csv/)){
+      $('#modal-success').modal('show');
+    }else{
+      $('#modal-faild').modal('show');
+    }
+  },3000);
+}
+
+function clearInputFile() {
+  showFileFormButton(false, false);
+  showFileFormErrorMessage(false);
+  $("#inputFile").val("");
+  document.getElementById('fileName').innerHTML = "";
+}
+
+function showFileFormButton(clear, upload){
+  document.getElementById('clearButton').style.display = clear ? "" : "none";
+  document.getElementById('uploadButton').style.display = upload ? "" : "none";
+}
+
+function showFileFormErrorMessage(errorMessage){
+  document.getElementById('errorMessage').style.display = errorMessage ? "" : "none";
+}

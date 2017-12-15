@@ -127,6 +127,8 @@ img.infoReload {
 
 #infoDatepicker {
   vertical-align: middle;
+}
+
 .inputFileForm {
   margin: 15px;
 }
@@ -137,4 +139,38 @@ img.infoReload {
 
 #errorMessage i {
   color: red;
+  margin-bottom: 15px;
+}
+
+.loadingIcon {
+  text-align: center;
+  font-size: 30px;
+}
+
+.confirmMessage {
+  text-align: center;
+  font-size: 20px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.successMessage {
+  text-align: center;
+  font-size: 24px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  color: blue;
+}
+
+.faildMessage {
+  text-align: center;
+  font-size: 24px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  color: red;
+}
+
+#fileName {
+  font-size: 12px;
+  font-weight: bolder;
 }
