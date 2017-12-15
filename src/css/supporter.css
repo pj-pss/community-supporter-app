@@ -1,8 +1,6 @@
 html, body, .contents, main { height:100%; }
 
-//header {
-//  background-color: #008F00;
-//}
+#editor {overflow:scroll; max-height:300px}
 
 button#logout {
   margin: 0 16px 0 0;
@@ -50,25 +48,6 @@ img.infoReload {
   float: right;
 }
 
-#proviedInfoTable {
-  width: 100%;
-  margin: 2px;
-}
-#proviedInfoTable thead th {
-  text-align: center;
-}
-#proviedInfoTable .centering {
-  text-align: center;
-}
-#proviedInfoTable .title {
-  width: 30%;
-}
-#proviedInfoTable th,
-#proviedInfoTable td {
-  vertical-align: middle;
-}
-
-
 .borderTable .description {
   width: 70%;
 }
@@ -96,11 +75,26 @@ img.infoReload {
 }
 
 
+#modal-infoEditor table {
+  width: 100%;
+  background-color: #ffffff;
+  border: 0px;
+}
+
+#modal-infoEditor table th,
+#modal-infoEditor table td {
+  background-color: #ffffff;
+  border: 0px;
+  padding: 0px 0px 5px 0px;
+}
+
+
 #editModal ul li {
   list-style-type: square;
   padding-top: 10px;
   padding-bottom: 2px;
 }
+
 #editModal table {
   width: 100%;
   background-color: #ffffff;
@@ -119,6 +113,20 @@ img.infoReload {
   border-radius: 10px;
 }
 
+.jqte {
+  margin: 5px 0;
+}
+.jqte_tool.jqte_tool_1 .jqte_tool_label {
+  height: 28px;
+}
+.jqte_editor {
+  height: 150px;
+  max-height: 150px;
+  resize: none;
+}
+
+#infoDatepicker {
+  vertical-align: middle;
 .inputFileForm {
   margin: 15px;
 }
