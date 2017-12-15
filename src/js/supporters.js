@@ -55,7 +55,7 @@ function submitFile() {
 
   $('#modal-loading').modal('show');
 
-  // show loading modal for 1.5sec
+  // show loading modal for 3sec
   setTimeout(function(){
     $('#modal-loading').modal('hide');
 
@@ -65,5 +65,5 @@ function submitFile() {
     }else{
       $('#modal-faild').modal('show');
     }
-  },1500);
+  },3000);
 }
