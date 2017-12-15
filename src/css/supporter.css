@@ -136,12 +136,25 @@ img.infoReload {
   font-size: 50px;
 }
 
+.confirmMessage {
+  text-align: center;
+  font-size: 20px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
 .successMessage {
   text-align: center;
+  font-size: 24px;
+  padding-top: 50px;
+  padding-bottom: 50px;
   color: blue;
 }
 
 .faildMessage {
   text-align: center;
+  font-size: 24px;
+  padding-top: 50px;
+  padding-bottom: 50px;
   color: red;
 }
