@@ -28,24 +28,10 @@ button#logout {
   font-size: 30px;
 }
 
-#infoSearchKeyword {
-  background: #fff url("../img/parts_ico_search.png") no-repeat;
-  background-size: contain;
-  padding-left: 32px;
-  margin: 2px;
-  border-radius: 10px;
-}
-
 #createInfo {
   color: #FFFFFF;
   background-color: #00B0F0;
   margin: 2px;
-  float: right;
-}
-
-img.infoReload {
-  width: 32px;
-  height: 32px;
   float: right;
 }
 
@@ -70,6 +56,7 @@ img.infoReload {
   text-align: center;
   vertical-align: middle;
   border: 2px #eeeeee solid;
+  padding: 5px 15px 5px 15px;
 }
 .borderTable tr:nth-child(odd) {
   background-color: #f7fbff;
