@@ -52,6 +52,11 @@ function openComment(id){
       });
     });
 
+    // If it does not exist, the parent window can not be scrolled.
+    $('#modal-confirm-delete').on('hidden.bs.modal', function () {
+      $('body').addClass('modal-open');
+    });
+
     $('#modal-situationAggregate').modal('show');
   });
 }
@@ -120,4 +125,13 @@ function showFileFormButton(clear, upload){
 
 function showFileFormErrorMessage(errorMessage){
   document.getElementById('errorMessage').style.display = errorMessage ? "" : "none";
+}
+
+function showDeleteCommentConfirm() {
+  $('#modal-confirm-delete').modal('show');
+}
+
+function deleteComment(){
+  // dummy
+  $('#modal-confirm-delete').modal('hide');
 }
