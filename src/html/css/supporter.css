@@ -189,3 +189,16 @@ button#logout {
   font-size: 12px;
   font-weight: bolder;
 }
+
+.stealthTable {
+  width: 100%;
+  margin: 2px;
+  border: 0px;
+}
+.stealthTable th,
+.stealthTable td {
+  text-align: center;
+  vertical-align: middle;
+  border: 0px;
+  padding: 0px 0px 10px 0px;
+}
