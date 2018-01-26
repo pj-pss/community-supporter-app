@@ -101,9 +101,6 @@ button#logout {
   padding: 0px 0px 0px 0px;
 }
 
-.editor {overflow:scroll; max-height:300px}
-
-
 #editModal ul li {
   list-style-type: square;
   padding-top: 10px;
@@ -201,4 +198,26 @@ button#logout {
   vertical-align: middle;
   border: 0px;
   padding: 0px 0px 10px 0px;
+}
+
+.editorItem {
+  margin: 10px 0 5px 0;
+}
+
+#infoYear {
+  width: 60px;
+}
+#infoMonth,
+#infoDay {
+  width: 40px;
+}
+
+#infoYear,
+#infoMonth,
+#infoDay {
+  margin: 3px;
+}
+
+.fullWidth {
+  width: 100%;
 }

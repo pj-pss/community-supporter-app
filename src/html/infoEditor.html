@@ -1,69 +1,97 @@
 <div id="modal-infoEditor_0">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        提供情報：新規作成
-      </div>
-      <div class="modal-body">
-        <table>
-          <tr><th colspan="2">■記事区分</th><th colspan="2">■記事掲載期間</th></tr>
-          <tr>
-            <td colspan="2">
-              <select>
-                <option>イベント</option>
-              </select>
-            </td>
-            <td colspan="2">
-              <input id="infoYear" type="text" maxlength="4" style="width: 60px" />年&nbsp;<input id="infoMonth" type="text" maxlength="2" style="width: 40px" />月&nbsp;<input id="infoDay" type="text" maxlength="2" style="width: 40px" />日&nbsp;<i class="fa fa-calendar fa-2x" aria-hidden="true" id="infoDatepicker"></i>&nbsp;まで
-            </td>
-          </tr>
-          <tr><th colspan="4">■記事配信対象者</th></tr>
-          <tr>
-            <td style="width: 25%;">
-               入居フロア<br>
-              &nbsp;&nbsp;<select>
-                <option>全入居者</option>
-              </select>
-            </td>
-            <td style="width: 25%;">
-              性別<br>
-              &nbsp;&nbsp;<select>
-                <option>全て</option>
-                <option>男性</option>
-                <option>女性</option>
-              </select>
-            </td>
-            <td style="width: 25%;">
-              年代<br>
-              &nbsp;&nbsp;<select>
-                <option>全年代</option>
-                <option>80代</option>
-                <option>70代</option>
-                <option>60代</option>
-                <option>50代以下</option>
-              </select>
-            </td>
-            <td style="width: 25%;">
-              居住形態<br>
-              &nbsp;&nbsp;<select>
-                <option>全て</option>
-              </select>
-            </td>
-          </tr>
-          <tr><th colspan="4">■URL</th></tr>
-          <tr><td colspan="4"><input type="text" style="width: 100%" /></td></tr>
-          <tr><th colspan="4">■記事タイトル</th></tr>
-          <tr><td colspan="4"><input type="text" style="width: 100%" /></td></tr>
-          <tr><th colspan="4">■記事本文</th></tr>
-          <tr><td colspan="4"><textarea id="editor" /></td></tr>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal">保存</button>
-        <button class="btn" data-dismiss="modal">キャンセル</button>
-      </div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                提供情報：新規作成
+            </div>
+            <div class="modal-body">
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="editorItem">■記事区分</div>
+                        <select>
+                            <option>イベント</option>
+                            <option>お知らせ</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="editorItem">■記事掲載期間</div>
+                        <input id="infoYear" type="text" maxlength="4"/>年
+                        <input id="infoMonth" type="text" maxlength="2"/>月
+                        <input id="infoDay" type="text" maxlength="2"/>日
+                        <i class="fa fa-fw fa-calendar fa-2x" aria-hidden="true" id="infoDatepicker"></i>まで
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="editorItem">■記事配信対象者</div>
+                    </div>
+                    <div class="col-md-3">
+                        入居フロア<br>
+                        <select>
+                            <option>全入居者</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        性別<br>
+                        <select>
+                            <option>全て</option>
+                            <option>男性</option>
+                            <option>女性</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        年代<br>
+                        <select>
+                            <option>全年代</option>
+                            <option>80代</option>
+                            <option>70代</option>
+                            <option>60代</option>
+                            <option>50代以下</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        居住形態<br>
+                        <select>
+                            <option>全て</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="editorItem">■URL</div>
+                        <input type="text" class="fullWidth"/>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="editorItem">■画像</div>
+                        <div class="inputImgForm">
+                            <label>
+                                <span class="btn btn-default btn-sm">
+                                   ファイル選択
+                                    <input id="inputFile" type="file" style="display:none" accept="image/*">
+                                </span>
+                            </label>
+                            <span id="fileName"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="editorItem">■記事タイトル</div>
+                        <input type="text" class="fullWidth"/>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="editorItem">■記事本文</div>
+                        <textarea id="editor" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">保存</button>
+                <button class="btn" data-dismiss="modal">キャンセル</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div id="modal-infoEditor_1">
