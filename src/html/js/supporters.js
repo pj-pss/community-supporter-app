@@ -82,6 +82,11 @@ function openInfoEdit(id){
       });
     });
 
+    // If it does not exist, the parent window can not be scrolled.
+    $('#modal-preview').on('hidden.bs.modal', function () {
+      $('body').addClass('modal-open');
+    });
+
     $('#modal-infoEditor').modal('show');
   });
 }
@@ -108,7 +113,7 @@ function openComment(id){
 
 // load personal data and show modal window
 function openEditModal(name) {
-  $("#editModal").load("personalData.html #modal-edit_" + name, function(response){
+  $("#editModal").load("personalData.html #modal-edit_" + name, function(){
     $('#modal-edit_' + name).modal('show');
   });
 }
@@ -158,4 +163,10 @@ function showDeleteCommentConfirm() {
 function deleteComment(){
   // dummy
   $('#modal-confirm-delete').modal('hide');
+}
+
+function showInfoPreview() {
+  $("#modal-preview").load("infoPreview.html", function(){
+    $('#modal-preview').modal('show');
+  });
 }
