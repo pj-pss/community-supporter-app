@@ -43,9 +43,6 @@ $(function() {
 
 function openInfoEdit(id){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
-    // Set up wisywig editor
-    $("#editor").jqte();
-
     // Set up date picker
     $("#infoDatepicker").datepicker({
       format: "yyyy/mm/dd",
