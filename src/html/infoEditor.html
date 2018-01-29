@@ -8,31 +8,28 @@
 
 
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="editorItem">■記事区分</div>
-                        <select>
-                            <option>イベント</option>
-                            <option>お知らせ</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="editorItem">■記事掲載期間</div>
+                <form enctype="multipart/form-data" method="post">
+                    <div class="col-md-12">
+                        <div class="editorItem">■開催日時</div>
                         <input id="infoYear" type="text" maxlength="4"/>年
                         <input id="infoMonth" type="text" maxlength="2"/>月
                         <input id="infoDay" type="text" maxlength="2"/>日
-                        <i class="fa fa-fw fa-calendar fa-2x" aria-hidden="true" id="infoDatepicker"></i>まで
+                        <i class="fa fa-fw fa-calendar fa-2x" aria-hidden="true" id="infoDatepicker"></i>
+                        <input id="infoTime" type="time">
+
+                        ~
+
+                        <input id="infoYear" type="text" maxlength="4"/>年
+                        <input id="infoMonth" type="text" maxlength="2"/>月
+                        <input id="infoDay" type="text" maxlength="2"/>日
+                        <i class="fa fa-fw fa-calendar fa-2x" aria-hidden="true" id="infoDatepicker"></i>
+                        <input id="infoTime" type="time">
                     </div>
 
                     <div class="col-md-12">
                         <div class="editorItem">■記事配信対象者</div>
                     </div>
-                    <div class="col-md-3">
-                        入居フロア<br>
-                        <select>
-                            <option>全入居者</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         性別<br>
                         <select>
                             <option>全て</option>
@@ -40,7 +37,7 @@
                             <option>女性</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         年代<br>
                         <select>
                             <option>全年代</option>
@@ -50,36 +47,28 @@
                             <option>50代以下</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        居住形態<br>
-                        <select>
-                            <option>全て</option>
-                        </select>
-                    </div>
+                    <div class="col-md-8"></div>
+                    <div class="clearfix"></div>
 
-                    <div class="col-md-8">
-                        <div class="editorItem">■URL</div>
-                        <input type="text" class="fullWidth"/>
-                    </div>
+
                     <div class="col-md-4">
                         <div class="editorItem">■画像</div>
-                        <div class="inputImgForm">
+                        <div class="inputFileForm">
                             <label>
                                 <span class="btn btn-default btn-sm">
                                    ファイル選択
-                                    <input id="inputFile" type="file" style="display:none" accept="image/*">
+                                    <input id="inputFileImg" type="file" style="display:none" accept="image/*">
                                 </span>
                             </label>
-                            <span id="fileName"></span>
+                            <span id="fileNameImg"></span>
+                            <div id="infoThumbnail"></div>
                         </div>
                     </div>
-
-                    <div class="col-md-12">
+                    <div class="col-md-8">
+                        <div class="editorItem">■URL</div>
+                        <input type="text" class="fullWidth"/>
                         <div class="editorItem">■記事タイトル</div>
                         <input type="text" class="fullWidth"/>
-                    </div>
-
-                    <div class="col-md-12">
                         <div class="editorItem">■記事本文</div>
                         <textarea id="editor" />
                     </div>
@@ -90,6 +79,7 @@
                 <button class="btn btn-primary" data-dismiss="modal">保存</button>
                 <button class="btn" data-dismiss="modal">キャンセル</button>
             </div>
+        </form>
         </div>
     </div>
 </div>

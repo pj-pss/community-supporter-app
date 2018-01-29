@@ -149,6 +149,11 @@ button#logout {
   display: inline;
 }
 
+.inputFileForm .fileName {
+  font-size: 12px;
+  font-weight: bolder;
+}
+
 #errorMessage i {
   color: red;
   margin-bottom: 15px;
@@ -180,11 +185,6 @@ button#logout {
   padding-top: 50px;
   padding-bottom: 50px;
   color: red;
-}
-
-#fileName {
-  font-size: 12px;
-  font-weight: bolder;
 }
 
 .stealthTable {
@@ -219,5 +219,19 @@ button#logout {
 }
 
 .fullWidth {
+  width: 100%;
+}
+
+.modal-lg {
+  width: 80%;
+}
+
+#infoThumbnail {
+  width: 100%;
+  /*height: 300px;
+  border: 2px solid black;*/
+}
+
+#infoThumbnail img {
   width: 100%;
 }

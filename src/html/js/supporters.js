@@ -14,7 +14,30 @@ function view(functionId) {
 $(function() {
   $("#proviedInfoList").load("proviedInfoList.html");
   $("#operationHistory").load("operationHistory.html");
-  $("#disclosureInfotList").load("disclosureInfotList.html");
+  $("#disclosureInfotList").load("disclosureInfotList.html" , function(){
+    // when select file
+    $('#inputFileCsv').on('change', function() {
+    // $(document).on('change', ':file', function() {
+      var input = $(this),
+      // delete file path
+      fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+      $('#fileNameCsv').html(fileName);
+
+      // show or hide: error message, clear button, upload button
+      if(fileName){
+        if(fileName.match(/.*\.csv/)){
+          showFileFormButton(true, true);
+          showFileFormErrorMessage(false);
+        }else{
+          showFileFormButton(true, false);
+          showFileFormErrorMessage(true);
+        }
+      }else{
+        showFileFormButton(false, false);
+        showFileFormErrorMessage(false);
+      }
+    });
+  });
   $("#tenantList").load("tenantList.html");
 });
 
@@ -36,6 +59,32 @@ function openInfoEdit(id){
         $("#infoDay").val(selected_date.getDate());
       }
     })
+
+    $(function() {
+      // select upload file
+      $('#inputFileImg').on('change', function() {
+        // show file name
+        var input = $(this);
+        var fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        $('#fileNameImg').html(fileName);
+
+        var file = $(this).prop('files')[0];
+
+        // allow only image file
+        if (! file.type.match('image.*')) {
+          // show error message
+          return;
+        }
+
+        // preview
+        var reader = new FileReader();
+        reader.onload = function() {
+          var img_src = $('<img>').attr('src', reader.result).addClass('thumbnail');
+          $('#infoThumbnail').html(img_src);
+        }
+        reader.readAsDataURL(file);
+      });
+    });
 
     $('#modal-infoEditor').modal('show');
   });
@@ -68,27 +117,6 @@ function openEditModal(name) {
   });
 }
 
-// when select file
-$(document).on('change', ':file', function() {
-  var input = $(this),
-  // delete file path
-  fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-  document.getElementById('fileName').innerHTML = fileName;
-
-  if(fileName){
-    if(fileName.match(/.*\.csv/)){
-      showFileFormButton(true, true);
-      showFileFormErrorMessage(false);
-    }else{
-      showFileFormButton(true, false);
-      showFileFormErrorMessage(true);
-    }
-  }else{
-    showFileFormButton(false, false);
-    showFileFormErrorMessage(false);
-  }
-});
-
 function showConfirm() {
   $('#modal-confirm').modal('show');
 }
@@ -115,7 +143,7 @@ function clearInputFile() {
   showFileFormButton(false, false);
   showFileFormErrorMessage(false);
   $("#inputFile").val("");
-  document.getElementById('fileName').innerHTML = "";
+  document.getElementById('fileNameCsv').innerHTML = "";
 }
 
 function showFileFormButton(clear, upload){
