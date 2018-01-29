@@ -43,19 +43,13 @@ $(function() {
 
 function openInfoEdit(id){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
-    // Set up date picker
-    $("#infoDatepicker").datepicker({
-      format: "yyyy/mm/dd",
-      autoclose: true,
-      todayHighlight: true,
-    }).on({
-      changeDate: function(e) {
-        var selected_date = e["date"];
-        $("#infoYear").val(selected_date.getFullYear());
-        $("#infoMonth").val(selected_date.getMonth() + 1);
-        $("#infoDay").val(selected_date.getDate());
-      }
-    })
+    $('#datepicker .date').datepicker({
+        format: "yyyy/mm/dd",
+        language: 'ja',
+        autoclose: true,
+        todayHighlight: true,
+        startDate: Date()
+    });
 
     $(function() {
       // select upload file

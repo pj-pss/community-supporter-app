@@ -198,14 +198,6 @@ button#logout {
   margin: 10px 0 5px 0;
 }
 
-#infoYear {
-  width: 60px;
-}
-#infoMonth,
-#infoDay {
-  width: 40px;
-}
-
 #infoYear,
 #infoMonth,
 #infoDay {
@@ -222,10 +214,18 @@ button#logout {
 
 #infoThumbnail {
   width: 100%;
-  /*height: 300px;
-  border: 2px solid black;*/
 }
 
 #infoThumbnail img {
   width: 100%;
+}
+
+.date {
+  width: 150px;
+  text-indent: 1.5em;
+}
+
+.calendarIcon {
+  margin: 10px -28px 0px 20px;
+  font-size: 18px;
 }
