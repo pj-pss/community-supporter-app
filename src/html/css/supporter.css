@@ -132,9 +132,7 @@ button#logout {
   height: 28px;
 }
 .jqte_editor {
-  height: 150px;
-  max-height: 150px;
-  resize: none;
+  height: 300px;
 }
 
 #infoDatepicker {
