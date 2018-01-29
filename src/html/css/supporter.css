@@ -1,7 +1,5 @@
 html, body, .contents, main { height:100%; }
 
-#editor {overflow:scroll; max-height:300px}
-
 button#logout {
   margin: 0 16px 0 0;
 }
@@ -101,9 +99,6 @@ button#logout {
   padding: 0px 0px 0px 0px;
 }
 
-.editor {overflow:scroll; max-height:300px}
-
-
 #editModal ul li {
   list-style-type: square;
   padding-top: 10px;
@@ -128,18 +123,6 @@ button#logout {
   border-radius: 10px;
 }
 
-.jqte {
-  margin: 5px 0;
-}
-.jqte_tool.jqte_tool_1 .jqte_tool_label {
-  height: 28px;
-}
-.jqte_editor {
-  height: 150px;
-  max-height: 150px;
-  resize: none;
-}
-
 #infoDatepicker {
   vertical-align: middle;
 }
@@ -152,7 +135,14 @@ button#logout {
   display: inline;
 }
 
-#errorMessage i {
+#fileNameCsv,
+#fileNameImg {
+  font-size: 12px;
+  font-weight: bolder;
+}
+
+#errorMessageCsv i,
+#errorMessageImg i {
   color: red;
   margin-bottom: 15px;
 }
@@ -185,11 +175,6 @@ button#logout {
   color: red;
 }
 
-#fileName {
-  font-size: 12px;
-  font-weight: bolder;
-}
-
 .stealthTable {
   width: 100%;
   margin: 2px;
@@ -201,4 +186,46 @@ button#logout {
   vertical-align: middle;
   border: 0px;
   padding: 0px 0px 10px 0px;
+}
+
+#editor {
+  width: 100%;
+  height: 300px;
+  resize: vertical;
+}
+
+.editorItem {
+  margin: 10px 0 5px 0;
+}
+
+#infoYear,
+#infoMonth,
+#infoDay {
+  margin: 3px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.modal-lg {
+  width: 80%;
+}
+
+#infoThumbnail {
+  width: 100%;
+}
+
+#infoThumbnail img {
+  width: 100%;
+}
+
+.date {
+  width: 150px;
+  text-indent: 1.5em;
+}
+
+.calendarIcon {
+  margin: 10px -28px 0px 20px;
+  font-size: 18px;
 }

@@ -14,28 +14,73 @@ function view(functionId) {
 $(function() {
   $("#proviedInfoList").load("proviedInfoList.html");
   $("#operationHistory").load("operationHistory.html");
-  $("#disclosureInfotList").load("disclosureInfotList.html");
+  $("#disclosureInfotList").load("disclosureInfotList.html" , function(){
+    // when select file
+    $('#inputFileCsv').on('change', function() {
+    // $(document).on('change', ':file', function() {
+      var input = $(this),
+      // delete file path
+      fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+      $('#fileNameCsv').html(fileName);
+
+      // show or hide: error message, clear button, upload button
+      if(fileName){
+        if(fileName.match(/.*\.csv/)){
+          showFileFormButton(true, true);
+          showFileFormErrorMessage('errorMessageCsv', false);
+        }else{
+          showFileFormButton(true, false);
+          showFileFormErrorMessage('errorMessageCsv', true);
+        }
+      }else{
+        showFileFormButton(false, false);
+        showFileFormErrorMessage('errorMessageCsv', false);
+      }
+    });
+  });
   $("#tenantList").load("tenantList.html");
 });
 
 function openInfoEdit(id){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
-    // Set up wisywig editor
-    $("#editor").jqte();
+    $('#datepicker .date').datepicker({
+        format: "yyyy/mm/dd",
+        language: 'ja',
+        autoclose: true,
+        todayHighlight: true,
+        startDate: Date()
+    });
 
-    // Set up date picker
-    $("#infoDatepicker").datepicker({
-      format: "yyyy/mm/dd",
-      autoclose: true,
-      todayHighlight: true,
-    }).on({
-      changeDate: function(e) {
-        var selected_date = e["date"];
-        $("#infoYear").val(selected_date.getFullYear());
-        $("#infoMonth").val(selected_date.getMonth() + 1);
-        $("#infoDay").val(selected_date.getDate());
-      }
-    })
+    $(function() {
+      // select upload file
+      $('#inputFileImg').on('change', function() {
+        var file = $(this).prop('files')[0];
+        if(!file) return;
+
+        // show file name
+        var input = $(this);
+        var fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        $('#fileNameImg').html(fileName);
+
+
+        // allow only image file
+        if (! file.type.match('image.*')) {
+          // show error message
+          showFileFormErrorMessage('errorMessageImg', true);
+          $('#infoThumbnail').html('');
+          return;
+        }
+        showFileFormErrorMessage('errorMessageImg', false);
+
+        // preview
+        var reader = new FileReader();
+        reader.onload = function() {
+          var img_src = $('<img>').attr('src', reader.result).addClass('thumbnail');
+          $('#infoThumbnail').html(img_src);
+        }
+        reader.readAsDataURL(file);
+      });
+    });
 
     $('#modal-infoEditor').modal('show');
   });
@@ -68,33 +113,12 @@ function openEditModal(name) {
   });
 }
 
-// when select file
-$(document).on('change', ':file', function() {
-  var input = $(this),
-  // delete file path
-  fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-  document.getElementById('fileName').innerHTML = fileName;
-
-  if(fileName){
-    if(fileName.match(/.*\.csv/)){
-      showFileFormButton(true, true);
-      showFileFormErrorMessage(false);
-    }else{
-      showFileFormButton(true, false);
-      showFileFormErrorMessage(true);
-    }
-  }else{
-    showFileFormButton(false, false);
-    showFileFormErrorMessage(false);
-  }
-});
-
 function showConfirm() {
   $('#modal-confirm').modal('show');
 }
 
 function submitFile() {
-  var fileName = document.getElementById('fileName').innerHTML;
+  var fileName = document.getElementById('fileNameCsv').innerHTML;
 
   $('#modal-loading').modal('show');
 
@@ -113,9 +137,9 @@ function submitFile() {
 
 function clearInputFile() {
   showFileFormButton(false, false);
-  showFileFormErrorMessage(false);
+  showFileFormErrorMessage('errorMessageCsv', false);
   $("#inputFile").val("");
-  document.getElementById('fileName').innerHTML = "";
+  document.getElementById('fileNameCsv').innerHTML = "";
 }
 
 function showFileFormButton(clear, upload){
@@ -123,8 +147,8 @@ function showFileFormButton(clear, upload){
   document.getElementById('uploadButton').style.display = upload ? "" : "none";
 }
 
-function showFileFormErrorMessage(errorMessage){
-  document.getElementById('errorMessage').style.display = errorMessage ? "" : "none";
+function showFileFormErrorMessage(id, errorMessage){
+  document.getElementById(id).style.display = errorMessage ? "" : "none";
 }
 
 function showDeleteCommentConfirm() {
