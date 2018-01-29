@@ -27,14 +27,14 @@ $(function() {
       if(fileName){
         if(fileName.match(/.*\.csv/)){
           showFileFormButton(true, true);
-          showFileFormErrorMessage(false);
+          showFileFormErrorMessage('errorMessageCsv', false);
         }else{
           showFileFormButton(true, false);
-          showFileFormErrorMessage(true);
+          showFileFormErrorMessage('errorMessageCsv', true);
         }
       }else{
         showFileFormButton(false, false);
-        showFileFormErrorMessage(false);
+        showFileFormErrorMessage('errorMessageCsv', false);
       }
     });
   });
@@ -63,18 +63,23 @@ function openInfoEdit(id){
     $(function() {
       // select upload file
       $('#inputFileImg').on('change', function() {
+        var file = $(this).prop('files')[0];
+        if(!file) return;
+
         // show file name
         var input = $(this);
         var fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
         $('#fileNameImg').html(fileName);
 
-        var file = $(this).prop('files')[0];
 
         // allow only image file
         if (! file.type.match('image.*')) {
           // show error message
+          showFileFormErrorMessage('errorMessageImg', true);
+          $('#infoThumbnail').html('');
           return;
         }
+        showFileFormErrorMessage('errorMessageImg', false);
 
         // preview
         var reader = new FileReader();
@@ -122,7 +127,7 @@ function showConfirm() {
 }
 
 function submitFile() {
-  var fileName = document.getElementById('fileName').innerHTML;
+  var fileName = document.getElementById('fileNameCsv').innerHTML;
 
   $('#modal-loading').modal('show');
 
@@ -141,7 +146,7 @@ function submitFile() {
 
 function clearInputFile() {
   showFileFormButton(false, false);
-  showFileFormErrorMessage(false);
+  showFileFormErrorMessage('errorMessageCsv', false);
   $("#inputFile").val("");
   document.getElementById('fileNameCsv').innerHTML = "";
 }
@@ -151,8 +156,8 @@ function showFileFormButton(clear, upload){
   document.getElementById('uploadButton').style.display = upload ? "" : "none";
 }
 
-function showFileFormErrorMessage(errorMessage){
-  document.getElementById('errorMessage').style.display = errorMessage ? "" : "none";
+function showFileFormErrorMessage(id, errorMessage){
+  document.getElementById(id).style.display = errorMessage ? "" : "none";
 }
 
 function showDeleteCommentConfirm() {

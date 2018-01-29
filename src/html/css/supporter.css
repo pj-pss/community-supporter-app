@@ -149,12 +149,14 @@ button#logout {
   display: inline;
 }
 
-.inputFileForm .fileName {
+#fileNameCsv,
+#fileNameImg {
   font-size: 12px;
   font-weight: bolder;
 }
 
-#errorMessage i {
+#errorMessageCsv i,
+#errorMessageImg i {
   color: red;
   margin-bottom: 15px;
 }
