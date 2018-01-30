@@ -179,7 +179,9 @@ function showInfoPreview() {
     link = $('<a></a>').attr('href', url);
     link.text(url);
 
-    var term = startDate + ' ' + startTime + '~' + endDate + ' ' + endTime;
+    if(startDate && endDate) {
+      var term = startDate + ' ' + startTime + '~' + endDate + ' ' + endTime;
+    }
 
     $('#modal-infoPreview .title').html(title);
     $('#modal-infoPreview .url').html(link);

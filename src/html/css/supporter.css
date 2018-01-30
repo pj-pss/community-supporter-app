@@ -243,3 +243,19 @@ button#logout {
   padding: 10px;
   font-size: 18px;
 }
+
+.centering {
+  text-align: center;
+}
+
+#modal-infoPreview img {
+  margin:0 auto;
+}
+
+#modal-infoPreview .title {
+  font-size: 24px;
+}
+
+#modal-infoPreview .term {
+  font-weight: bold;
+}
