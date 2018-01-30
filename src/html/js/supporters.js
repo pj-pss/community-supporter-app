@@ -167,6 +167,19 @@ function deleteComment(){
 
 function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
+    var title = $('#editorTitle').val();
+    var url = $('#editorUrl').val();
+    var text = $('#editor').val();
+    var img = $('#infoThumbnail').html();
+
+    link = $('<a></a>').attr('href', url);
+    link.text(url);
+
+    $('#modal-infoPreview .title').html(title);
+    $('#modal-infoPreview .url').html(link);
+    $('#modal-infoPreview .text').html(text);
+    $('#modal-infoPreview .img').html(img);
+
     $('#modal-preview').modal('show');
   });
 }
