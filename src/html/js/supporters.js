@@ -168,6 +168,10 @@ function deleteComment(){
 function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
     var title = $('#editorTitle').val();
+    var startDate = $('#infoStartDate').val();
+    var startTime = $('#infoStartTime').val();
+    var endDate = $('#infoEndDate').val();
+    var endTime = $('#infoEndTime').val();
     var url = $('#editorUrl').val();
     var text = $('#editor').val();
     var img = $('#infoThumbnail').html();
@@ -175,8 +179,13 @@ function showInfoPreview() {
     link = $('<a></a>').attr('href', url);
     link.text(url);
 
+    var term = startDate + ' ' + startTime + '~' + endDate + ' ' + endTime;
+    console.log(startDate);
+    console.log(startTime);
+
     $('#modal-infoPreview .title').html(title);
     $('#modal-infoPreview .url').html(link);
+    $('#modal-infoPreview .term').html(term);
     $('#modal-infoPreview .text').html(text);
     $('#modal-infoPreview .img').html(img);
 
