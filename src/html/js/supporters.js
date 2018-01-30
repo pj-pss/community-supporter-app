@@ -176,11 +176,16 @@ function showInfoPreview() {
     var text = $('#editor').val();
     var img = $('#infoThumbnail').html();
 
+    if(!(title && url && text && img)) {
+      alert('入力項目に誤りがあります');
+      return;
+    }
+
     link = $('<a></a>').attr('href', url);
     link.text(url);
 
     if(startDate && endDate) {
-      var term = startDate + ' ' + startTime + '~' + endDate + ' ' + endTime;
+      var term = startDate + ' ' + startTime + ' ~ ' + endDate + ' ' + endTime;
     }
 
     $('#modal-infoPreview .title').html(title);
