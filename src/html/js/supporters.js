@@ -180,8 +180,6 @@ function showInfoPreview() {
     link.text(url);
 
     var term = startDate + ' ' + startTime + '~' + endDate + ' ' + endTime;
-    console.log(startDate);
-    console.log(startTime);
 
     $('#modal-infoPreview .title').html(title);
     $('#modal-infoPreview .url').html(link);
