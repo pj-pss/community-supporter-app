@@ -182,6 +182,11 @@ function deleteComment(){
 }
 
 function showinfoEditorAlert() {
+  // If it does not exist, the parent window can not be scrolled.
+  $('#modal-infoEditor-alert').on('hidden.bs.modal', function () {
+    $('body').addClass('modal-open');
+  });
+
   $('#modal-infoEditor-alert').modal('show');
 }
 
