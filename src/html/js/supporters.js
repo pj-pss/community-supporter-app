@@ -43,15 +43,29 @@ $(function() {
 
 function openInfoEdit(id){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
-    $('#datepicker .date').datepicker({
-        format: "yyyy/mm/dd",
-        language: 'ja',
-        autoclose: true,
-        todayHighlight: true,
-        startDate: Date()
-    });
 
     $(function() {
+      // set date picker
+      $('#datepicker .date').datepicker({
+          format: "yyyy/mm/dd",
+          language: 'ja',
+          autoclose: true,
+          todayHighlight: true,
+          startDate: Date()
+      });
+
+      // click radio button
+      $('#modal-infoEditor input[name="articleType"]:radio').on('change', function() {
+        var val = $(this).val();
+        if(val == "info"){
+          $("#modal-infoEditor .date").prop('disabled', true);
+          $("#modal-infoEditor .time").prop('disabled', true);
+        } else {
+          $("#modal-infoEditor .date").prop('disabled', false);
+          $("#modal-infoEditor .time").prop('disabled', false);
+        }
+      });
+
       // select upload file
       $('#inputFileImg').on('change', function() {
         var file = $(this).prop('files')[0];
@@ -188,11 +202,11 @@ function showInfoPreview() {
       var term = startDate + ' ' + startTime + ' ~ ' + endDate + ' ' + endTime;
     }
 
-    $('#modal-infoPreview .title').html(title);
-    $('#modal-infoPreview .url').html(link);
-    $('#modal-infoPreview .term').html(term);
-    $('#modal-infoPreview .text').html(text);
-    $('#modal-infoPreview .img').html(img);
+    $('#modal-preview .title').html(title);
+    $('#modal-preview .url').html(link);
+    $('#modal-preview .term').html(term);
+    $('#modal-preview .text').html(text);
+    $('#modal-preview .img').html(img);
 
     $('#modal-preview').modal('show');
   });

@@ -99,6 +99,10 @@ button#logout {
   padding: 0px 0px 0px 0px;
 }
 
+#modal-infoEditor label {
+  margin: 0 10px;
+}
+
 #editModal ul li {
   list-style-type: square;
   padding-top: 10px;
@@ -115,6 +119,7 @@ button#logout {
   background-color: #ffffff;
   border: 0px;
 }
+
 
 #searchKeywordBox {
   background-size: contain;
@@ -248,7 +253,7 @@ button#logout {
   text-align: center;
 }
 
-#modal-infoPreview img {
+#modal-preview img {
   margin:0 auto;
   width: auto;
   height: auto;
@@ -256,7 +261,7 @@ button#logout {
   max-height: 500px;
 }
 
-#modal-infoPreview .title {
+#modal-preview .title {
   position:absolute;
   bottom: 5px;
   left: 50%;
@@ -271,10 +276,11 @@ button#logout {
                -2px -2px 25px black;
 }
 
-#modal-infoPreview .term {
+#modal-preview .term {
   font-weight: bold;
 }
 
-#modal-infoPreview .imgBox {
+#modal-preview .imgBox {
   position: relative;
 }
+

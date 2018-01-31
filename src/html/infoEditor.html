@@ -10,23 +10,33 @@
                 <div class="row">
                 <form enctype="multipart/form-data" method="post">
                     <div class="col-md-12">
-                        <div class="editorItem">■開催日時</div>
+                        ■記事区分
                     </div>
                     <div class="col-md-offset-1">
-                        <div id="datepicker">
-                            <span class="calendar">
-                                <i class="fa fa-calendar calendarIcon"></i>
-                                <input id="infoStartDate" class="date" type="text" maxlength="10">
-                                <input id="infoStartTime" type="time" value="00:00">
-                            </span>
-                            ~
-                            <span class="calendar">
-                                <i class="fa fa-calendar calendarIcon"></i>
-                                <input id="infoEndDate" class="date" type="text" maxlength="10">
-                                <input id="infoEndTime" type="time" value="00:00">
-                            </span>
+                        <div class="radio">
+                            <label><input type="radio" name="articleType" id="info" value="info"> お知らせ</label>
+                            <label><input type="radio" name="articleType" id="event" value="event"> イベント</label>
                         </div>
-
+                    </div>
+                    <div class="selectDate">
+                        <div class="col-md-12">
+                            <div class="editorItem">■開催日時</div>
+                        </div>
+                        <div class="col-md-offset-1">
+                            <div id="datepicker">
+                                <span class="calendar">
+                                    <i class="fa fa-calendar calendarIcon"></i>
+                                    <input id="infoStartDate" class="date" type="text" maxlength="10">
+                                    <input id="infoStartTime" class="time" type="time" value="00:00">
+                                </span>
+                                ~
+                                <span class="calendar">
+                                    <i class="fa fa-calendar calendarIcon"></i>
+                                    <input id="infoEndDate" class="date" type="text" maxlength="10">
+                                    <input id="infoEndTime" class="time" type="time" value="00:00">
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-12">
