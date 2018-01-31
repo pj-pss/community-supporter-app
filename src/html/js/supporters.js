@@ -181,8 +181,13 @@ function deleteComment(){
   $('#modal-confirm-delete').modal('hide');
 }
 
+function showinfoEditorAlert() {
+  $('#modal-infoEditor-alert').modal('show');
+}
+
 function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
+    var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
     var title = $('#editorTitle').val();
     var startDate = $('#infoStartDate').val();
     var startTime = $('#infoStartTime').val();
@@ -192,8 +197,9 @@ function showInfoPreview() {
     var text = $('#editor').val();
     var img = $('#infoThumbnail').html();
 
-    if(!(title && url && text && img)) {
-      alert('入力項目に誤りがあります');
+    if( !(type && title && text) ||
+        ((type == 'event') && !(startDate || endDate))) {
+      showinfoEditorAlert();
       return;
     }
 
