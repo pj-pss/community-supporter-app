@@ -43,15 +43,31 @@ $(function() {
 
 function openInfoEdit(id){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
-    $('#datepicker .date').datepicker({
-        format: "yyyy/mm/dd",
-        language: 'ja',
-        autoclose: true,
-        todayHighlight: true,
-        startDate: Date()
-    });
 
     $(function() {
+      // set date picker
+      $('#datepicker .date').datepicker({
+          format: "yyyy/mm/dd",
+          language: 'ja',
+          autoclose: true,
+          todayHighlight: true,
+          startDate: Date()
+      });
+
+      // click radio button
+      $('#modal-infoEditor input[name="articleType"]:radio').on('change', function() {
+        var val = $(this).val();
+        if(val == "info"){
+          $("#modal-infoEditor .date").prop('disabled', true);
+          $("#modal-infoEditor .time").prop('disabled', true);
+          $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
+        } else {
+          $("#modal-infoEditor .date").prop('disabled', false);
+          $("#modal-infoEditor .time").prop('disabled', false);
+          $("#modal-infoEditor .selectDate .editorItem").addClass('must');
+        }
+      });
+
       // select upload file
       $('#inputFileImg').on('change', function() {
         var file = $(this).prop('files')[0];
@@ -82,6 +98,11 @@ function openInfoEdit(id){
       });
     });
 
+    // If it does not exist, the parent window can not be scrolled.
+    $('#modal-preview').on('hidden.bs.modal', function () {
+      $('body').addClass('modal-open');
+    });
+
     $('#modal-infoEditor').modal('show');
   });
 }
@@ -108,7 +129,7 @@ function openComment(id){
 
 // load personal data and show modal window
 function openEditModal(name) {
-  $("#editModal").load("personalData.html #modal-edit_" + name, function(response){
+  $("#editModal").load("personalData.html #modal-edit_" + name, function(){
     $('#modal-edit_' + name).modal('show');
   });
 }
@@ -158,4 +179,49 @@ function showDeleteCommentConfirm() {
 function deleteComment(){
   // dummy
   $('#modal-confirm-delete').modal('hide');
+}
+
+function showinfoEditorAlert() {
+  // If it does not exist, the parent window can not be scrolled.
+  $('#modal-infoEditor-alert').on('hidden.bs.modal', function () {
+    $('body').addClass('modal-open');
+  });
+
+  $('#modal-infoEditor-alert').modal('show');
+}
+
+function showInfoPreview() {
+  $("#modal-preview").load("infoPreview.html", function(){
+    var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
+    var title = $('#editorTitle').val();
+    var startDate = $('#infoStartDate').val();
+    var startTime = $('#infoStartTime').val();
+    var endDate = $('#infoEndDate').val();
+    var endTime = $('#infoEndTime').val();
+    var url = $('#editorUrl').val();
+    var text = $('#editor').val();
+    var img = $('#infoThumbnail').html() ||
+              $('<img>').attr('src', 'img/dummy_image.png').addClass('thumbnail');
+
+    if( !(type && title && text) ||
+        ((type == 'event') && !(startDate && endDate))) {
+      showinfoEditorAlert();
+      return;
+    }
+
+    link = $('<a></a>').attr('href', url);
+    link.text(url);
+
+    if(startDate && endDate) {
+      var term = startDate + ' ' + startTime + ' ~ ' + endDate + ' ' + endTime;
+    }
+
+    $('#modal-preview .title').html(title);
+    $('#modal-preview .url').html(link);
+    $('#modal-preview .term').html(term);
+    $('#modal-preview .text').html(text);
+    $('#modal-preview .img').html(img);
+
+    $('#modal-preview').modal('show');
+  });
 }

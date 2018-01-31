@@ -1,5 +1,5 @@
 <div id="modal-infoEditor_0">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog wideModal">
         <div class="modal-content">
             <div class="modal-header">
                 提供情報：新規作成
@@ -10,23 +10,33 @@
                 <div class="row">
                 <form enctype="multipart/form-data" method="post">
                     <div class="col-md-12">
-                        <div class="editorItem">■開催日時</div>
+                        <div class="must">■記事区分</div>
                     </div>
                     <div class="col-md-offset-1">
-                        <div id="datepicker">
-                            <span class="calendar">
-                                <i class="fa fa-calendar calendarIcon"></i>
-                                <input id="infoStartDate" class="date" type="text" maxlength="10">
-                                <input id="infoTime" type="time" value="00:00">
-                            </span>
-                            ~
-                            <span class="calendar">
-                                <i class="fa fa-calendar calendarIcon"></i>
-                                <input id="infoEndDate" class="date" type="text" maxlength="10">
-                                <input id="infoTime" type="time" value="00:00">
-                            </span>
+                        <div class="radio">
+                            <label><input type="radio" name="articleType" id="info" value="info" checked="checked"> お知らせ</label>
+                            <label><input type="radio" name="articleType" id="event" value="event"> イベント</label>
                         </div>
-
+                    </div>
+                    <div class="selectDate">
+                        <div class="col-md-12">
+                            <div class="editorItem">■開催日時</div>
+                        </div>
+                        <div class="col-md-offset-1">
+                            <div id="datepicker">
+                                <span class="calendar">
+                                    <i class="fa fa-calendar calendarIcon"></i>
+                                    <input id="infoStartDate" class="date" type="text" maxlength="10" disabled="disabled">
+                                    <input id="infoStartTime" class="time" type="time" value="00:00" disabled="disabled">
+                                </span>
+                                ~
+                                <span class="calendar">
+                                    <i class="fa fa-calendar calendarIcon"></i>
+                                    <input id="infoEndDate" class="date" type="text" maxlength="10" disabled="disabled">
+                                    <input id="infoEndTime" class="time" type="time" value="00:00" disabled="disabled">
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-12">
@@ -69,16 +79,17 @@
                     </div>
                     <div class="col-md-8">
                         <div class="editorItem">■URL</div>
-                        <input type="text" class="fullWidth"/>
-                        <div class="editorItem">■記事タイトル</div>
-                        <input type="text" class="fullWidth"/>
-                        <div class="editorItem">■記事本文</div>
+                        <input type="text" class="fullWidth" id="editorUrl"/>
+                        <div class="editorItem must">■記事タイトル</div>
+                        <input type="text" class="fullWidth" id="editorTitle"/>
+                        <div class="editorItem must">■記事本文</div>
                         <textarea id="editor" />
                     </div>
                 </div>
 
             </div>
             <div class="modal-footer">
+                <button class="btn btn-default" onclick="showInfoPreview()">プレビュー</button>
                 <button class="btn btn-primary" data-dismiss="modal">保存</button>
                 <button class="btn" data-dismiss="modal">キャンセル</button>
             </div>
