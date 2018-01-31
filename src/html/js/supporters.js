@@ -201,7 +201,7 @@ function showInfoPreview() {
     var url = $('#editorUrl').val();
     var text = $('#editor').val();
     var img = $('#infoThumbnail').html() ||
-              $('<img>').attr('src', 'img/dummy_image.png').addClass('thumbnail');
+              $('<canvas>').attr('data-jdenticon-value', title).attr('height', '300');
 
     if( !(type && title && text) ||
         ((type == 'event') && !(startDate && endDate))) {
@@ -221,6 +221,8 @@ function showInfoPreview() {
     $('#modal-preview .term').html(term);
     $('#modal-preview .text').html(text);
     $('#modal-preview .img').html(img);
+
+    jdenticon();
 
     $('#modal-preview').modal('show');
   });
