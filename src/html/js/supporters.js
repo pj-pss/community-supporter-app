@@ -204,7 +204,7 @@ function showInfoPreview() {
               $('<img>').attr('src', 'img/dummy_image.png').addClass('thumbnail');
 
     if( !(type && title && text) ||
-        ((type == 'event') && !(startDate || endDate))) {
+        ((type == 'event') && !(startDate && endDate))) {
       showinfoEditorAlert();
       return;
     }
