@@ -284,3 +284,10 @@ button#logout {
   position: relative;
 }
 
+.must:after {
+  font-family: FontAwesome;
+  color: red;
+  content: "\f069";
+  font-size: 8px;
+  margin: 0px 0px 0px 5px;
+}

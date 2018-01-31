@@ -60,9 +60,11 @@ function openInfoEdit(id){
         if(val == "info"){
           $("#modal-infoEditor .date").prop('disabled', true);
           $("#modal-infoEditor .time").prop('disabled', true);
+          $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
         } else {
           $("#modal-infoEditor .date").prop('disabled', false);
           $("#modal-infoEditor .time").prop('disabled', false);
+          $("#modal-infoEditor .selectDate .editorItem").addClass('must');
         }
       });
 
