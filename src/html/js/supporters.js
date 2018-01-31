@@ -195,7 +195,8 @@ function showInfoPreview() {
     var endTime = $('#infoEndTime').val();
     var url = $('#editorUrl').val();
     var text = $('#editor').val();
-    var img = $('#infoThumbnail').html();
+    var img = $('#infoThumbnail').html() ||
+              $('<img>').attr('src', 'img/dummy_image.png').addClass('thumbnail');
 
     if( !(type && title && text) ||
         ((type == 'event') && !(startDate || endDate))) {
