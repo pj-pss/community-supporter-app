@@ -253,7 +253,8 @@ button#logout {
   text-align: center;
 }
 
-#modal-preview img {
+#modal-preview img,
+#modal-preview canvas {
   margin:0 auto;
   width: auto;
   height: auto;

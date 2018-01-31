@@ -201,7 +201,8 @@ function showInfoPreview() {
     var url = $('#editorUrl').val();
     var text = $('#editor').val();
     var img = $('#infoThumbnail').html() ||
-              $('<canvas>').attr('data-jdenticon-value', title).attr('height', '300');
+              $('<canvas>').attr('data-jdenticon-value', title)
+              .attr('height', '300').addClass('thumbnail');
 
     if( !(type && title && text) ||
         ((type == 'event') && !(startDate && endDate))) {
