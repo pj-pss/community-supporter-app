@@ -84,9 +84,12 @@ function openInfoEdit(id){
           // show error message
           showFileFormErrorMessage('errorMessageImg', true);
           $('#infoThumbnail').html('');
+          $('#inputFileImg').val('');
+          $('#fileNameImg').html('');
           return;
         }
         showFileFormErrorMessage('errorMessageImg', false);
+        $('#clearImgButton')[0].style.display = '';
 
         // preview
         var reader = new FileReader();
@@ -159,7 +162,7 @@ function submitFile() {
 function clearInputFile() {
   showFileFormButton(false, false);
   showFileFormErrorMessage('errorMessageCsv', false);
-  $("#inputFile").val("");
+  $('#inputFileCsv').val('');
   document.getElementById('fileNameCsv').innerHTML = "";
 }
 
@@ -227,4 +230,12 @@ function showInfoPreview() {
 
     $('#modal-preview').modal('show');
   });
+}
+
+function clearInputImg() {
+  showFileFormErrorMessage('errorMessageImg', false);
+  $('#infoThumbnail').html('');
+  $('#inputFileImg').val('');
+  $('#fileNameImg').html('');
+  $('#clearImgButton')[0].style.display = 'none';
 }
