@@ -292,3 +292,9 @@ button#logout {
   font-size: 8px;
   margin: 0px 0px 0px 5px;
 }
+
+pre.text {
+  background-color: white;
+  border: none;
+  font-size: 18px;
+}
