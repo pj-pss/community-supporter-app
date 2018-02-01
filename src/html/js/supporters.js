@@ -47,8 +47,8 @@ function openInfoEdit(id){
     $(function() {
       // set date picker
       $('#datepicker .date').datepicker({
-          format: "yyyy/mm/dd",
           language: 'ja',
+          format: "yyyy/mm/dd (D)",
           autoclose: true,
           todayHighlight: true,
           startDate: Date()
