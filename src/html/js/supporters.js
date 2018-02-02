@@ -197,6 +197,15 @@ function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
     var article = varidateArticle();
 
+    if(article.errMsg){
+      $('#articleError').html('');
+      for(i in article.errMsg) {
+        $('<li></li>').append(article.errMsg[i]).appendTo('#articleError');
+      }
+      showinfoEditorAlert();
+      return;
+    }
+
     if(article.type == 'event' && article.startDate && article.endDate) {
       var term = article.startDate + ' ' + article.startTime + ' ~ ' + (article.endDate == article.startDate ? '' : article.endDate) + ' ' + article.endTime;
     }
@@ -248,20 +257,17 @@ function varidateArticle() {
   // require items
   if( !(type && title && text && venue) ||
       ((type == 'event') && !(startDate && endDate))) {
-    errMsg.push("ERROR1");
-    console.log('error1');
+    errMsg.push('<span class="must"></span> は必須項目です');
   }
 
   // check url
   if(url && !url.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/)) {
-    errMsg.push("ERROR2");
-    console.log('error2');
+    errMsg.push('正しいURLを入力してください');
   }
 
   // check startDate is before endDate
   if((startDate > endDate) || ((startDate == endDate) && (startTime > endTime))) {
-    errMsg.push("ERROR3");
-    console.log('error3');
+    errMsg.push('終了日時は開始日時の後に設定してください');
   }
 
   return {
