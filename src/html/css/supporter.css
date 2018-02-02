@@ -82,25 +82,9 @@ button#logout {
   padding: 5px 5px 5px 5px;
 }
 
-#modal-infoEditor table {
-  width: 100%;
-  background-color: #ffffff;
-  border: 0px;
-}
-
-#modal-infoEditor table th{
-  background-color: #ffffff;
-  border: 0px;
-  padding: 15px 0px 5px 0px;
-}
-
-#modal-infoEditor table td {
-  border: 0px;
-  padding: 0px 0px 0px 0px;
-}
-
-#modal-infoEditor label {
-  margin: 0 10px;
+#modal-infoEditor select,
+#modal-infoEditor .radio {
+  margin-left: 10px;
 }
 
 #editModal ul li {
@@ -203,12 +187,6 @@ button#logout {
   margin: 10px 0 5px 0;
 }
 
-#infoYear,
-#infoMonth,
-#infoDay {
-  margin: 3px;
-}
-
 .fullWidth {
   width: 100%;
 }
@@ -225,8 +203,8 @@ button#logout {
   width: 100%;
 }
 
-.date {
-  width: 150px;
+#modal-infoEditor .date {
+  width: 170px;
   text-indent: 1.5em;
 }
 
@@ -278,7 +256,16 @@ button#logout {
 }
 
 #modal-preview .term {
-  font-weight: bold;
+  border-radius: 10px;
+  background-color: #ebebeb;
+  color: #6e6e6e;
+  padding: 10px 0 10px 0;
+  margin-top: 10px;
+}
+
+#modal-preview .url {
+  word-break: break-all;
+  margin: 20px 0;
 }
 
 #modal-preview .imgBox {
@@ -292,3 +279,12 @@ button#logout {
   font-size: 8px;
   margin: 0px 0px 0px 5px;
 }
+
+pre.text {
+  background-color: white;
+  border: none;
+  font-size: 18px;
+  white-space: pre-wrap;
+  padding-top: 0;
+}
+

@@ -47,8 +47,8 @@ function openInfoEdit(id){
     $(function() {
       // set date picker
       $('#datepicker .date').datepicker({
-          format: "yyyy/mm/dd",
           language: 'ja',
+          format: "yyyy/mm/dd (D)",
           autoclose: true,
           todayHighlight: true,
           startDate: Date()
@@ -84,9 +84,12 @@ function openInfoEdit(id){
           // show error message
           showFileFormErrorMessage('errorMessageImg', true);
           $('#infoThumbnail').html('');
+          $('#inputFileImg').val('');
+          $('#fileNameImg').html('');
           return;
         }
         showFileFormErrorMessage('errorMessageImg', false);
+        $('#clearImgButton')[0].style.display = '';
 
         // preview
         var reader = new FileReader();
@@ -159,7 +162,7 @@ function submitFile() {
 function clearInputFile() {
   showFileFormButton(false, false);
   showFileFormErrorMessage('errorMessageCsv', false);
-  $("#inputFile").val("");
+  $('#inputFileCsv').val('');
   document.getElementById('fileNameCsv').innerHTML = "";
 }
 
@@ -199,12 +202,13 @@ function showInfoPreview() {
     var endDate = $('#infoEndDate').val();
     var endTime = $('#infoEndTime').val();
     var url = $('#editorUrl').val();
+    var venue = $('#editorVenue').val();
     var text = $('#editor').val();
     var img = $('#infoThumbnail').html() ||
               $('<canvas>').attr('data-jdenticon-value', title)
               .attr('height', '300').addClass('thumbnail');
 
-    if( !(type && title && text) ||
+    if( !(type && title && text && venue) ||
         ((type == 'event') && !(startDate && endDate))) {
       showinfoEditorAlert();
       return;
@@ -214,12 +218,13 @@ function showInfoPreview() {
     link.text(url);
 
     if(startDate && endDate) {
-      var term = startDate + ' ' + startTime + ' ~ ' + endDate + ' ' + endTime;
+      var term = startDate + ' ' + startTime + ' ~ ' + (endDate == startDate ? '' : endDate) + ' ' + endTime;
     }
 
     $('#modal-preview .title').html(title);
     $('#modal-preview .url').html(link);
-    $('#modal-preview .term').html(term);
+    $('#modal-preview .venue').html('開催場所: ' + venue);
+    $('#modal-preview .date').html(term);
     $('#modal-preview .text').html(text);
     $('#modal-preview .img').html(img);
 
@@ -227,4 +232,12 @@ function showInfoPreview() {
 
     $('#modal-preview').modal('show');
   });
+}
+
+function clearInputImg() {
+  showFileFormErrorMessage('errorMessageImg', false);
+  $('#infoThumbnail').html('');
+  $('#inputFileImg').val('');
+  $('#fileNameImg').html('');
+  $('#clearImgButton')[0].style.display = 'none';
 }
