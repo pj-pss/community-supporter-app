@@ -218,7 +218,7 @@ function showInfoPreview() {
     link.text(url);
 
     if(startDate && endDate) {
-      var term = startDate + ' ' + startTime + ' ~ ' + endDate + ' ' + endTime;
+      var term = startDate + ' ' + startTime + ' ~ ' + (endDate == startDate ? '' : endDate) + ' ' + endTime;
     }
 
     $('#modal-preview .title').html(title);
