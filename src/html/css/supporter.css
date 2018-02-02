@@ -82,8 +82,9 @@ button#logout {
   padding: 5px 5px 5px 5px;
 }
 
-#modal-infoEditor label {
-  margin: 0 10px;
+#modal-infoEditor select,
+#modal-infoEditor .radio {
+  margin-left: 10px;
 }
 
 #editModal ul li {
@@ -202,7 +203,7 @@ button#logout {
   width: 100%;
 }
 
-.date {
+#modal-infoEditor .date {
   width: 170px;
   text-indent: 1.5em;
 }
@@ -255,7 +256,15 @@ button#logout {
 }
 
 #modal-preview .term {
-  font-weight: bold;
+  border-radius: 10px;
+  background-color: #ebebeb;
+  color: #6e6e6e;
+  padding: 10px 0 10px 0;
+  margin-top: 10px;
+}
+
+#modal-preview .url {
+  word-break: break-all;
 }
 
 #modal-preview .imgBox {

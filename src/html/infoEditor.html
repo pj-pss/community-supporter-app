@@ -8,20 +8,16 @@
 
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <div class="must">■記事区分</div>
-                    </div>
-                    <div class="col-md-offset-1">
                         <div class="radio">
                             <label><input type="radio" name="articleType" id="info" value="info" checked="checked"> お知らせ</label>
                             <label><input type="radio" name="articleType" id="event" value="event"> イベント</label>
                         </div>
                     </div>
                     <div class="selectDate">
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div class="editorItem">■開催日時</div>
-                        </div>
-                        <div class="col-md-offset-1">
                             <div id="datepicker">
                                 <span class="calendar">
                                     <i class="fa fa-calendar calendarIcon"></i>
@@ -41,7 +37,7 @@
                     <div class="col-md-12">
                         <div class="editorItem">■記事配信対象者</div>
                     </div>
-                    <div class="col-md-2 col-md-offset-1">
+                    <div class="col-md-1">
                         性別<br>
                         <select>
                             <option>全て</option>
@@ -49,7 +45,7 @@
                             <option>女性</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         年代<br>
                         <select>
                             <option>全年代</option>
@@ -59,8 +55,10 @@
                             <option>50代以下</option>
                         </select>
                     </div>
-                    <div class="clearfix"></div>
-
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="editorItem must">■開催場所</div>
+                        <input type="text" class="fullWidth" id="editorVenue"/>
+                    </div>
 
                     <div class="col-md-4">
                         <div class="editorItem">■画像</div>
