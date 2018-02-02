@@ -195,38 +195,22 @@ function showinfoEditorAlert() {
 
 function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
-    var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
-    var title = $('#editorTitle').val();
-    var startDate = $('#infoStartDate').val();
-    var startTime = $('#infoStartTime').val();
-    var endDate = $('#infoEndDate').val();
-    var endTime = $('#infoEndTime').val();
-    var url = $('#editorUrl').val();
-    var venue = $('#editorVenue').val();
-    var text = $('#editor').val();
-    var img = $('#infoThumbnail').html() ||
-              $('<canvas>').attr('data-jdenticon-value', title)
-              .attr('height', '300').addClass('thumbnail');
+    var article = varidateArticle();
 
-    if( !(type && title && text && venue) ||
-        ((type == 'event') && !(startDate && endDate))) {
-      showinfoEditorAlert();
-      return;
+    if(article.type == 'event' && article.startDate && article.endDate) {
+      var term = article.startDate + ' ' + article.startTime + ' ~ ' + (article.endDate == article.startDate ? '' : article.endDate) + ' ' + article.endTime;
     }
 
-    link = $('<a></a>').attr('href', url);
-    link.text(url);
+    link = $('<a></a>').attr('href', article.url);
+    link.text(article.url);
 
-    if(startDate && endDate) {
-      var term = startDate + ' ' + startTime + ' ~ ' + (endDate == startDate ? '' : endDate) + ' ' + endTime;
-    }
 
-    $('#modal-preview .title').html(title);
+    $('#modal-preview .title').html(article.title);
     $('#modal-preview .url').html(link);
-    $('#modal-preview .venue').html('開催場所: ' + venue);
+    $('#modal-preview .venue').html('開催場所: ' + article.venue);
     $('#modal-preview .date').html(term);
-    $('#modal-preview .text').html(text);
-    $('#modal-preview .img').html(img);
+    $('#modal-preview .text').html(article.text);
+    $('#modal-preview .img').html(article.img);
 
     jdenticon();
 
@@ -240,4 +224,57 @@ function clearInputImg() {
   $('#inputFileImg').val('');
   $('#fileNameImg').html('');
   $('#clearImgButton')[0].style.display = 'none';
+}
+
+/**
+ * varidate article input and return input object
+ * @return input object and error message list
+ */
+function varidateArticle() {
+  var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
+  var title = $('#editorTitle').val();
+  var startDate = $('#infoStartDate').val();
+  var startTime = $('#infoStartTime').val();
+  var endDate = $('#infoEndDate').val();
+  var endTime = $('#infoEndTime').val();
+  var url = $('#editorUrl').val();
+  var venue = $('#editorVenue').val();
+  var text = $('#editor').val();
+  var img = $('#infoThumbnail').html() ||
+            $('<canvas>').attr('data-jdenticon-value', title)
+            .attr('height', '300').addClass('thumbnail');
+  var errMsg = [];
+
+  // require items
+  if( !(type && title && text && venue) ||
+      ((type == 'event') && !(startDate && endDate))) {
+    errMsg.push("ERROR1");
+    console.log('error1');
+  }
+
+  // check url
+  if(url && !url.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/)) {
+    errMsg.push("ERROR2");
+    console.log('error2');
+  }
+
+  // check startDate is before endDate
+  if((startDate > endDate) || ((startDate == endDate) && (startTime > endTime))) {
+    errMsg.push("ERROR3");
+    console.log('error3');
+  }
+
+  return {
+    'type' : type,
+    'title' : title,
+    'startDate' : startDate,
+    'startTime' : startTime,
+    'endDate' : endDate,
+    'endTime' : endTime,
+    'url' : url,
+    'venue' : venue,
+    'text' : text,
+    'img' : img,
+    'errMsg' : errMsg
+  }
 }
