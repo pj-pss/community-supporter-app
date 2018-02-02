@@ -265,6 +265,7 @@ button#logout {
 
 #modal-preview .url {
   word-break: break-all;
+  margin: 20px 0;
 }
 
 #modal-preview .imgBox {
@@ -284,5 +285,6 @@ pre.text {
   border: none;
   font-size: 18px;
   white-space: pre-wrap;
+  padding-top: 0;
 }
 
