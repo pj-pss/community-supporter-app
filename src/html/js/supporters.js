@@ -61,10 +61,12 @@ function openInfoEdit(id){
           $("#modal-infoEditor .date").prop('disabled', true);
           $("#modal-infoEditor .time").prop('disabled', true);
           $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
+          $("#modal-infoEditor .venue .editorItem").removeClass('must');
         } else {
           $("#modal-infoEditor .date").prop('disabled', false);
           $("#modal-infoEditor .time").prop('disabled', false);
           $("#modal-infoEditor .selectDate .editorItem").addClass('must');
+          $("#modal-infoEditor .venue .editorItem").addClass('must');
         }
       });
 
@@ -213,10 +215,15 @@ function showInfoPreview() {
     link = $('<a></a>').attr('href', article.url);
     link.text(article.url);
 
+    var venue = article.venue ? '開催場所: ' + article.venue : '';
+    if(!venue) {
+      $('#modal-preview .term')[0].style.display = 'none';
+    }
+
 
     $('#modal-preview .title').html(article.title);
     $('#modal-preview .url').html(link);
-    $('#modal-preview .venue').html('開催場所: ' + article.venue);
+    $('#modal-preview .venue').html(venue);
     $('#modal-preview .date').html(term);
     $('#modal-preview .text').html(article.text);
     $('#modal-preview .img').html(article.img);
@@ -255,8 +262,8 @@ function varidateArticle() {
   var errMsg = [];
 
   // require items
-  if( !(type && title && text && venue) ||
-      ((type == 'event') && !(startDate && endDate))) {
+  if( !(type && title && text) ||
+      ((type == 'event') && (!(startDate && endDate) || !venue))) {
     errMsg.push('<span class="must"></span> は必須項目です');
   }
 
