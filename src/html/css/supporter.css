@@ -297,4 +297,6 @@ pre.text {
   background-color: white;
   border: none;
   font-size: 18px;
+  white-space: pre-wrap;
 }
+
