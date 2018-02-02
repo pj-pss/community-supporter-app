@@ -197,7 +197,7 @@ function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
     var article = varidateArticle();
 
-    if(article.errMsg){
+    if(article.errMsg.length > 0){
       $('#articleError').html('');
       for(i in article.errMsg) {
         $('<li></li>').append(article.errMsg[i]).appendTo('#articleError');
