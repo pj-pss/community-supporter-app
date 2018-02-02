@@ -291,3 +291,39 @@ function varidateArticle() {
     'errMsg' : errMsg
   }
 }
+
+function saveArticle() {
+  var article = varidateArticle();
+
+  var token = window.prompt('input access token');
+  if(!token) return;
+
+  var base = 'https://demo.personium.io';
+  var box = 'fst-community-user';
+  var cell = 'app-fst-community-user';
+  var oData = 'test_article';
+  var entityType = 'article_list';
+
+  $.ajax({
+    type : 'POST',
+    url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
+    headers : {
+      'Authorization' : 'Bearer ' + token
+    },
+    data : JSON.stringify({
+      'articleType' : article.type,
+      'title' : article.title,
+      'startDate' : article.startDate,
+      'startTime' : article.startTime,
+      'endDate' : article.endDate,
+      'endTime' : article.endTime,
+      'url' : article.url,
+      'evenue' : article.venue,
+      'text' : article.text
+      // ,
+      // 'img' : article.img
+    })
+  }).done(function() {
+    alert('ok');
+  });
+}
