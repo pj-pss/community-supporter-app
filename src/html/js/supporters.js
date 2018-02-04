@@ -197,7 +197,7 @@ function showinfoEditorAlert() {
 
 function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
-    var article = varidateArticle();
+    var article = validateArticle();
 
     if(article.errMsg.length > 0){
       $('#articleError').html('');
@@ -243,10 +243,10 @@ function clearInputImg() {
 }
 
 /**
- * varidate article input and return input object
+ * validate article input and return input object
  * @return input object and error message list
  */
-function varidateArticle() {
+function validateArticle() {
   var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
   var title = $('#editorTitle').val();
   var startDate = $('#infoStartDate').val();
