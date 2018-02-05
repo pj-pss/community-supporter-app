@@ -61,10 +61,12 @@ function openInfoEdit(id){
           $("#modal-infoEditor .date").prop('disabled', true);
           $("#modal-infoEditor .time").prop('disabled', true);
           $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
+          $("#modal-infoEditor .venue .editorItem").removeClass('must');
         } else {
           $("#modal-infoEditor .date").prop('disabled', false);
           $("#modal-infoEditor .time").prop('disabled', false);
           $("#modal-infoEditor .selectDate .editorItem").addClass('must');
+          $("#modal-infoEditor .venue .editorItem").addClass('must');
         }
       });
 
@@ -195,38 +197,36 @@ function showinfoEditorAlert() {
 
 function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
-    var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
-    var title = $('#editorTitle').val();
-    var startDate = $('#infoStartDate').val();
-    var startTime = $('#infoStartTime').val();
-    var endDate = $('#infoEndDate').val();
-    var endTime = $('#infoEndTime').val();
-    var url = $('#editorUrl').val();
-    var venue = $('#editorVenue').val();
-    var text = $('#editor').val();
-    var img = $('#infoThumbnail').html() ||
-              $('<canvas>').attr('data-jdenticon-value', title)
-              .attr('height', '300').addClass('thumbnail');
+    var article = validateArticle();
 
-    if( !(type && title && text && venue) ||
-        ((type == 'event') && !(startDate && endDate))) {
+    if(article.errMsg.length > 0){
+      $('#articleError').html('');
+      for(i in article.errMsg) {
+        $('<li></li>').append(article.errMsg[i]).appendTo('#articleError');
+      }
       showinfoEditorAlert();
       return;
     }
 
-    link = $('<a></a>').attr('href', url);
-    link.text(url);
-
-    if(startDate && endDate) {
-      var term = startDate + ' ' + startTime + ' ~ ' + (endDate == startDate ? '' : endDate) + ' ' + endTime;
+    if(article.type == 'event' && article.startDate && article.endDate) {
+      var term = article.startDate + ' ' + article.startTime + ' ~ ' + (article.endDate == article.startDate ? '' : article.endDate) + ' ' + article.endTime;
     }
 
-    $('#modal-preview .title').html(title);
+    link = $('<a></a>').attr('href', article.url);
+    link.text(article.url);
+
+    var venue = article.venue ? '開催場所: ' + article.venue : '';
+    if(!venue) {
+      $('#modal-preview .term')[0].style.display = 'none';
+    }
+
+
+    $('#modal-preview .title').html(article.title);
     $('#modal-preview .url').html(link);
-    $('#modal-preview .venue').html('開催場所: ' + venue);
+    $('#modal-preview .venue').html(venue);
     $('#modal-preview .date').html(term);
-    $('#modal-preview .text').html(text);
-    $('#modal-preview .img').html(img);
+    $('#modal-preview .text').html(article.text);
+    $('#modal-preview .img').html(article.img);
 
     jdenticon();
 
@@ -240,4 +240,81 @@ function clearInputImg() {
   $('#inputFileImg').val('');
   $('#fileNameImg').html('');
   $('#clearImgButton')[0].style.display = 'none';
+}
+
+/**
+ * validate article input and return input object
+ * @return input object and error message list
+ */
+function validateArticle() {
+  var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
+  var title = $('#editorTitle').val();
+  var startDate = $('#infoStartDate').val();
+  var startTime = $('#infoStartTime').val();
+  var endDate = $('#infoEndDate').val();
+  var endTime = $('#infoEndTime').val();
+  var url = $('#editorUrl').val();
+  var venue = $('#editorVenue').val();
+  var text = $('#editor').val();
+  var img = $('#infoThumbnail').html() ||
+            $('<canvas>').attr('data-jdenticon-value', title)
+            .attr('height', '300').addClass('thumbnail');
+  var errMsg = [];
+
+  // required items
+  if(!(title && text)) {
+    errMsg.push('<span class="must"></span> は必須項目です');
+  } else {
+    switch (type) {
+      case 'info':
+        break;
+
+      case 'event':
+        if(!(startDate && endDate) || !venue){
+          errMsg.push('<span class="must"></span> は必須項目です');
+        }
+
+        // check startDate is before endDate
+        var start = moment(startDate + startTime);
+        var end = moment(endDate + endTime);
+        if(start > end) {
+          errMsg.push('終了日時は開始日時の後に設定してください');
+        }
+        break;
+
+      default:
+        errMsg.push('終了日時は開始日時の後に設定してください');
+        break;
+    }
+  }
+
+  // check url
+  pUrl = $.url(url);
+  if(url) {
+    if(!(pUrl.attr('protocol').match(/^(https?|ftp)$/) && pUrl.attr('host'))) {
+      errMsg.push('正しいURLを入力してください');
+    } else {
+      var labels = pUrl.attr('host').split('.');
+      for(var label of labels){
+        if( !label.match(/^([a-zA-Z0-9\-])+$/) || label.match(/(^-)|(-$)/) ) {
+          errMsg.push('正しいURLを入力してください');
+          break;
+        }
+      }
+    }
+  }
+
+  return {
+    'type' : type,
+    'title' : title,
+    'startDate' : startDate,
+    'startTime' : startTime,
+    'endDate' : endDate,
+    'endTime' : endTime,
+    'url' : url,
+    'venue' : venue,
+    'text' : text,
+    'img' : img,
+    'errMsg' : errMsg
+  }
 }
