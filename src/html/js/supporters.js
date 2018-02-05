@@ -275,7 +275,11 @@ function validateArticle() {
         }
 
         // check startDate is before endDate
-        if((startDate > endDate) || ((startDate == endDate) && (startTime > endTime))) {
+        var start = moment(startDate + startTime);
+        var end = moment(endDate + endTime);
+        console.log(start);
+        console.log(end);
+        if(start > end) {
           errMsg.push('終了日時は開始日時の後に設定してください');
         }
         break;
@@ -286,8 +290,6 @@ function validateArticle() {
   if(url && !url.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/)) {
     errMsg.push('正しいURLを入力してください');
   }
-
-
 
   return {
     'type' : type,
