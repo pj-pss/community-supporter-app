@@ -268,9 +268,15 @@ function validateArticle() {
     switch (type) {
       case 'info':
         break;
+
       case 'event':
         if(!(startDate && endDate) || !venue){
           errMsg.push('<span class="must"></span> は必須項目です');
+        }
+
+        // check startDate is before endDate
+        if((startDate > endDate) || ((startDate == endDate) && (startTime > endTime))) {
+          errMsg.push('終了日時は開始日時の後に設定してください');
         }
         break;
     }
@@ -281,10 +287,7 @@ function validateArticle() {
     errMsg.push('正しいURLを入力してください');
   }
 
-  // check startDate is before endDate
-  if((startDate > endDate) || ((startDate == endDate) && (startTime > endTime))) {
-    errMsg.push('終了日時は開始日時の後に設定してください');
-  }
+
 
   return {
     'type' : type,
