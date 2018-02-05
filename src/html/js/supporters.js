@@ -331,7 +331,7 @@ function validateArticle() {
 }
 
 function saveArticle() {
-  var article = varidateArticle();
+  var article = validateArticle();
 
   var token = window.prompt('input access token');
   if(!token) return;
