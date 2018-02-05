@@ -262,7 +262,7 @@ function validateArticle() {
   var errMsg = [];
 
   // required items
-  if(!(type && title && text)) {
+  if(!(title && text)) {
     errMsg.push('<span class="must"></span> は必須項目です');
   } else {
     switch (type) {
@@ -277,11 +277,13 @@ function validateArticle() {
         // check startDate is before endDate
         var start = moment(startDate + startTime);
         var end = moment(endDate + endTime);
-        console.log(start);
-        console.log(end);
         if(start > end) {
           errMsg.push('終了日時は開始日時の後に設定してください');
         }
+        break;
+
+      default:
+        errMsg.push('終了日時は開始日時の後に設定してください');
         break;
     }
   }
