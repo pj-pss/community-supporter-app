@@ -261,10 +261,19 @@ function validateArticle() {
             .attr('height', '300').addClass('thumbnail');
   var errMsg = [];
 
-  // require items
-  if( !(type && title && text) ||
-      ((type == 'event') && (!(startDate && endDate) || !venue))) {
+  // required items
+  if(!(type && title && text)) {
     errMsg.push('<span class="must"></span> は必須項目です');
+  } else {
+    switch (type) {
+      case 'info':
+        break;
+      case 'event':
+        if(!(startDate && endDate) || !venue){
+          errMsg.push('<span class="must"></span> は必須項目です');
+        }
+        break;
+    }
   }
 
   // check url
