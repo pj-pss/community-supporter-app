@@ -287,8 +287,19 @@ function validateArticle() {
   }
 
   // check url
-  if(url && !url.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/)) {
-    errMsg.push('正しいURLを入力してください');
+  pUrl = $.url(url);
+  if(url) {
+    if(!(pUrl.attr('protocol').match(/^(https?|ftp)$/) && pUrl.attr('host'))) {
+      errMsg.push('正しいURLを入力してください');
+    } else {
+      var labels = pUrl.attr('host').split('.');
+      for(var label of labels){
+        if( !label.match(/^([a-zA-Z0-9\-])+$/) || label.match(/(^-)|(-$)/) ) {
+          errMsg.push('正しいURLを入力してください');
+          break;
+        }
+      }
+    }
   }
 
   return {
