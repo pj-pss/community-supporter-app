@@ -199,7 +199,7 @@ function showinfoEditorAlert() {
 
 function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
-    var article = varidateArticle();
+    var article = validateArticle();
 
     if(article.errMsg.length > 0){
       $('#articleError').html('');
@@ -244,10 +244,10 @@ function clearInputImg() {
 }
 
 /**
- * varidate article input and return input object
+ * validate article input and return input object
  * @return input object and error message list
  */
-function varidateArticle() {
+function validateArticle() {
   var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
   var title = $('#editorTitle').val();
   var startDate = $('#infoStartDate').val();
@@ -260,20 +260,47 @@ function varidateArticle() {
   var img = $('#inputFileImg').prop('files')[0];
   var errMsg = [];
 
-  // require items
-  if( !(type && title && text) ||
-      ((type == 'event') && (!(startDate && endDate) || !venue))) {
+  // required items
+  if(!(title && text)) {
     errMsg.push('<span class="must"></span> は必須項目です');
+  } else {
+    switch (type) {
+      case 'info':
+        break;
+
+      case 'event':
+        if(!(startDate && endDate) || !venue){
+          errMsg.push('<span class="must"></span> は必須項目です');
+        }
+
+        // check startDate is before endDate
+        var start = moment(startDate + startTime);
+        var end = moment(endDate + endTime);
+        if(start > end) {
+          errMsg.push('終了日時は開始日時の後に設定してください');
+        }
+        break;
+
+      default:
+        errMsg.push('終了日時は開始日時の後に設定してください');
+        break;
+    }
   }
 
   // check url
-  if(url && !url.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/)) {
-    errMsg.push('正しいURLを入力してください');
-  }
-
-  // check startDate is before endDate
-  if((startDate > endDate) || ((startDate == endDate) && (startTime > endTime))) {
-    errMsg.push('終了日時は開始日時の後に設定してください');
+  pUrl = $.url(url);
+  if(url) {
+    if(!(pUrl.attr('protocol').match(/^(https?|ftp)$/) && pUrl.attr('host'))) {
+      errMsg.push('正しいURLを入力してください');
+    } else {
+      var labels = pUrl.attr('host').split('.');
+      for(var label of labels){
+        if( !label.match(/^([a-zA-Z0-9\-])+$/) || label.match(/(^-)|(-$)/) ) {
+          errMsg.push('正しいURLを入力してください');
+          break;
+        }
+      }
+    }
   }
 
 
