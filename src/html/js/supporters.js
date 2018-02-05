@@ -41,6 +41,7 @@ $(function() {
   $("#tenantList").load("tenantList.html");
 });
 
+var imputImage;
 function openInfoEdit(id){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
 
@@ -97,6 +98,7 @@ function openInfoEdit(id){
         var reader = new FileReader();
         reader.onload = function() {
           var img_src = $('<img>').attr('src', reader.result).addClass('thumbnail');
+          inputImage = reader.result;
           $('#infoThumbnail').html(img_src);
         }
         reader.readAsDataURL(file);
@@ -220,15 +222,14 @@ function showInfoPreview() {
       $('#modal-preview .term')[0].style.display = 'none';
     }
 
+    var img = $('<img>').attr('src', article.img).addClass('thumbnail');
 
     $('#modal-preview .title').html(article.title);
     $('#modal-preview .url').html(link);
     $('#modal-preview .venue').html(venue);
     $('#modal-preview .date').html(term);
     $('#modal-preview .text').html(article.text);
-    $('#modal-preview .img').html(article.img);
-
-    jdenticon();
+    $('#modal-preview .img').html(img);
 
     $('#modal-preview').modal('show');
   });
@@ -256,9 +257,7 @@ function varidateArticle() {
   var url = $('#editorUrl').val();
   var venue = $('#editorVenue').val();
   var text = $('#editor').val();
-  var img = $('#infoThumbnail').html() ||
-            $('<canvas>').attr('data-jdenticon-value', title)
-            .attr('height', '300').addClass('thumbnail');
+  var img = $('#inputFileImg').prop('files')[0];
   var errMsg = [];
 
   // require items
@@ -275,6 +274,18 @@ function varidateArticle() {
   // check startDate is before endDate
   if((startDate > endDate) || ((startDate == endDate) && (startTime > endTime))) {
     errMsg.push('終了日時は開始日時の後に設定してください');
+  }
+
+
+  // set image
+  if(img) {
+    img = inputImage;
+  } else {
+    var cvs = document.createElement('canvas');
+    cvs.height = cvs.width = 300;
+    var ctx = cvs.getContext('2d');
+    jdenticon.drawIcon(ctx, title, cvs.height);
+    img = cvs.toDataURL('image/jpeg');
   }
 
   return {
@@ -319,9 +330,8 @@ function saveArticle() {
       'endTime' : article.endTime,
       'url' : article.url,
       'evenue' : article.venue,
-      'text' : article.text
-      // ,
-      // 'img' : article.img
+      'text' : article.text,
+      'img' : article.img
     })
   }).done(function() {
     alert('ok');
