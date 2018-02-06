@@ -307,6 +307,22 @@ function validateArticle() {
   // set image
   if(img) {
     img = inputImage;
+
+    var image = new Image();
+    image.src = img;
+
+    // resize
+    var ratio = image.height / image.width;
+    var width = 300;
+    var height = width * ratio;
+
+    var cvs = document.createElement('canvas');
+    cvs.width = width;
+    cvs.height = height;
+    var ctx = cvs.getContext('2d');
+    ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
+
+    img = cvs.toDataURL('image/jpeg');
   } else {
     var cvs = document.createElement('canvas');
     cvs.height = cvs.width = 300;
