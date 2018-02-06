@@ -349,6 +349,15 @@ function validateArticle() {
 function saveArticle() {
   var article = validateArticle();
 
+  if(article.errMsg.length > 0){
+    $('#articleError').html('');
+    for(i in article.errMsg) {
+      $('<li></li>').append(article.errMsg[i]).appendTo('#articleError');
+    }
+    showinfoEditorAlert();
+    return;
+  }
+
   var token = window.prompt('input access token');
   if(!token) return;
 
@@ -378,6 +387,7 @@ function saveArticle() {
     })
   }).done(function() {
     alert('記事の保存が完了しました');
+    $("#modal-infoEditor").modal('hide');
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
     alert('記事の保存に失敗しました\n\n' + XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
   });
