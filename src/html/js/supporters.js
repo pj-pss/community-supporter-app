@@ -377,6 +377,8 @@ function saveArticle() {
       'img' : article.img
     })
   }).done(function() {
-    alert('ok');
+    alert('記事の保存が完了しました');
+  }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+    alert('記事の保存に失敗しました\n\n' + XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
   });
 }
