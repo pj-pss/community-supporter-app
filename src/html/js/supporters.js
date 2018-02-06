@@ -356,7 +356,7 @@ function saveArticle() {
   var box = 'fst-community-user';
   var cell = 'app-fst-community-user';
   var oData = 'test_article';
-  var entityType = 'article_list';
+  var entityType = 'provide_information';
 
   $.ajax({
     type : 'POST',
