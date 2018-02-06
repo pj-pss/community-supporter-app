@@ -365,16 +365,16 @@ function saveArticle() {
       'Authorization' : 'Bearer ' + token
     },
     data : JSON.stringify({
-      'articleType' : article.type,
+      'type' : article.type,
       'title' : article.title,
-      'startDate' : article.startDate,
-      'startTime' : article.startTime,
-      'endDate' : article.endDate,
-      'endTime' : article.endTime,
+      'start_date' : article.startDate,
+      'start_time' : article.startTime,
+      'end_date' : article.endDate,
+      'end_time' : article.endTime,
       'url' : article.url,
-      'evenue' : article.venue,
-      'text' : article.text,
-      'img' : article.img
+      'venue' : article.venue,
+      'detail' : article.text,
+      'image' : article.img
     })
   }).done(function() {
     alert('記事の保存が完了しました');
