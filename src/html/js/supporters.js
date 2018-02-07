@@ -322,13 +322,14 @@ function validateArticle() {
     var ctx = cvs.getContext('2d');
     ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
 
-    img = cvs.toDataURL('image/jpeg');
+    img = dataURLtoBlob(cvs.toDataURL('image/jpeg'));
   } else {
     var cvs = document.createElement('canvas');
     cvs.height = cvs.width = 300;
     var ctx = cvs.getContext('2d');
     jdenticon.drawIcon(ctx, title, cvs.height);
-    img = cvs.toDataURL('image/jpeg');
+
+    img = dataURLtoBlob(cvs.toDataURL('image/jpeg'));
   }
 
   return {
@@ -382,13 +383,41 @@ function saveArticle() {
       'end_time' : article.endTime,
       'url' : article.url,
       'venue' : article.venue,
-      'detail' : article.text,
-      'image' : article.img
+      'detail' : article.text
     })
-  }).done(function() {
-    alert('記事の保存が完了しました');
-    $("#modal-infoEditor").modal('hide');
+  }).done(function(response) {
+    console.log(response.d.results.__id);
+    var DAV = 'test_article_image';
+    var id = response.d.results.__id;
+
+    $.ajax({
+      type : 'PUT',
+      url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+      processData: false,
+      headers : {
+        'Authorization' : 'Bearer ' + token
+        ,'Content-Type' : 'image/jpeg'
+      },
+      data : article.img
+    }).done(function(){
+      alert('記事の保存が完了しました');
+      $("#modal-infoEditor").modal('hide');
+    });
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
     alert('記事の保存に失敗しました\n\n' + XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
   });
+}
+
+function dataURLtoBlob(dataURL) {
+  // convert base64 to raw binary data held in a string
+  var byteString = atob(dataURL.split(',')[1]);
+
+  // write the bytes of the string to an ArrayBuffer
+  var len = byteString.length;
+  var arr = new Uint8Array(len);
+  for (var i = 0; i < len; i++) {
+      arr[i] = byteString.charCodeAt(i);
+  }
+
+  return new Blob([arr], {type: 'image/jpeg'});
 }
