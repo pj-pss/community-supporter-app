@@ -368,6 +368,8 @@ function saveArticle() {
   var oData = 'test_article';
   var entityType = 'provide_information';
 
+
+  // save text
   $.ajax({
     type : 'POST',
     url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
@@ -385,8 +387,9 @@ function saveArticle() {
       'venue' : article.venue,
       'detail' : article.text
     })
-  }).done(function(response) {
-    console.log(response.d.results.__id);
+  })
+  // save img
+  .done(function(response) {
     var DAV = 'test_article_image';
     var id = response.d.results.__id;
 
@@ -395,17 +398,40 @@ function saveArticle() {
       url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
       processData: false,
       headers : {
-        'Authorization' : 'Bearer ' + token
-        ,'Content-Type' : 'image/jpeg'
+        'Authorization' : 'Bearer ' + token,
+        'Content-Type' : 'image/jpeg'
       },
       data : article.img
-    }).done(function(){
+
+    })
+    // all OK
+    .done(function(){
       alert('記事の保存が完了しました');
       $("#modal-infoEditor").modal('hide');
+    })
+    // save img failed
+    .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+      alert('記事の保存に失敗しました\n\n' + XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+
+      // delete text
+      $.ajax({
+        type : 'DELETE',
+        url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+        headers : {
+          'Authorization' : 'Bearer ' + token
+        }
+      })
+      .fail(function(){
+        alert('delete failed');
+      });
+
     });
-  }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+  })
+  // save text failed
+  .fail(function(XMLHttpRequest, textStatus, errorThrown) {
     alert('記事の保存に失敗しました\n\n' + XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
   });
+
 }
 
 function dataURLtoBlob(dataURL) {
