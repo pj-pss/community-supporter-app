@@ -41,6 +41,7 @@ $(function() {
   $("#tenantList").load("tenantList.html");
 });
 
+var imputImage;
 function openInfoEdit(id){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
 
@@ -97,6 +98,7 @@ function openInfoEdit(id){
         var reader = new FileReader();
         reader.onload = function() {
           var img_src = $('<img>').attr('src', reader.result).addClass('thumbnail');
+          inputImage = reader.result;
           $('#infoThumbnail').html(img_src);
         }
         reader.readAsDataURL(file);
@@ -220,15 +222,14 @@ function showInfoPreview() {
       $('#modal-preview .term')[0].style.display = 'none';
     }
 
+    var img = $('<img>').attr('src', article.previewImg).addClass('thumbnail');
 
     $('#modal-preview .title').html(article.title);
     $('#modal-preview .url').html(link);
     $('#modal-preview .venue').html(venue);
     $('#modal-preview .date').html(term);
     $('#modal-preview .text').html(article.text);
-    $('#modal-preview .img').html(article.img);
-
-    jdenticon();
+    $('#modal-preview .img').html(img);
 
     $('#modal-preview').modal('show');
   });
@@ -256,9 +257,7 @@ function validateArticle() {
   var url = $('#editorUrl').val();
   var venue = $('#editorVenue').val();
   var text = $('#editor').val();
-  var img = $('#infoThumbnail').html() ||
-            $('<canvas>').attr('data-jdenticon-value', title)
-            .attr('height', '300').addClass('thumbnail');
+  var img = $('#inputFileImg').prop('files')[0];
   var errMsg = [];
 
   // required items
@@ -304,6 +303,34 @@ function validateArticle() {
     }
   }
 
+
+  // set image
+  if(img) {
+    img = inputImage;
+
+    var image = new Image();
+    image.src = img;
+
+    // resize
+    var ratio = image.height / image.width;
+    var width = 300;
+    var height = width * ratio;
+
+    var cvs = document.createElement('canvas');
+    cvs.width = width;
+    cvs.height = height;
+    var ctx = cvs.getContext('2d');
+    ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
+
+  } else {
+    var cvs = document.createElement('canvas');
+    cvs.height = cvs.width = 300;
+    var ctx = cvs.getContext('2d');
+    jdenticon.drawIcon(ctx, title, cvs.height);
+  }
+  previewImg = cvs.toDataURL('image/jpeg');
+  img = dataURLtoBlob(previewImg);
+
   return {
     'type' : type,
     'title' : title,
@@ -315,6 +342,124 @@ function validateArticle() {
     'venue' : venue,
     'text' : text,
     'img' : img,
+    'previewImg' : previewImg,
     'errMsg' : errMsg
   }
+}
+
+function saveArticle() {
+  var article = validateArticle();
+
+  if(article.errMsg.length > 0){
+    $('#articleError').html('');
+    for(i in article.errMsg) {
+      $('<li></li>').append(article.errMsg[i]).appendTo('#articleError');
+    }
+    showinfoEditorAlert();
+    return;
+  }
+
+  var token = window.prompt('input access token');
+  if(!token) return;
+
+  var base = 'https://demo.personium.io';
+  var box = 'fst-community-organization';
+  var cell = 'app-fst-community-user';
+  var oData = 'test_article';
+  var entityType = 'provide_information';
+
+  var err = [];
+
+  // save text
+  var saveText = function(){
+    return $.ajax({
+      type : 'POST',
+      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
+      headers : {
+        'Authorization' : 'Bearer ' + token
+      },
+      data : JSON.stringify({
+        'type' : article.type,
+        'title' : article.title,
+        'start_date' : article.startDate,
+        'start_time' : article.startTime,
+        'end_date' : article.endDate,
+        'end_time' : article.endTime,
+        'url' : article.url,
+        'venue' : article.venue,
+        'detail' : article.text
+      })
+    })
+    .then(
+      function(res) {
+        return res
+      },
+      function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+      }
+    );
+  };
+
+  // save img
+  var saveImg = function(res){
+    var DAV = 'test_article_image';
+    var id = res.d.results.__id;
+
+    return $.ajax({
+      type : 'PUT',
+      url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+      processData: false,
+      headers : {
+        'Authorization' : 'Bearer ' + token,
+        'Content-Type' : 'image/jpeg'
+      },
+      data : article.img
+    }).then(
+      function(res) {
+        return res
+      },
+      function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+
+        // delete text
+        $.ajax({
+          type : 'DELETE',
+          url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+          headers : {
+            'Authorization' : 'Bearer ' + token
+          }
+        })
+        .fail(function(XMLHttpRequest, textStatus, errorThrown){
+          alert('delete failed');
+          // err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+        });
+
+        return Promise.reject();
+      }
+    )
+  }
+
+  saveText().then(saveImg)
+  .fail(function() {
+    alert('記事の保存に失敗しました\n\n' + err.join('\n'));
+  })
+  .done(function() {
+    alert('記事の保存が完了しました');
+    $("#modal-infoEditor").modal('hide');
+  });
+
+}
+
+function dataURLtoBlob(dataURL) {
+  // convert base64 to raw binary data held in a string
+  var byteString = atob(dataURL.split(',')[1]);
+
+  // write the bytes of the string to an ArrayBuffer
+  var len = byteString.length;
+  var arr = new Uint8Array(len);
+  for (var i = 0; i < len; i++) {
+      arr[i] = byteString.charCodeAt(i);
+  }
+
+  return new Blob([arr], {type: 'image/jpeg'});
 }
