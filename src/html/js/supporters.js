@@ -363,7 +363,7 @@ function saveArticle() {
   if(!token) return;
 
   var base = 'https://demo.personium.io';
-  var box = 'fst-community-user';
+  var box = 'fst-community-organization';
   var cell = 'app-fst-community-user';
   var oData = 'test_article';
   var entityType = 'provide_information';
