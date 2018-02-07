@@ -368,32 +368,44 @@ function saveArticle() {
   var oData = 'test_article';
   var entityType = 'provide_information';
 
+  var err = [];
 
   // save text
-  $.ajax({
-    type : 'POST',
-    url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
-    headers : {
-      'Authorization' : 'Bearer ' + token
-    },
-    data : JSON.stringify({
-      'type' : article.type,
-      'title' : article.title,
-      'start_date' : article.startDate,
-      'start_time' : article.startTime,
-      'end_date' : article.endDate,
-      'end_time' : article.endTime,
-      'url' : article.url,
-      'venue' : article.venue,
-      'detail' : article.text
+  var saveText = function(){
+    return $.ajax({
+      type : 'POST',
+      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
+      headers : {
+        'Authorization' : 'Bearer ' + token
+      },
+      data : JSON.stringify({
+        'type' : article.type,
+        'title' : article.title,
+        'start_date' : article.startDate,
+        'start_time' : article.startTime,
+        'end_date' : article.endDate,
+        'end_time' : article.endTime,
+        'url' : article.url,
+        'venue' : article.venue,
+        'detail' : article.text
+      })
     })
-  })
-  // save img
-  .done(function(response) {
-    var DAV = 'test_article_image';
-    var id = response.d.results.__id;
+    .then(
+      function(res) {
+        return res
+      },
+      function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+      }
+    );
+  };
 
-    $.ajax({
+  // save img
+  var saveImg = function(res){
+    var DAV = 'test_article_image';
+    var id = res.d.results.__id;
+
+    return $.ajax({
       type : 'PUT',
       url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
       processData: false,
@@ -402,34 +414,38 @@ function saveArticle() {
         'Content-Type' : 'image/jpeg'
       },
       data : article.img
+    }).then(
+      function(res) {
+        return res
+      },
+      function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
 
-    })
-    // all OK
-    .done(function(){
-      alert('記事の保存が完了しました');
-      $("#modal-infoEditor").modal('hide');
-    })
-    // save img failed
-    .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-      alert('記事の保存に失敗しました\n\n' + XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+        // delete text
+        $.ajax({
+          type : 'DELETE',
+          url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+          headers : {
+            'Authorization' : 'Bearer ' + token
+          }
+        })
+        .fail(function(XMLHttpRequest, textStatus, errorThrown){
+          alert('delete failed');
+          // err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+        });
 
-      // delete text
-      $.ajax({
-        type : 'DELETE',
-        url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
-        headers : {
-          'Authorization' : 'Bearer ' + token
-        }
-      })
-      .fail(function(){
-        alert('delete failed');
-      });
+        return Promise.reject();
+      }
+    )
+  }
 
-    });
+  saveText().then(saveImg)
+  .fail(function() {
+    alert('記事の保存に失敗しました\n\n' + err.join('\n'));
   })
-  // save text failed
-  .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-    alert('記事の保存に失敗しました\n\n' + XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+  .done(function() {
+    alert('記事の保存が完了しました');
+    $("#modal-infoEditor").modal('hide');
   });
 
 }
