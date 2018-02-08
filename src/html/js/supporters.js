@@ -414,7 +414,6 @@ function saveArticle() {
         'venue' : article.venue,
         'detail' : article.text,
         'post_place' : 'みんなの掲示板',
-        'reply_flag' : 0,
         'target_age' : article.age,
         'target_sex' : article.sex
         // ,'update_user_id' : user_id
@@ -480,13 +479,6 @@ function saveArticle() {
 
 }
 
-/**
- * update article
- * @param  {[type]} id [description]
- * @return {[type]}    [description]
- */
-function saveArticle(id) {
-}
 function dataURLtoBlob(dataURL) {
   // convert base64 to raw binary data held in a string
   var byteString = atob(dataURL.split(',')[1]);
@@ -567,17 +559,14 @@ function getArticleDetail(id) {
       headers: {
           'Authorization': 'Bearer ' + token,
           'Accept' : 'application/json'
-      }
-    })
-    .then(
-      function(res) {
-        return res.d.results;
       },
-      function(XMLHttpRequest, textStatus, errorThrown) {
+      success: function(res){
+        return res;
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
         err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
       }
-    )
-    ,
+    }),
 
     // get image
     $.ajax({
@@ -598,19 +587,20 @@ function getArticleDetail(id) {
     })
   )
   .done(function(text, image) {
-    $('#modal-infoEditor input[name="articleType"]').val([text.type]);
-    $('#editorTitle').val(text.title);
-    $('#infoStartDate').val(text.start_date);
-    $('#infoStartTime').val(text.start_time);
-    $('#infoEndDate').val(text.end_date);
-    $('#infoEndTime').val(text.end_time);
-    $('#editorUrl').val(text.url);
-    $('#editorVenue').val(text.venue);
-    $('#editor').val(text.detail);
-    $('#editorAge').val(text.target_age);
-    $('#editorSex').val(text.target_sex);
+    var article = text[0].d.results;
+    $('#modal-infoEditor input[name="articleType"]').val([article.type]);
+    $('#editorTitle').val(article.title);
+    $('#infoStartDate').val(article.start_date);
+    $('#infoStartTime').val(article.start_time);
+    $('#infoEndDate').val(article.end_date);
+    $('#infoEndTime').val(article.end_time);
+    $('#editorUrl').val(article.url);
+    $('#editorVenue').val(article.venue);
+    $('#editor').val(article.detail);
+    $('#editorAge').val(article.target_age);
+    $('#editorSex').val(article.target_sex);
 
-    if(parseInt(text.type) == TYPE_EVENT){
+    if(parseInt(article.type) == TYPE_EVENT){
       $("#modal-infoEditor .date").prop('disabled', false);
       $("#modal-infoEditor .time").prop('disabled', false);
       $("#modal-infoEditor .selectDate .editorItem").addClass('must');
@@ -632,5 +622,7 @@ function getArticleDetail(id) {
     reader.readAsArrayBuffer(image[0]);
 
   })
-  .fail();
+  .fail(function() {
+    alert('記事の取得に失敗しました\n\n' + err.join('\n'));
+  });
 }
