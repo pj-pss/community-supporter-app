@@ -197,6 +197,8 @@ function showinfoEditorAlert() {
   $('#modal-infoEditor-alert').modal('show');
 }
 
+const TYPE_INFO = 0;
+const TYPE_EVENT = 1;
 function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
     var article = validateArticle();
@@ -210,7 +212,7 @@ function showInfoPreview() {
       return;
     }
 
-    if(article.type == 'event' && article.startDate && article.endDate) {
+    if(article.type == TYPE_EVENT && article.startDate && article.endDate) {
       var term = article.startDate + ' ' + article.startTime + ' ~ ' + (article.endDate == article.startDate ? '' : article.endDate) + ' ' + article.endTime;
     }
 
@@ -257,6 +259,8 @@ function validateArticle() {
   var url = $('#editorUrl').val();
   var venue = $('#editorVenue').val();
   var text = $('#editor').val();
+  var age = $('#editorAge').val();
+  var sex = $('#editorSex').val();
   var img = $('#inputFileImg').prop('files')[0];
   var errMsg = [];
 
@@ -264,11 +268,11 @@ function validateArticle() {
   if(!(title && text)) {
     errMsg.push('<span class="must"></span> は必須項目です');
   } else {
-    switch (type) {
-      case 'info':
+    switch (parseInt(type)) {
+      case TYPE_INFO:
         break;
 
-      case 'event':
+      case TYPE_EVENT:
         if(!(startDate && endDate) || !venue){
           errMsg.push('<span class="must"></span> は必須項目です');
         }
@@ -301,6 +305,13 @@ function validateArticle() {
         }
       }
     }
+  }
+
+  // check drop down list
+  if( isNaN(type + age + sex) ||
+      type < 0 || age < 0 || sex < 0 ||
+      1 < type || 4 < age || 2 < sex) {
+    errMsg.push('不正な値です');
   }
 
 
@@ -343,6 +354,8 @@ function validateArticle() {
     'text' : text,
     'img' : img,
     'previewImg' : previewImg,
+    'age' : age,
+    'sex' : sex,
     'errMsg' : errMsg
   }
 }
@@ -387,7 +400,12 @@ function saveArticle() {
         'end_time' : article.endTime,
         'url' : article.url,
         'venue' : article.venue,
-        'detail' : article.text
+        'detail' : article.text,
+        'post_place' : 'みんなの掲示板',
+        'reply_flag' : 0,
+        'target_age' : article.age,
+        'target_sex' : article.sex
+        // ,'update_user_id' : user_id
       })
     })
     .then(

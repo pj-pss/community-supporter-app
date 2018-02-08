@@ -11,8 +11,8 @@
                     <div class="col-md-4">
                         <div class="must">■記事区分</div>
                         <div class="radio">
-                            <label><input type="radio" name="articleType" id="info" value="info" checked="checked"> お知らせ</label>
-                            <label><input type="radio" name="articleType" id="event" value="event"> イベント</label>
+                            <label><input type="radio" name="articleType" id="info" value="0" checked="checked"> お知らせ</label>
+                            <label><input type="radio" name="articleType" id="event" value="1"> イベント</label>
                         </div>
                     </div>
                     <div class="selectDate">
@@ -39,20 +39,20 @@
                     </div>
                     <div class="col-md-1">
                         性別<br>
-                        <select>
-                            <option>全て</option>
-                            <option>男性</option>
-                            <option>女性</option>
+                        <select id="editorSex">
+                            <option value="0">全て</option>
+                            <option value="1">男性</option>
+                            <option value="2">女性</option>
                         </select>
                     </div>
                     <div class="col-md-1">
                         年代<br>
-                        <select>
-                            <option>全年代</option>
-                            <option>80代以上</option>
-                            <option>70代</option>
-                            <option>60代</option>
-                            <option>50代以下</option>
+                        <select id="editorAge">
+                            <option value="0">全年代</option>
+                            <option value="1">80代以上</option>
+                            <option value="2">70代</option>
+                            <option value="3">60代</option>
+                            <option value="4">50代以下</option>
                         </select>
                     </div>
                     <div class="col-md-8 col-md-offset-2">
