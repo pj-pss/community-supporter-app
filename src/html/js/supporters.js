@@ -44,75 +44,85 @@ $(function() {
 });
 
 var imputImage;
-function openInfoEdit(id){
-  $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
-
-    $(function() {
-      // set date picker
-      $('#datepicker .date').datepicker({
-          language: 'ja',
-          format: "yyyy/mm/dd (D)",
-          autoclose: true,
-          todayHighlight: true,
-          startDate: Date()
-      });
-
-      // click radio button
-      $('#modal-infoEditor input[name="articleType"]:radio').on('change', function() {
-        var val = $(this).val();
-        if(val == "info"){
-          $("#modal-infoEditor .date").prop('disabled', true);
-          $("#modal-infoEditor .time").prop('disabled', true);
-          $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
-          $("#modal-infoEditor .venue .editorItem").removeClass('must');
-        } else {
-          $("#modal-infoEditor .date").prop('disabled', false);
-          $("#modal-infoEditor .time").prop('disabled', false);
-          $("#modal-infoEditor .selectDate .editorItem").addClass('must');
-          $("#modal-infoEditor .venue .editorItem").addClass('must');
-        }
-      });
-
-      // select upload file
-      $('#inputFileImg').on('change', function() {
-        var file = $(this).prop('files')[0];
-        if(!file) return;
-
-        // show file name
-        var input = $(this);
-        var fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-        $('#fileNameImg').html(fileName);
-
-
-        // allow only image file
-        if (! file.type.match('image.*')) {
-          // show error message
-          showFileFormErrorMessage('errorMessageImg', true);
-          $('#infoThumbnail').html('');
-          $('#inputFileImg').val('');
-          $('#fileNameImg').html('');
-          return;
-        }
-        showFileFormErrorMessage('errorMessageImg', false);
-        $('#clearImgButton')[0].style.display = '';
-
-        // preview
-        var reader = new FileReader();
-        reader.onload = function() {
-          var img_src = $('<img>').attr('src', reader.result).addClass('thumbnail');
-          inputImage = reader.result;
-          $('#infoThumbnail').html(img_src);
-        }
-        reader.readAsDataURL(file);
-      });
-    });
-
-    // If it does not exist, the parent window can not be scrolled.
-    $('#modal-preview').on('hidden.bs.modal', function () {
-      $('body').addClass('modal-open');
-    });
+function openInfoCreate(){
+  $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor", null, function(){
+    initInfoEdit();
 
     $('#modal-infoEditor').modal('show');
+  });
+}
+
+function openInfoEdit(id){
+  $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor", null, function(){
+    initInfoEdit();
+    getArticleDetail(id);
+
+    $('#modal-infoEditor').modal('show');
+  });
+}
+
+function initInfoEdit(){
+  // set date picker
+  $('#datepicker .date').datepicker({
+      language: 'ja',
+      format: "yyyy/mm/dd (D)",
+      autoclose: true,
+      todayHighlight: true,
+      startDate: Date()
+  });
+
+  // click radio button
+  $('#modal-infoEditor input[name="articleType"]:radio').on('change', function() {
+    var val = $(this).val();
+    if(parseInt(val) == TYPE_INFO){
+      $("#modal-infoEditor .date").prop('disabled', true);
+      $("#modal-infoEditor .time").prop('disabled', true);
+      $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
+      $("#modal-infoEditor .venue .editorItem").removeClass('must');
+    } else {
+      $("#modal-infoEditor .date").prop('disabled', false);
+      $("#modal-infoEditor .time").prop('disabled', false);
+      $("#modal-infoEditor .selectDate .editorItem").addClass('must');
+      $("#modal-infoEditor .venue .editorItem").addClass('must');
+    }
+  });
+
+  // select upload file
+  $('#inputFileImg').on('change', function() {
+    var file = $(this).prop('files')[0];
+    if(!file) return;
+
+    // show file name
+    var input = $(this);
+    var fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    $('#fileNameImg').html(fileName);
+
+
+    // allow only image file
+    if (! file.type.match('image.*')) {
+      // show error message
+      showFileFormErrorMessage('errorMessageImg', true);
+      $('#infoThumbnail').html('');
+      $('#inputFileImg').val('');
+      $('#fileNameImg').html('');
+      return;
+    }
+    showFileFormErrorMessage('errorMessageImg', false);
+    $('#clearImgButton')[0].style.display = '';
+
+    // preview
+    var reader = new FileReader();
+    reader.onload = function() {
+      var img_src = $('<img>').attr('src', reader.result).addClass('thumbnail');
+      inputImage = reader.result;
+      $('#infoThumbnail').html(img_src);
+    }
+    reader.readAsDataURL(file);
+  });
+
+  // If it does not exist, the parent window can not be scrolled.
+  $('#modal-preview').on('hidden.bs.modal', function () {
+    $('body').addClass('modal-open');
   });
 }
 
@@ -526,4 +536,63 @@ function getArticleList(divId) {
       }
       $('#' + divId).html(list.join(''));
   });
+}
+
+
+function getArticleDetail(id) {
+  var token = window.prompt('input access token');
+  if(!token) return;
+
+  var base = 'https://demo.personium.io';
+  var box = 'fst-community-organization';
+  var cell = 'app-fst-community-user';
+  var oData = 'test_article';
+  var entityType = 'provide_information';
+
+  var err = [];
+
+  $.when(
+    // get text
+    $.ajax({
+      type: "GET",
+      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+      headers: {
+          "Authorization": "Bearer " + token,
+          "Accept" : "application/json"
+      }
+    })
+    .then(
+      function(res) {
+        return res.d.results;
+      },
+      function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+      }
+    ),
+
+    // get image
+    $.ajax()
+    .then(
+      function(res) {
+        return res;
+      },
+      function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+      }
+    )
+  )
+  .done(function(text, image) {
+    // $('#modal-infoEditor input[name="articleType"]').val(data.d.results.type);
+    $('#editorTitle').val(text.title);
+    $('#infoStartDate').val(text.start_date);
+    $('#infoStartTime').val(text.start_time);
+    $('#infoEndDate').val(text.end_date);
+    $('#infoEndTime').val(text.end_time);
+    $('#editorUrl').val(text.url);
+    $('#editorVenue').val(text.venue);
+    $('#editor').val(text.detail);
+    $('#editorAge').val(text.target_age);
+    $('#editorSex').val(text.target_sex);
+  })
+  .fail();
 }
