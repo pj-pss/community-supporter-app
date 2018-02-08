@@ -12,7 +12,9 @@ function view(functionId) {
 
 // load html
 $(function() {
-  $("#proviedInfoList").load("proviedInfoList.html");
+  $("#proviedInfoList").load("proviedInfoList.html", function() {
+    getArticleList('infoList');
+  });
   $("#operationHistory").load("operationHistory.html");
   $("#disclosureInfotList").load("disclosureInfotList.html" , function(){
     // when select file
@@ -480,4 +482,48 @@ function dataURLtoBlob(dataURL) {
   }
 
   return new Blob([arr], {type: 'image/jpeg'});
+}
+
+
+function getArticleList(divId) {
+  var token = window.prompt('input access token');
+  if(!token) return;
+
+  var base = 'https://demo.personium.io';
+  var box = 'fst-community-organization';
+  var cell = 'app-fst-community-user';
+  var oData = 'test_article';
+  var entityType = 'provide_information';
+
+  $('#' + divId).html('');
+  $.ajax({
+      type: "GET",
+      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
+      headers: {
+          "Authorization": "Bearer " + token,
+          "Accept" : "application/json"
+      }
+  }).done(function(data) {
+      var list = [];
+      for(result of data.d.results){
+        // format datetime (yyyy/mm/dd hh:mm:ss)
+        var dateTime = new Date(parseInt(result.__updated.substr(6)));
+        var date =  dateTime.getFullYear() + '/' +
+                    ('0' + (dateTime.getMonth() + 1)).slice(-2) + '/' +
+                    ('0' + (dateTime.getDate())).slice(-2);
+        var time =  ('0' + dateTime.getHours()).slice(-2) + ':' +
+                    ('0' + dateTime.getMinutes()).slice(-2) + ':' +
+                    ('0' + dateTime.getSeconds()).slice(-2);
+        var row = '<tr><td>' + date + ' ' + time +
+                  '</td><td>' + result.post_place +
+                  '</td><td class="flushleft">' +
+                  '<a href="javascript:openInfoEdit(\'' + result.__id + '\')">' + result.title +
+                  '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
+                  '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
+                  '</a></td></tr>';
+
+          list.push(row);
+      }
+      $('#' + divId).html(list.join(''));
+  });
 }
