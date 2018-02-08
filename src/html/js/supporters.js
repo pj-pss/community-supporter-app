@@ -480,6 +480,13 @@ function saveArticle() {
 
 }
 
+/**
+ * update article
+ * @param  {[type]} id [description]
+ * @return {[type]}    [description]
+ */
+function saveArticle(id) {
+}
 function dataURLtoBlob(dataURL) {
   // convert base64 to raw binary data held in a string
   var byteString = atob(dataURL.split(',')[1]);
@@ -548,17 +555,18 @@ function getArticleDetail(id) {
   var cell = 'app-fst-community-user';
   var oData = 'test_article';
   var entityType = 'provide_information';
+  var DAV = 'test_article_image';
 
   var err = [];
 
   $.when(
     // get text
     $.ajax({
-      type: "GET",
+      type: 'GET',
       url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
       headers: {
-          "Authorization": "Bearer " + token,
-          "Accept" : "application/json"
+          'Authorization': 'Bearer ' + token,
+          'Accept' : 'application/json'
       }
     })
     .then(
@@ -568,21 +576,29 @@ function getArticleDetail(id) {
       function(XMLHttpRequest, textStatus, errorThrown) {
         err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
       }
-    ),
+    )
+    ,
 
     // get image
-    $.ajax()
-    .then(
-      function(res) {
+    $.ajax({
+      type: 'GET',
+      url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+      dataType: 'binary',
+      processData: false,
+      responseType: 'blob',
+      headers: {
+          'Authorization': 'Bearer ' + token
+      },
+      success: function(res){
         return res;
       },
-      function(XMLHttpRequest, textStatus, errorThrown) {
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
         err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
       }
-    )
+    })
   )
   .done(function(text, image) {
-    // $('#modal-infoEditor input[name="articleType"]').val(data.d.results.type);
+    $('#modal-infoEditor input[name="articleType"]').val([text.type]);
     $('#editorTitle').val(text.title);
     $('#infoStartDate').val(text.start_date);
     $('#infoStartTime').val(text.start_time);
@@ -593,6 +609,28 @@ function getArticleDetail(id) {
     $('#editor').val(text.detail);
     $('#editorAge').val(text.target_age);
     $('#editorSex').val(text.target_sex);
+
+    if(parseInt(text.type) == TYPE_EVENT){
+      $("#modal-infoEditor .date").prop('disabled', false);
+      $("#modal-infoEditor .time").prop('disabled', false);
+      $("#modal-infoEditor .selectDate .editorItem").addClass('must');
+      $("#modal-infoEditor .venue .editorItem").addClass('must');
+    }
+
+    var reader = new FileReader();
+    reader.onloadend = $.proxy(function(event) {
+        var binary = '';
+            var bytes = new Uint8Array(event.currentTarget.result);
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+        window.btoa(binary);
+        var img_src = $('<img>').attr('src', "data:image/jpg;base64," + btoa(binary)).addClass('thumbnail');
+        $('#infoThumbnail').html(img_src);
+    }, this);
+    reader.readAsArrayBuffer(image[0]);
+
   })
   .fail();
 }
