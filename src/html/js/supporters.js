@@ -716,6 +716,7 @@ function deleteArticle(id) {
   $.when(deleteText, deleteImage)
   .done(function() {
     alert('記事の削除が完了しました');
+    $("#modal-infoEditor").modal('hide');
   })
   .fail(function() {
     alert('記事の削除に失敗しました\n\n' + err.join('\n'));
