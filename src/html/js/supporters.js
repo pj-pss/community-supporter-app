@@ -308,10 +308,6 @@ function clearInputImg() {
 function validateArticle() {
   var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
   var title = $('#editorTitle').val();
-  var startDate = $('#infoStartDate').val();
-  var startTime = $('#infoStartTime').val();
-  var endDate = $('#infoEndDate').val();
-  var endTime = $('#infoEndTime').val();
   var url = $('#editorUrl').val();
   var venue = $('#editorVenue').val();
   var text = $('#editor').val();
@@ -319,6 +315,13 @@ function validateArticle() {
   var sex = $('#editorSex').val();
   var img = $('#inputFileImg').prop('files')[0];
   var errMsg = [];
+
+  if(type == TYPE.EVENT){
+    var startDate = $('#infoStartDate').val();
+    var startTime = $('#infoStartTime').val();
+    var endDate = $('#infoEndDate').val();
+    var endTime = $('#infoEndTime').val();
+  }
 
   // required items
   if(!(title && text)) {
@@ -329,7 +332,7 @@ function validateArticle() {
         break;
 
       case TYPE.EVENT:
-        if(!(startDate && endDate) || !venue){
+        if(!(startDate && endDate && startTime && endTime) || !venue){
           errMsg.push('<span class="must"></span> は必須項目です');
         }
 
