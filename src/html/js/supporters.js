@@ -21,7 +21,8 @@ Object.freeze(TYPE);
 Object.freeze(SEX);
 Object.freeze(AGE);
 
-var imputImage;
+var inputImage;
+var getImage;
 var debug_token;
 
 // function ID currently displayed
@@ -653,7 +654,8 @@ function getArticleDetail(id) {
                 binary += String.fromCharCode(bytes[i]);
             }
         window.btoa(binary);
-        var img_src = $('<img>').attr('src', "data:image/jpg;base64," + btoa(binary)).addClass('thumbnail');
+        getImage = "data:image/jpg;base64," + btoa(binary);
+        var img_src = $('<img>').attr('src', getImage).addClass('thumbnail');
         $('#infoThumbnail').html(img_src);
     }, this);
     reader.readAsArrayBuffer(image[0]);
@@ -681,41 +683,64 @@ function deleteArticle(id) {
   var DAV = 'test_article_image';
 
   var err = [];
-  var deleteText = $.ajax({
-    type: 'DELETE',
-    url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
-    headers: {
-        'Authorization': 'Bearer ' + token
-    }
-  })
-  .then(
-    function(res) {
-      return res;
-    },
-    function(XMLHttpRequest, textStatus, errorThrown) {
-      err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
-      return Promise.reject();
-    }
-  );
 
-  var deleteImage = $.ajax({
-    type: 'DELETE',
-    url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
-    headers: {
-        'Authorization': 'Bearer ' + token
-    }
-  })
-  .then(
-    function(res) {
-      return res;
-    },
-    function(XMLHttpRequest, textStatus, errorThrown) {
-      err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
-      return Promise.reject();
-    }
-  );
+  var deleteImage = function(){
+    return $.ajax({
+      type: 'DELETE',
+      url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+      headers: {
+          'Authorization': 'Bearer ' + token
+      }
+    })
+    .then(
+      function(res) {
+        return res;
+      },
+      function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+        return Promise.reject();
+      }
+    );
+  }
 
-  $.when(deleteText, deleteImage)
+  var deleteText = function() {
+    return $.ajax({
+      type: 'DELETE',
+      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+      headers: {
+          'Authorization': 'Bearer ' + token
+      }
+    })
+    .then(
+      function(res) {
+        return res;
+      },
+      function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+
+        // save image if delete text failed
+        var img = dataURLtoBlob(getImage);
+        $.ajax({
+          type : 'PUT',
+          url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+          processData: false,
+          headers : {
+            'Authorization' : 'Bearer ' + token,
+            'Content-Type' : 'image/jpeg'
+          },
+          data : img
+        })
+        .fail(function() {
+          alert('rollback error');
+        })
+
+        return Promise.reject();
+      }
+    );
+  }
+
+
+  deleteImage().then(deleteText)
   .done(function() {
     alert('記事の削除が完了しました');
     $("#modal-infoEditor").modal('hide');
