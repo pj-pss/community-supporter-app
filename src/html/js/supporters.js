@@ -82,7 +82,7 @@ function openInfoEdit(id){
     getArticleDetail(id);
     var deleteButton = $('<button></button>')
                           .text('削除').addClass('btn').addClass('btn-danger')
-                          .attr('onclick', "deleteArticle('" + id + "')");
+                          .attr('onclick', "showDeleteArticleConfirm('" + id + "')");
     $('#modal-infoEditor .modal-footer').append(deleteButton);
 
     $('#modal-infoEditor').modal('show');
@@ -235,15 +235,6 @@ function showFileFormButton(clear, upload){
 
 function showFileFormErrorMessage(id, errorMessage){
   document.getElementById(id).style.display = errorMessage ? "" : "none";
-}
-
-function showDeleteCommentConfirm() {
-  $('#modal-confirm-delete').modal('show');
-}
-
-function deleteComment(){
-  // dummy
-  $('#modal-confirm-delete').modal('hide');
 }
 
 function showinfoEditorAlert() {
@@ -671,6 +662,62 @@ function getArticleDetail(id) {
   });
 }
 
+function showDeleteArticleConfirm(id) {
+  $('#deleteArticle').attr('onclick', "deleteArticle('" + id + "')");
+  $('#modal-confirm-delete').modal('show');
+}
+
 function deleteArticle(id) {
-  showDeleteCommentConfirm();
+  var token = window.prompt('input access token');
+  if(!token) return;
+
+  var base = 'https://demo.personium.io';
+  var box = 'fst-community-organization';
+  var cell = 'app-fst-community-user';
+  var oData = 'test_article';
+  var entityType = 'provide_information';
+  var DAV = 'test_article_image';
+
+  var err = [];
+  var deleteText = $.ajax({
+    type: 'DELETE',
+    url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+    headers: {
+        'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(
+    function(res) {
+      return res;
+    },
+    function(XMLHttpRequest, textStatus, errorThrown) {
+      err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+      return Promise.reject();
+    }
+  );
+
+  var deleteImage = $.ajax({
+    type: 'DELETE',
+    url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+    headers: {
+        'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(
+    function(res) {
+      return res;
+    },
+    function(XMLHttpRequest, textStatus, errorThrown) {
+      err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+      return Promise.reject();
+    }
+  );
+
+  $.when(deleteText, deleteImage)
+  .done(function() {
+    alert('記事の削除が完了しました');
+  })
+  .fail(function() {
+    alert('記事の削除に失敗しました\n\n' + err.join('\n'));
+  });
 }
