@@ -1,3 +1,8 @@
+const TYPE_INFO = 0;
+const TYPE_EVENT = 1;
+
+var imputImage;
+
 // function ID currently displayed
 var nowViewFunction = "proviedInfoList";
 // switch the screen to be displayed
@@ -43,7 +48,6 @@ $(function() {
   $("#tenantList").load("tenantList.html");
 });
 
-var imputImage;
 function openInfoCreate(){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor", null, function(){
     initInfoEdit();
@@ -213,8 +217,6 @@ function showinfoEditorAlert() {
   $('#modal-infoEditor-alert').modal('show');
 }
 
-const TYPE_INFO = 0;
-const TYPE_EVENT = 1;
 function showInfoPreview() {
   $("#modal-preview").load("infoPreview.html", function(){
     var article = validateArticle();
