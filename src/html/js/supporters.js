@@ -22,6 +22,7 @@ Object.freeze(SEX);
 Object.freeze(AGE);
 
 var imputImage;
+var debug_token;
 
 // function ID currently displayed
 var nowViewFunction = "proviedInfoList";
@@ -419,7 +420,7 @@ function saveArticle() {
     return;
   }
 
-  var token = window.prompt('input access token');
+  var token = debug_getToken();
   if(!token) return;
 
   var base = 'https://demo.personium.io';
@@ -531,7 +532,7 @@ function dataURLtoBlob(dataURL) {
 
 
 function getArticleList(divId) {
-  var token = window.prompt('input access token');
+  var token = debug_getToken();
   if(!token) return;
 
   var base = 'https://demo.personium.io';
@@ -575,7 +576,7 @@ function getArticleList(divId) {
 
 
 function getArticleDetail(id) {
-  var token = window.prompt('input access token');
+  var token = debug_getToken();
   if(!token) return;
 
   var base = 'https://demo.personium.io';
@@ -669,7 +670,7 @@ function showDeleteArticleConfirm(id) {
 }
 
 function deleteArticle(id) {
-  var token = window.prompt('input access token');
+  var token = debug_getToken();
   if(!token) return;
 
   var base = 'https://demo.personium.io';
@@ -723,4 +724,14 @@ function deleteArticle(id) {
   .fail(function() {
     alert('記事の削除に失敗しました\n\n' + err.join('\n'));
   });
+}
+
+function debug_getToken(){
+  if(!debug_token) {
+    debug_token = window.prompt('input access token');
+    setTimeout(function(){
+      debug_token = '';
+    }, 300000);
+  }
+  return debug_token;
 }
