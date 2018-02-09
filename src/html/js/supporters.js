@@ -75,6 +75,7 @@ function openInfoCreate(){
     initInfoEdit();
 
     getImage = null;
+    $('#saveArticleButton').attr('onclick', "saveArticle()");
     $('#modal-infoEditor').modal('show');
   });
 }
@@ -87,6 +88,7 @@ function openInfoEdit(id){
                           .text('削除').addClass('btn').addClass('btn-danger')
                           .attr('onclick', "showDeleteArticleConfirm('" + id + "')");
     $('#modal-infoEditor .modal-footer').append(deleteButton);
+    $('#saveArticleButton').attr('onclick', "saveArticle('" + id + "')");
 
     $('#modal-infoEditor').modal('show');
   });
@@ -415,7 +417,7 @@ function validateArticle() {
   }
 }
 
-function saveArticle() {
+function saveArticle(editId) {
   var article = validateArticle();
 
   if(article.errMsg.length > 0){
@@ -440,9 +442,16 @@ function saveArticle() {
 
   // save text
   var saveText = function(){
+    var method = 'POST';
+    var url = base + '/' + box + '/' + cell + '/' + oData + '/' + entityType;
+    if(editId){
+      method = 'PUT';
+      url += "('" + editId + "')";
+    }
+
     return $.ajax({
-      type : 'POST',
-      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
+      type : method,
+      url : url,
       headers : {
         'Authorization' : 'Bearer ' + token
       },
@@ -464,7 +473,7 @@ function saveArticle() {
     })
     .then(
       function(res) {
-        return res
+        return editId || res;
       },
       function(XMLHttpRequest, textStatus, errorThrown) {
         err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
@@ -475,7 +484,7 @@ function saveArticle() {
   // save img
   var saveImg = function(res){
     var DAV = 'test_article_image';
-    var id = res.d.results.__id;
+    var id = res.d ? res.d.results.__id : res;
 
     return $.ajax({
       type : 'PUT',
