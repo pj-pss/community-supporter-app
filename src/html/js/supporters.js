@@ -80,6 +80,10 @@ function openInfoEdit(id){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor", null, function(){
     initInfoEdit();
     getArticleDetail(id);
+    var deleteButton = $('<button></button>')
+                          .text('削除').addClass('btn').addClass('btn-danger')
+                          .attr('onclick', "deleteArticle('" + id + "')");
+    $('#modal-infoEditor .modal-footer').append(deleteButton);
 
     $('#modal-infoEditor').modal('show');
   });
@@ -161,6 +165,9 @@ function initInfoEdit(){
 
   // If it does not exist, the parent window can not be scrolled.
   $('#modal-preview').on('hidden.bs.modal', function () {
+    $('body').addClass('modal-open');
+  });
+  $('#modal-confirm-delete').on('hidden.bs.modal', function () {
     $('body').addClass('modal-open');
   });
 }
@@ -662,4 +669,8 @@ function getArticleDetail(id) {
   .fail(function() {
     alert('記事の取得に失敗しました\n\n' + err.join('\n'));
   });
+}
+
+function deleteArticle(id) {
+  showDeleteCommentConfirm();
 }
