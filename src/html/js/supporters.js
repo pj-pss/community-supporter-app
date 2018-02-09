@@ -510,6 +510,7 @@ function saveArticle() {
   .done(function() {
     alert('記事の保存が完了しました');
     $("#modal-infoEditor").modal('hide');
+    getArticleList('infoList');
   });
 
 }
@@ -717,6 +718,7 @@ function deleteArticle(id) {
   .done(function() {
     alert('記事の削除が完了しました');
     $("#modal-infoEditor").modal('hide');
+    getArticleList('infoList');
   })
   .fail(function() {
     alert('記事の削除に失敗しました\n\n' + err.join('\n'));
