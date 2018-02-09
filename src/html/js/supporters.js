@@ -1,3 +1,28 @@
+const TYPE = {
+  INFO: 0,
+  EVENT: 1
+}
+
+const SEX = {
+  ALL: 0,
+  MALE: 1,
+  FEMALE: 2
+}
+
+const AGE = {
+  ALL: 0,
+  OVER_EIGHTY: 1,
+  SEVENTY: 2,
+  SIXTY: 3,
+  UNDER_FIFTY: 4
+}
+
+Object.freeze(TYPE);
+Object.freeze(SEX);
+Object.freeze(AGE);
+
+var imputImage;
+
 // function ID currently displayed
 var nowViewFunction = "proviedInfoList";
 // switch the screen to be displayed
@@ -12,7 +37,9 @@ function view(functionId) {
 
 // load html
 $(function() {
-  $("#proviedInfoList").load("proviedInfoList.html");
+  $("#proviedInfoList").load("proviedInfoList.html", function() {
+    getArticleList('infoList');
+  });
   $("#operationHistory").load("operationHistory.html");
   $("#disclosureInfotList").load("disclosureInfotList.html" , function(){
     // when select file
@@ -41,76 +68,100 @@ $(function() {
   $("#tenantList").load("tenantList.html");
 });
 
-var imputImage;
-function openInfoEdit(id){
-  $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor_" + id, null, function(){
-
-    $(function() {
-      // set date picker
-      $('#datepicker .date').datepicker({
-          language: 'ja',
-          format: "yyyy/mm/dd (D)",
-          autoclose: true,
-          todayHighlight: true,
-          startDate: Date()
-      });
-
-      // click radio button
-      $('#modal-infoEditor input[name="articleType"]:radio').on('change', function() {
-        var val = $(this).val();
-        if(val == "info"){
-          $("#modal-infoEditor .date").prop('disabled', true);
-          $("#modal-infoEditor .time").prop('disabled', true);
-          $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
-          $("#modal-infoEditor .venue .editorItem").removeClass('must');
-        } else {
-          $("#modal-infoEditor .date").prop('disabled', false);
-          $("#modal-infoEditor .time").prop('disabled', false);
-          $("#modal-infoEditor .selectDate .editorItem").addClass('must');
-          $("#modal-infoEditor .venue .editorItem").addClass('must');
-        }
-      });
-
-      // select upload file
-      $('#inputFileImg').on('change', function() {
-        var file = $(this).prop('files')[0];
-        if(!file) return;
-
-        // show file name
-        var input = $(this);
-        var fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-        $('#fileNameImg').html(fileName);
-
-
-        // allow only image file
-        if (! file.type.match('image.*')) {
-          // show error message
-          showFileFormErrorMessage('errorMessageImg', true);
-          $('#infoThumbnail').html('');
-          $('#inputFileImg').val('');
-          $('#fileNameImg').html('');
-          return;
-        }
-        showFileFormErrorMessage('errorMessageImg', false);
-        $('#clearImgButton')[0].style.display = '';
-
-        // preview
-        var reader = new FileReader();
-        reader.onload = function() {
-          var img_src = $('<img>').attr('src', reader.result).addClass('thumbnail');
-          inputImage = reader.result;
-          $('#infoThumbnail').html(img_src);
-        }
-        reader.readAsDataURL(file);
-      });
-    });
-
-    // If it does not exist, the parent window can not be scrolled.
-    $('#modal-preview').on('hidden.bs.modal', function () {
-      $('body').addClass('modal-open');
-    });
+function openInfoCreate(){
+  $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor", null, function(){
+    initInfoEdit();
 
     $('#modal-infoEditor').modal('show');
+  });
+}
+
+function openInfoEdit(id){
+  $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor", null, function(){
+    initInfoEdit();
+    getArticleDetail(id);
+
+    $('#modal-infoEditor').modal('show');
+  });
+}
+
+function initInfoEdit(){
+  // set input value
+  $('#info').val(TYPE.INFO);
+  $('#event').val(TYPE.EVENT);
+
+  var i = 1;
+  for(var key in SEX){
+    $('#editorSex option:nth-child(' + i + ')').val(SEX[key]);
+    i++;
+  }
+  i = 1;
+  for(var key in AGE) {
+    $('#editorAge option:nth-child(' + i + ')').val(AGE[key]);
+    i++;
+  }
+
+  // set date picker
+  $('#datepicker .date').datepicker({
+      language: 'ja',
+      format: "yyyy/mm/dd (D)",
+      autoclose: true,
+      todayHighlight: true,
+      startDate: Date()
+  });
+
+  // click radio button
+  $('#modal-infoEditor input[name="articleType"]:radio').on('change', function() {
+    var val = $(this).val();
+    if(parseInt(val) == TYPE.INFO){
+      $("#modal-infoEditor .date").prop('disabled', true);
+      $("#modal-infoEditor .time").prop('disabled', true);
+      $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
+      $("#modal-infoEditor .venue .editorItem").removeClass('must');
+    } else {
+      $("#modal-infoEditor .date").prop('disabled', false);
+      $("#modal-infoEditor .time").prop('disabled', false);
+      $("#modal-infoEditor .selectDate .editorItem").addClass('must');
+      $("#modal-infoEditor .venue .editorItem").addClass('must');
+    }
+  });
+
+  // select upload file
+  $('#inputFileImg').on('change', function() {
+    var file = $(this).prop('files')[0];
+    if(!file) return;
+
+    // show file name
+    var input = $(this);
+    var fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    $('#fileNameImg').html(fileName);
+
+
+    // allow only image file
+    if (! file.type.match('image.*')) {
+      // show error message
+      showFileFormErrorMessage('errorMessageImg', true);
+      $('#infoThumbnail').html('');
+      $('#inputFileImg').val('');
+      $('#fileNameImg').html('');
+      return;
+    }
+    showFileFormErrorMessage('errorMessageImg', false);
+    $('#clearImgButton')[0].style.display = '';
+
+    // preview
+    var reader = new FileReader();
+    reader.onload = function() {
+      var img_src = $('<img>').attr('src', reader.result).addClass('thumbnail');
+      inputImage = reader.result;
+      $('#infoThumbnail').html(img_src);
+    }
+    reader.readAsDataURL(file);
+  });
+
+  // If it does not exist, the parent window can not be scrolled.
+  $('#modal-preview').on('hidden.bs.modal', function () {
+    $('body').addClass('modal-open');
   });
 }
 
@@ -210,7 +261,7 @@ function showInfoPreview() {
       return;
     }
 
-    if(article.type == 'event' && article.startDate && article.endDate) {
+    if(article.type == TYPE.EVENT && article.startDate && article.endDate) {
       var term = article.startDate + ' ' + article.startTime + ' ~ ' + (article.endDate == article.startDate ? '' : article.endDate) + ' ' + article.endTime;
     }
 
@@ -257,6 +308,8 @@ function validateArticle() {
   var url = $('#editorUrl').val();
   var venue = $('#editorVenue').val();
   var text = $('#editor').val();
+  var age = $('#editorAge').val();
+  var sex = $('#editorSex').val();
   var img = $('#inputFileImg').prop('files')[0];
   var errMsg = [];
 
@@ -264,11 +317,11 @@ function validateArticle() {
   if(!(title && text)) {
     errMsg.push('<span class="must"></span> は必須項目です');
   } else {
-    switch (type) {
-      case 'info':
+    switch (parseInt(type)) {
+      case TYPE.INFO:
         break;
 
-      case 'event':
+      case TYPE.EVENT:
         if(!(startDate && endDate) || !venue){
           errMsg.push('<span class="must"></span> は必須項目です');
         }
@@ -301,6 +354,13 @@ function validateArticle() {
         }
       }
     }
+  }
+
+  // check drop down list
+  if( isNaN(type + age + sex) ||
+      type < 0 || age < 0 || sex < 0 ||
+      Object.keys(TYPE).length < type || Object.keys(AGE).length < age || Object.keys(SEX).length < sex) {
+    errMsg.push('不正な値です');
   }
 
 
@@ -343,6 +403,8 @@ function validateArticle() {
     'text' : text,
     'img' : img,
     'previewImg' : previewImg,
+    'age' : age,
+    'sex' : sex,
     'errMsg' : errMsg
   }
 }
@@ -387,7 +449,11 @@ function saveArticle() {
         'end_time' : article.endTime,
         'url' : article.url,
         'venue' : article.venue,
-        'detail' : article.text
+        'detail' : article.text,
+        'post_place' : 'みんなの掲示板',
+        'target_age' : article.age,
+        'target_sex' : article.sex
+        // ,'update_user_id' : user_id
       })
     })
     .then(
@@ -462,4 +528,138 @@ function dataURLtoBlob(dataURL) {
   }
 
   return new Blob([arr], {type: 'image/jpeg'});
+}
+
+
+function getArticleList(divId) {
+  var token = window.prompt('input access token');
+  if(!token) return;
+
+  var base = 'https://demo.personium.io';
+  var box = 'fst-community-organization';
+  var cell = 'app-fst-community-user';
+  var oData = 'test_article';
+  var entityType = 'provide_information';
+
+  $('#' + divId).html('');
+  $.ajax({
+      type: "GET",
+      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
+      headers: {
+          "Authorization": "Bearer " + token,
+          "Accept" : "application/json"
+      }
+  }).done(function(data) {
+      var list = [];
+      for(result of data.d.results){
+        // format datetime (yyyy/mm/dd hh:mm:ss)
+        var dateTime = new Date(parseInt(result.__updated.substr(6)));
+        var date =  dateTime.getFullYear() + '/' +
+                    ('0' + (dateTime.getMonth() + 1)).slice(-2) + '/' +
+                    ('0' + (dateTime.getDate())).slice(-2);
+        var time =  ('0' + dateTime.getHours()).slice(-2) + ':' +
+                    ('0' + dateTime.getMinutes()).slice(-2) + ':' +
+                    ('0' + dateTime.getSeconds()).slice(-2);
+        var row = '<tr><td>' + date + ' ' + time +
+                  '</td><td>' + result.post_place +
+                  '</td><td class="flushleft">' +
+                  '<a href="javascript:openInfoEdit(\'' + result.__id + '\')">' + result.title +
+                  '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
+                  '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
+                  '</a></td></tr>';
+
+          list.push(row);
+      }
+      $('#' + divId).html(list.join(''));
+  });
+}
+
+
+function getArticleDetail(id) {
+  var token = window.prompt('input access token');
+  if(!token) return;
+
+  var base = 'https://demo.personium.io';
+  var box = 'fst-community-organization';
+  var cell = 'app-fst-community-user';
+  var oData = 'test_article';
+  var entityType = 'provide_information';
+  var DAV = 'test_article_image';
+
+  var err = [];
+
+  $.when(
+    // get text
+    $.ajax({
+      type: 'GET',
+      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+      headers: {
+          'Authorization': 'Bearer ' + token,
+          'Accept' : 'application/json'
+      },
+      success: function(res){
+        return res;
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+      }
+    }),
+
+    // get image
+    $.ajax({
+      type: 'GET',
+      url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+      dataType: 'binary',
+      processData: false,
+      responseType: 'blob',
+      headers: {
+          'Authorization': 'Bearer ' + token
+      },
+      success: function(res){
+        return res;
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+      }
+    })
+  )
+  .done(function(text, image) {
+    var article = text[0].d.results;
+    $('#modal-infoEditor input[name="articleType"]').val([article.type]);
+    $('#editorTitle').val(article.title);
+    $('#infoStartDate').val(article.start_date);
+    $('#infoStartTime').val(article.start_time);
+    $('#infoEndDate').val(article.end_date);
+    $('#infoEndTime').val(article.end_time);
+    $('#editorUrl').val(article.url);
+    $('#editorVenue').val(article.venue);
+    $('#editor').val(article.detail);
+    $('#editorAge').val(article.target_age);
+    $('#editorSex').val(article.target_sex);
+
+    if(parseInt(article.type) == TYPE.EVENT){
+      $("#modal-infoEditor .date").prop('disabled', false);
+      $("#modal-infoEditor .time").prop('disabled', false);
+      $("#modal-infoEditor .selectDate .editorItem").addClass('must');
+      $("#modal-infoEditor .venue .editorItem").addClass('must');
+    }
+
+    var reader = new FileReader();
+    reader.onloadend = $.proxy(function(event) {
+        var binary = '';
+            var bytes = new Uint8Array(event.currentTarget.result);
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+        window.btoa(binary);
+        var img_src = $('<img>').attr('src', "data:image/jpg;base64," + btoa(binary)).addClass('thumbnail');
+        $('#infoThumbnail').html(img_src);
+    }, this);
+    reader.readAsArrayBuffer(image[0]);
+
+  })
+  .fail(function() {
+    alert('記事の取得に失敗しました\n\n' + err.join('\n'));
+  });
 }
