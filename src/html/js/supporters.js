@@ -62,6 +62,10 @@ function openInfoEdit(id){
 }
 
 function initInfoEdit(){
+  // set radio button value
+  $('#info').attr('value', TYPE_INFO);
+  $('#event').attr('value', TYPE_EVENT);
+
   // set date picker
   $('#datepicker .date').datepicker({
       language: 'ja',
