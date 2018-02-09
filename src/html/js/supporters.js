@@ -291,10 +291,14 @@ function showInfoPreview() {
 
 function clearInputImg() {
   showFileFormErrorMessage('errorMessageImg', false);
-  $('#infoThumbnail').html('');
   $('#inputFileImg').val('');
-  $('#fileNameImg').html('');
+  $('#fileNameImg').empty();
   $('#clearImgButton')[0].style.display = 'none';
+  if(getImage) {
+    $('#infoThumbnail img').attr('src', getImage);
+  } else {
+    $('#infoThumbnail').empty();
+  }
 }
 
 /**
