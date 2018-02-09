@@ -74,6 +74,7 @@ function openInfoCreate(){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor", null, function(){
     initInfoEdit();
 
+    getImage = null;
     $('#modal-infoEditor').modal('show');
   });
 }
@@ -381,14 +382,19 @@ function validateArticle() {
     cvs.height = height;
     var ctx = cvs.getContext('2d');
     ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
+    previewImg = cvs.toDataURL('image/jpeg');
 
   } else {
-    var cvs = document.createElement('canvas');
-    cvs.height = cvs.width = 300;
-    var ctx = cvs.getContext('2d');
-    jdenticon.drawIcon(ctx, title, cvs.height);
+    if(getImage) {
+      previewImg = getImage;
+    } else {
+      var cvs = document.createElement('canvas');
+      cvs.height = cvs.width = 300;
+      var ctx = cvs.getContext('2d');
+      jdenticon.drawIcon(ctx, title, cvs.height);
+      previewImg = cvs.toDataURL('image/jpeg');
+    }
   }
-  previewImg = cvs.toDataURL('image/jpeg');
   img = dataURLtoBlob(previewImg);
 
   return {
