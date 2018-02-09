@@ -1,5 +1,25 @@
-const TYPE_INFO = 0;
-const TYPE_EVENT = 1;
+const TYPE = {
+  INFO: 0,
+  EVENT: 1
+}
+
+const SEX = {
+  ALL: 0,
+  MALE: 1,
+  FEMALE: 2
+}
+
+const AGE = {
+  ALL: 0,
+  OVER_EIGHTY: 1,
+  SEVENTY: 2,
+  SIXTY: 3,
+  UNDER_FIFTY: 4
+}
+
+Object.freeze(TYPE);
+Object.freeze(SEX);
+Object.freeze(AGE);
 
 var imputImage;
 
@@ -66,9 +86,20 @@ function openInfoEdit(id){
 }
 
 function initInfoEdit(){
-  // set radio button value
-  $('#info').attr('value', TYPE_INFO);
-  $('#event').attr('value', TYPE_EVENT);
+  // set input value
+  $('#info').val(TYPE.INFO);
+  $('#event').val(TYPE.EVENT);
+
+  var i = 1;
+  for(var key in SEX){
+    $('#editorSex option:nth-child(' + i + ')').val(SEX[key]);
+    i++;
+  }
+  i = 1;
+  for(var key in AGE) {
+    $('#editorAge option:nth-child(' + i + ')').val(AGE[key]);
+    i++;
+  }
 
   // set date picker
   $('#datepicker .date').datepicker({
@@ -82,7 +113,7 @@ function initInfoEdit(){
   // click radio button
   $('#modal-infoEditor input[name="articleType"]:radio').on('change', function() {
     var val = $(this).val();
-    if(parseInt(val) == TYPE_INFO){
+    if(parseInt(val) == TYPE.INFO){
       $("#modal-infoEditor .date").prop('disabled', true);
       $("#modal-infoEditor .time").prop('disabled', true);
       $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
@@ -230,7 +261,7 @@ function showInfoPreview() {
       return;
     }
 
-    if(article.type == TYPE_EVENT && article.startDate && article.endDate) {
+    if(article.type == TYPE.EVENT && article.startDate && article.endDate) {
       var term = article.startDate + ' ' + article.startTime + ' ~ ' + (article.endDate == article.startDate ? '' : article.endDate) + ' ' + article.endTime;
     }
 
@@ -287,10 +318,10 @@ function validateArticle() {
     errMsg.push('<span class="must"></span> は必須項目です');
   } else {
     switch (parseInt(type)) {
-      case TYPE_INFO:
+      case TYPE.INFO:
         break;
 
-      case TYPE_EVENT:
+      case TYPE.EVENT:
         if(!(startDate && endDate) || !venue){
           errMsg.push('<span class="must"></span> は必須項目です');
         }
@@ -328,7 +359,7 @@ function validateArticle() {
   // check drop down list
   if( isNaN(type + age + sex) ||
       type < 0 || age < 0 || sex < 0 ||
-      1 < type || 4 < age || 2 < sex) {
+      Object.keys(TYPE).length < type || Object.keys(AGE).length < age || Object.keys(SEX).length < sex) {
     errMsg.push('不正な値です');
   }
 
@@ -606,7 +637,7 @@ function getArticleDetail(id) {
     $('#editorAge').val(article.target_age);
     $('#editorSex').val(article.target_sex);
 
-    if(parseInt(article.type) == TYPE_EVENT){
+    if(parseInt(article.type) == TYPE.EVENT){
       $("#modal-infoEditor .date").prop('disabled', false);
       $("#modal-infoEditor .time").prop('disabled', false);
       $("#modal-infoEditor .selectDate .editorItem").addClass('must');
