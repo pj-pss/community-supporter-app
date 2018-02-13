@@ -74,6 +74,8 @@ function openInfoCreate(){
   $("#modal-infoEditor").load("infoEditor.html #modal-infoEditor", null, function(){
     initInfoEdit();
 
+    getImage = null;
+    $('#saveArticleButton').attr('onclick', "saveArticle()");
     $('#modal-infoEditor').modal('show');
   });
 }
@@ -86,6 +88,7 @@ function openInfoEdit(id){
                           .text('削除').addClass('btn').addClass('btn-danger')
                           .attr('onclick', "showDeleteArticleConfirm('" + id + "')");
     $('#modal-infoEditor .modal-footer').append(deleteButton);
+    $('#saveArticleButton').attr('onclick', "saveArticle('" + id + "')");
 
     $('#modal-infoEditor').modal('show');
   });
@@ -288,10 +291,11 @@ function showInfoPreview() {
 
 function clearInputImg() {
   showFileFormErrorMessage('errorMessageImg', false);
-  $('#infoThumbnail').html('');
   $('#inputFileImg').val('');
-  $('#fileNameImg').html('');
+  $('#fileNameImg').empty();
   $('#clearImgButton')[0].style.display = 'none';
+  $('#infoThumbnail').empty();
+  getImage = null;
 }
 
 /**
@@ -301,10 +305,6 @@ function clearInputImg() {
 function validateArticle() {
   var type = $('#modal-infoEditor input[name="articleType"]:checked').val();
   var title = $('#editorTitle').val();
-  var startDate = $('#infoStartDate').val();
-  var startTime = $('#infoStartTime').val();
-  var endDate = $('#infoEndDate').val();
-  var endTime = $('#infoEndTime').val();
   var url = $('#editorUrl').val();
   var venue = $('#editorVenue').val();
   var text = $('#editor').val();
@@ -312,6 +312,13 @@ function validateArticle() {
   var sex = $('#editorSex').val();
   var img = $('#inputFileImg').prop('files')[0];
   var errMsg = [];
+
+  if(type == TYPE.EVENT){
+    var startDate = $('#infoStartDate').val();
+    var startTime = $('#infoStartTime').val();
+    var endDate = $('#infoEndDate').val();
+    var endTime = $('#infoEndTime').val();
+  }
 
   // required items
   if(!(title && text)) {
@@ -322,7 +329,7 @@ function validateArticle() {
         break;
 
       case TYPE.EVENT:
-        if(!(startDate && endDate) || !venue){
+        if(!(startDate && endDate && startTime && endTime) || !venue){
           errMsg.push('<span class="must"></span> は必須項目です');
         }
 
@@ -381,14 +388,19 @@ function validateArticle() {
     cvs.height = height;
     var ctx = cvs.getContext('2d');
     ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
+    previewImg = cvs.toDataURL('image/jpeg');
 
   } else {
-    var cvs = document.createElement('canvas');
-    cvs.height = cvs.width = 300;
-    var ctx = cvs.getContext('2d');
-    jdenticon.drawIcon(ctx, title, cvs.height);
+    if(getImage) {
+      previewImg = getImage;
+    } else {
+      var cvs = document.createElement('canvas');
+      cvs.height = cvs.width = 300;
+      var ctx = cvs.getContext('2d');
+      jdenticon.drawIcon(ctx, title, cvs.height);
+      previewImg = cvs.toDataURL('image/jpeg');
+    }
   }
-  previewImg = cvs.toDataURL('image/jpeg');
   img = dataURLtoBlob(previewImg);
 
   return {
@@ -409,7 +421,7 @@ function validateArticle() {
   }
 }
 
-function saveArticle() {
+function saveArticle(editId) {
   var article = validateArticle();
 
   if(article.errMsg.length > 0){
@@ -434,9 +446,16 @@ function saveArticle() {
 
   // save text
   var saveText = function(){
+    var method = 'POST';
+    var url = base + '/' + box + '/' + cell + '/' + oData + '/' + entityType;
+    if(editId){
+      method = 'PUT';
+      url += "('" + editId + "')";
+    }
+
     return $.ajax({
-      type : 'POST',
-      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
+      type : method,
+      url : url,
       headers : {
         'Authorization' : 'Bearer ' + token
       },
@@ -458,7 +477,7 @@ function saveArticle() {
     })
     .then(
       function(res) {
-        return res
+        return editId || res;
       },
       function(XMLHttpRequest, textStatus, errorThrown) {
         err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
@@ -469,7 +488,7 @@ function saveArticle() {
   // save img
   var saveImg = function(res){
     var DAV = 'test_article_image';
-    var id = res.d.results.__id;
+    var id = res.d ? res.d.results.__id : res;
 
     return $.ajax({
       type : 'PUT',
@@ -659,6 +678,7 @@ function getArticleDetail(id) {
         $('#infoThumbnail').html(img_src);
     }, this);
     reader.readAsArrayBuffer(image[0]);
+    $('#clearImgButton')[0].style.display = '';
 
   })
   .fail(function() {
