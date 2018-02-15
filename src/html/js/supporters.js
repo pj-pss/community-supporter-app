@@ -25,8 +25,7 @@ const APP_URL = "https://demo.personium.io/app-fst-community-user/";
 const CELL_URL = "https://demo.personium.io/fst-community-organization/";
 
 getEngineEndPoint = function () {
-  // return Common.getAppCellUrl() + "__/html/Engine/getAppAuthToken";
-  return APP_URL + "__/html/Engine/getAppAuthToken";
+  return Common.getAppCellUrl() + "__/html/Engine/getAppAuthToken";
 };
 
 additionalCallback = function () {
@@ -56,9 +55,7 @@ function view(functionId) {
 
 // load html
 $(function() {
-  $("#proviedInfoList").load("proviedInfoList.html", function() {
-    // getArticleList('infoList');
-  });
+  $("#proviedInfoList").load("proviedInfoList.html");
   $("#operationHistory").load("operationHistory.html");
   $("#disclosureInfotList").load("disclosureInfotList.html" , function(){
     // when select file
