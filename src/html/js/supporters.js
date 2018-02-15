@@ -22,6 +22,7 @@ Object.freeze(SEX);
 Object.freeze(AGE);
 
 const APP_URL = "https://demo.personium.io/app-fst-community-user/";
+const APP_BOX_NAME = 'io_personium_demo_app-fst-community-user';
 
 getEngineEndPoint = function () {
   return Common.getAppCellUrl() + "__/html/Engine/getAppAuthToken";
