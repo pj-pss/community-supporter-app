@@ -436,7 +436,7 @@ function validateArticle() {
 }
 
 function saveArticle(editId) {
-  hoge(function(token) {
+  callArticleFunction(function(token) {
     var article = validateArticle();
 
     if(article.errMsg.length > 0){
@@ -565,7 +565,7 @@ function dataURLtoBlob(dataURL) {
 
 function getArticleList() {
 
-  hoge(function(token) {
+  callArticleFunction(function(token) {
     var base = 'https://demo.personium.io';
     var box = 'fst-community-organization';
     var cell = 'app-fst-community-user';
@@ -609,7 +609,7 @@ function getArticleList() {
 
 function getArticleDetail(id) {
 
-  hoge(function(token) {
+  callArticleFunction(function(token) {
     var base = 'https://demo.personium.io';
     var box = 'fst-community-organization';
     var cell = 'app-fst-community-user';
@@ -705,7 +705,7 @@ function showDeleteArticleConfirm(id) {
 
 function deleteArticle(id) {
 
-  hoge(function(token) {
+  callArticleFunction(function(token) {
     var base = 'https://demo.personium.io';
     var box = 'fst-community-organization';
     var cell = 'app-fst-community-user';
@@ -793,7 +793,7 @@ function debug_getToken(){
   return debug_token;
 }
 
-function hoge(callback, id) {
+function callArticleFunction(callback, id) {
   if(Common.getCellUrl() == ORGANIZATION_CELL_URL) {
     callback(Common.getToken(), id);
   } else {
