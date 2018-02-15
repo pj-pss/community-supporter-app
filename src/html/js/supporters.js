@@ -21,6 +21,22 @@ Object.freeze(TYPE);
 Object.freeze(SEX);
 Object.freeze(AGE);
 
+const APP_URL = "https://demo.personium.io/app-fst-community-user/";
+const APP_BOX_NAME = 'io_personium_demo_app-fst-community-user';
+
+getEngineEndPoint = function () {
+  return Common.getAppCellUrl() + "__/html/Engine/getAppAuthToken";
+};
+
+additionalCallback = function () {
+  Common.setIdleTime();
+  getArticleList('infoList');
+}
+
+getNamesapces = function () {
+  return ['common', 'glossary'];
+};
+
 var inputImage;
 var getImage;
 var debug_token;
@@ -39,9 +55,7 @@ function view(functionId) {
 
 // load html
 $(function() {
-  $("#proviedInfoList").load("proviedInfoList.html", function() {
-    getArticleList('infoList');
-  });
+  $("#proviedInfoList").load("proviedInfoList.html");
   $("#operationHistory").load("operationHistory.html");
   $("#disclosureInfotList").load("disclosureInfotList.html" , function(){
     // when select file
@@ -433,9 +447,6 @@ function saveArticle(editId) {
     return;
   }
 
-  var token = debug_getToken();
-  if(!token) return;
-
   var base = 'https://demo.personium.io';
   var box = 'fst-community-organization';
   var cell = 'app-fst-community-user';
@@ -457,7 +468,7 @@ function saveArticle(editId) {
       type : method,
       url : url,
       headers : {
-        'Authorization' : 'Bearer ' + token
+        'Authorization': 'Bearer ' + Common.getToken()
       },
       data : JSON.stringify({
         'type' : article.type,
@@ -495,7 +506,7 @@ function saveArticle(editId) {
       url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
       processData: false,
       headers : {
-        'Authorization' : 'Bearer ' + token,
+        'Authorization': 'Bearer ' + Common.getToken(),
         'Content-Type' : 'image/jpeg'
       },
       data : article.img
@@ -511,7 +522,7 @@ function saveArticle(editId) {
           type : 'DELETE',
           url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
           headers : {
-            'Authorization' : 'Bearer ' + token
+            'Authorization': 'Bearer ' + Common.getToken()
           }
         })
         .fail(function(XMLHttpRequest, textStatus, errorThrown){
@@ -552,8 +563,6 @@ function dataURLtoBlob(dataURL) {
 
 
 function getArticleList(divId) {
-  var token = debug_getToken();
-  if(!token) return;
 
   var base = 'https://demo.personium.io';
   var box = 'fst-community-organization';
@@ -566,7 +575,7 @@ function getArticleList(divId) {
       type: "GET",
       url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
       headers: {
-          "Authorization": "Bearer " + token,
+          "Authorization": "Bearer " + Common.getToken(),
           "Accept" : "application/json"
       }
   }).done(function(data) {
@@ -596,8 +605,6 @@ function getArticleList(divId) {
 
 
 function getArticleDetail(id) {
-  var token = debug_getToken();
-  if(!token) return;
 
   var base = 'https://demo.personium.io';
   var box = 'fst-community-organization';
@@ -614,7 +621,7 @@ function getArticleDetail(id) {
       type: 'GET',
       url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
       headers: {
-          'Authorization': 'Bearer ' + token,
+        'Authorization': 'Bearer ' + Common.getToken(),
           'Accept' : 'application/json'
       },
       success: function(res){
@@ -633,7 +640,7 @@ function getArticleDetail(id) {
       processData: false,
       responseType: 'blob',
       headers: {
-          'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + Common.getToken()
       },
       success: function(res){
         return res;
@@ -692,8 +699,6 @@ function showDeleteArticleConfirm(id) {
 }
 
 function deleteArticle(id) {
-  var token = debug_getToken();
-  if(!token) return;
 
   var base = 'https://demo.personium.io';
   var box = 'fst-community-organization';
@@ -709,7 +714,7 @@ function deleteArticle(id) {
       type: 'DELETE',
       url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
       headers: {
-          'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + Common.getToken()
       }
     })
     .then(
@@ -728,7 +733,7 @@ function deleteArticle(id) {
       type: 'DELETE',
       url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
       headers: {
-          'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + Common.getToken()
       }
     })
     .then(
@@ -745,7 +750,7 @@ function deleteArticle(id) {
           url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
           processData: false,
           headers : {
-            'Authorization' : 'Bearer ' + token,
+            'Authorization': 'Bearer ' + Common.getToken(),
             'Content-Type' : 'image/jpeg'
           },
           data : img
