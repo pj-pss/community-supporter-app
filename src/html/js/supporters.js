@@ -23,6 +23,7 @@ Object.freeze(AGE);
 
 const APP_URL = "https://demo.personium.io/app-fst-community-user/";
 const APP_BOX_NAME = 'io_personium_demo_app-fst-community-user';
+const ORGANIZATION_CELL_URL = 'https://demo.personium.io/fst-community-organization/'
 
 getEngineEndPoint = function () {
   return Common.getAppCellUrl() + "__/html/Engine/getAppAuthToken";
@@ -30,7 +31,7 @@ getEngineEndPoint = function () {
 
 additionalCallback = function () {
   Common.setIdleTime();
-  getArticleList('infoList');
+  getArticleList();
 }
 
 getNamesapces = function () {
@@ -60,7 +61,6 @@ $(function() {
   $("#disclosureInfotList").load("disclosureInfotList.html" , function(){
     // when select file
     $('#inputFileCsv').on('change', function() {
-    // $(document).on('change', ':file', function() {
       var input = $(this),
       // delete file path
       fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -436,115 +436,116 @@ function validateArticle() {
 }
 
 function saveArticle(editId) {
-  var article = validateArticle();
+  callArticleFunction(function(token) {
+    var article = validateArticle();
 
-  if(article.errMsg.length > 0){
-    $('#articleError').html('');
-    for(i in article.errMsg) {
-      $('<li></li>').append(article.errMsg[i]).appendTo('#articleError');
-    }
-    showinfoEditorAlert();
-    return;
-  }
-
-  var base = 'https://demo.personium.io';
-  var box = 'fst-community-organization';
-  var cell = 'app-fst-community-user';
-  var oData = 'test_article';
-  var entityType = 'provide_information';
-
-  var err = [];
-
-  // save text
-  var saveText = function(){
-    var method = 'POST';
-    var url = base + '/' + box + '/' + cell + '/' + oData + '/' + entityType;
-    if(editId){
-      method = 'PUT';
-      url += "('" + editId + "')";
-    }
-
-    return $.ajax({
-      type : method,
-      url : url,
-      headers : {
-        'Authorization': 'Bearer ' + Common.getToken()
-      },
-      data : JSON.stringify({
-        'type' : article.type,
-        'title' : article.title,
-        'start_date' : article.startDate,
-        'start_time' : article.startTime,
-        'end_date' : article.endDate,
-        'end_time' : article.endTime,
-        'url' : article.url,
-        'venue' : article.venue,
-        'detail' : article.text,
-        'post_place' : 'みんなの掲示板',
-        'target_age' : article.age,
-        'target_sex' : article.sex
-        // ,'update_user_id' : user_id
-      })
-    })
-    .then(
-      function(res) {
-        return editId || res;
-      },
-      function(XMLHttpRequest, textStatus, errorThrown) {
-        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+    if(article.errMsg.length > 0){
+      $('#articleError').html('');
+      for(i in article.errMsg) {
+        $('<li></li>').append(article.errMsg[i]).appendTo('#articleError');
       }
-    );
-  };
+      showinfoEditorAlert();
+      return;
+    }
 
-  // save img
-  var saveImg = function(res){
-    var DAV = 'test_article_image';
-    var id = res.d ? res.d.results.__id : res;
+    var base = 'https://demo.personium.io';
+    var box = 'fst-community-organization';
+    var cell = 'app-fst-community-user';
+    var oData = 'test_article';
+    var entityType = 'provide_information';
 
-    return $.ajax({
-      type : 'PUT',
-      url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
-      processData: false,
-      headers : {
-        'Authorization': 'Bearer ' + Common.getToken(),
-        'Content-Type' : 'image/jpeg'
-      },
-      data : article.img
-    }).then(
-      function(res) {
-        return res
-      },
-      function(XMLHttpRequest, textStatus, errorThrown) {
-        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+    var err = [];
 
-        // delete text
-        $.ajax({
-          type : 'DELETE',
-          url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
-          headers : {
-            'Authorization': 'Bearer ' + Common.getToken()
-          }
+    // save text
+    var saveText = function(){
+      var method = 'POST';
+      var url = base + '/' + box + '/' + cell + '/' + oData + '/' + entityType;
+      if(editId){
+        method = 'PUT';
+        url += "('" + editId + "')";
+      }
+
+      return $.ajax({
+        type : method,
+        url : url,
+        headers : {
+          'Authorization': 'Bearer ' + token
+        },
+        data : JSON.stringify({
+          'type' : article.type,
+          'title' : article.title,
+          'start_date' : article.startDate,
+          'start_time' : article.startTime,
+          'end_date' : article.endDate,
+          'end_time' : article.endTime,
+          'url' : article.url,
+          'venue' : article.venue,
+          'detail' : article.text,
+          'post_place' : 'みんなの掲示板',
+          'target_age' : article.age,
+          'target_sex' : article.sex
+          // ,'update_user_id' : user_id
         })
-        .fail(function(XMLHttpRequest, textStatus, errorThrown){
-          alert('delete failed');
-          // err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
-        });
+      })
+      .then(
+        function(res) {
+          return editId || res;
+        },
+        function(XMLHttpRequest, textStatus, errorThrown) {
+          err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+        }
+      );
+    };
 
-        return Promise.reject();
-      }
-    )
-  }
+    // save img
+    var saveImg = function(res){
+      var DAV = 'test_article_image';
+      var id = res.d ? res.d.results.__id : res;
 
-  saveText().then(saveImg)
-  .fail(function() {
-    alert('記事の保存に失敗しました\n\n' + err.join('\n'));
-  })
-  .done(function() {
-    alert('記事の保存が完了しました');
-    $("#modal-infoEditor").modal('hide');
-    getArticleList('infoList');
-  });
+      return $.ajax({
+        type : 'PUT',
+        url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+        processData: false,
+        headers : {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type' : 'image/jpeg'
+        },
+        data : article.img
+      }).then(
+        function(res) {
+          return res
+        },
+        function(XMLHttpRequest, textStatus, errorThrown) {
+          err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
 
+          // delete text
+          $.ajax({
+            type : 'DELETE',
+            url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+            headers : {
+              'Authorization': 'Bearer ' + token
+            }
+          })
+          .fail(function(XMLHttpRequest, textStatus, errorThrown){
+            alert('delete failed');
+            // err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+          });
+
+          return Promise.reject();
+        }
+      )
+    }
+
+    saveText().then(saveImg)
+    .fail(function() {
+      alert('記事の保存に失敗しました\n\n' + err.join('\n'));
+    })
+    .done(function() {
+      alert('記事の保存が完了しました');
+      $("#modal-infoEditor").modal('hide');
+      getArticleList();
+    });
+  }, editId);
 }
 
 function dataURLtoBlob(dataURL) {
@@ -562,135 +563,139 @@ function dataURLtoBlob(dataURL) {
 }
 
 
-function getArticleList(divId) {
+function getArticleList() {
 
-  var base = 'https://demo.personium.io';
-  var box = 'fst-community-organization';
-  var cell = 'app-fst-community-user';
-  var oData = 'test_article';
-  var entityType = 'provide_information';
+  callArticleFunction(function(token) {
+    var base = 'https://demo.personium.io';
+    var box = 'fst-community-organization';
+    var cell = 'app-fst-community-user';
+    var oData = 'test_article';
+    var entityType = 'provide_information';
 
-  $('#' + divId).html('');
-  $.ajax({
-      type: "GET",
-      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
-      headers: {
-          "Authorization": "Bearer " + Common.getToken(),
-          "Accept" : "application/json"
-      }
-  }).done(function(data) {
-      var list = [];
-      for(result of data.d.results){
-        // format datetime (yyyy/mm/dd hh:mm:ss)
-        var dateTime = new Date(parseInt(result.__updated.substr(6)));
-        var date =  dateTime.getFullYear() + '/' +
-                    ('0' + (dateTime.getMonth() + 1)).slice(-2) + '/' +
-                    ('0' + (dateTime.getDate())).slice(-2);
-        var time =  ('0' + dateTime.getHours()).slice(-2) + ':' +
-                    ('0' + dateTime.getMinutes()).slice(-2) + ':' +
-                    ('0' + dateTime.getSeconds()).slice(-2);
-        var row = '<tr><td>' + date + ' ' + time +
-                  '</td><td>' + result.post_place +
-                  '</td><td class="flushleft">' +
-                  '<a href="javascript:openInfoEdit(\'' + result.__id + '\')">' + result.title +
-                  '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
-                  '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
-                  '</a></td></tr>';
+    $('#infoList').empty();
+    $.ajax({
+        type: "GET",
+        url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Accept" : "application/json"
+        }
+    }).done(function(data) {
+        var list = [];
+        for(result of data.d.results){
+          // format datetime (yyyy/mm/dd hh:mm:ss)
+          var dateTime = new Date(parseInt(result.__updated.substr(6)));
+          var date =  dateTime.getFullYear() + '/' +
+                      ('0' + (dateTime.getMonth() + 1)).slice(-2) + '/' +
+                      ('0' + (dateTime.getDate())).slice(-2);
+          var time =  ('0' + dateTime.getHours()).slice(-2) + ':' +
+                      ('0' + dateTime.getMinutes()).slice(-2) + ':' +
+                      ('0' + dateTime.getSeconds()).slice(-2);
+          var row = '<tr><td>' + date + ' ' + time +
+                    '</td><td>' + result.post_place +
+                    '</td><td class="flushleft">' +
+                    '<a href="javascript:openInfoEdit(\'' + result.__id + '\')">' + result.title +
+                    '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
+                    '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
+                    '</a></td></tr>';
 
-          list.push(row);
-      }
-      $('#' + divId).html(list.join(''));
+            list.push(row);
+        }
+        $('#infoList').html(list.join(''));
+    });
   });
 }
 
 
 function getArticleDetail(id) {
 
-  var base = 'https://demo.personium.io';
-  var box = 'fst-community-organization';
-  var cell = 'app-fst-community-user';
-  var oData = 'test_article';
-  var entityType = 'provide_information';
-  var DAV = 'test_article_image';
+  callArticleFunction(function(token) {
+    var base = 'https://demo.personium.io';
+    var box = 'fst-community-organization';
+    var cell = 'app-fst-community-user';
+    var oData = 'test_article';
+    var entityType = 'provide_information';
+    var DAV = 'test_article_image';
 
-  var err = [];
+    var err = [];
 
-  $.when(
-    // get text
-    $.ajax({
-      type: 'GET',
-      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
-      headers: {
-        'Authorization': 'Bearer ' + Common.getToken(),
-          'Accept' : 'application/json'
-      },
-      success: function(res){
-        return res;
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+    $.when(
+      // get text
+      $.ajax({
+        type: 'GET',
+        url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+        headers: {
+          'Authorization': 'Bearer ' + token,
+            'Accept' : 'application/json'
+        },
+        success: function(res){
+          return res;
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+        }
+      }),
+
+      // get image
+      $.ajax({
+        type: 'GET',
+        url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+        dataType: 'binary',
+        processData: false,
+        responseType: 'blob',
+        headers: {
+          'Authorization': 'Bearer ' + token
+        },
+        success: function(res){
+          return res;
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+        }
+      })
+    )
+    .done(function(text, image) {
+      var article = text[0].d.results;
+      $('#modal-infoEditor input[name="articleType"]').val([article.type]);
+      $('#editorTitle').val(article.title);
+      $('#infoStartDate').val(article.start_date);
+      $('#infoStartTime').val(article.start_time);
+      $('#infoEndDate').val(article.end_date);
+      $('#infoEndTime').val(article.end_time);
+      $('#editorUrl').val(article.url);
+      $('#editorVenue').val(article.venue);
+      $('#editor').val(article.detail);
+      $('#editorAge').val(article.target_age);
+      $('#editorSex').val(article.target_sex);
+
+      if(parseInt(article.type) == TYPE.EVENT){
+        $("#modal-infoEditor .date").prop('disabled', false);
+        $("#modal-infoEditor .time").prop('disabled', false);
+        $("#modal-infoEditor .selectDate .editorItem").addClass('must');
+        $("#modal-infoEditor .venue .editorItem").addClass('must');
       }
-    }),
 
-    // get image
-    $.ajax({
-      type: 'GET',
-      url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
-      dataType: 'binary',
-      processData: false,
-      responseType: 'blob',
-      headers: {
-        'Authorization': 'Bearer ' + Common.getToken()
-      },
-      success: function(res){
-        return res;
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
-      }
+      var reader = new FileReader();
+      reader.onloadend = $.proxy(function(event) {
+          var binary = '';
+              var bytes = new Uint8Array(event.currentTarget.result);
+              var len = bytes.byteLength;
+              for (var i = 0; i < len; i++) {
+                  binary += String.fromCharCode(bytes[i]);
+              }
+          window.btoa(binary);
+          getImage = "data:image/jpg;base64," + btoa(binary);
+          var img_src = $('<img>').attr('src', getImage).addClass('thumbnail');
+          $('#infoThumbnail').html(img_src);
+      }, this);
+      reader.readAsArrayBuffer(image[0]);
+      $('#clearImgButton')[0].style.display = '';
+
     })
-  )
-  .done(function(text, image) {
-    var article = text[0].d.results;
-    $('#modal-infoEditor input[name="articleType"]').val([article.type]);
-    $('#editorTitle').val(article.title);
-    $('#infoStartDate').val(article.start_date);
-    $('#infoStartTime').val(article.start_time);
-    $('#infoEndDate').val(article.end_date);
-    $('#infoEndTime').val(article.end_time);
-    $('#editorUrl').val(article.url);
-    $('#editorVenue').val(article.venue);
-    $('#editor').val(article.detail);
-    $('#editorAge').val(article.target_age);
-    $('#editorSex').val(article.target_sex);
-
-    if(parseInt(article.type) == TYPE.EVENT){
-      $("#modal-infoEditor .date").prop('disabled', false);
-      $("#modal-infoEditor .time").prop('disabled', false);
-      $("#modal-infoEditor .selectDate .editorItem").addClass('must');
-      $("#modal-infoEditor .venue .editorItem").addClass('must');
-    }
-
-    var reader = new FileReader();
-    reader.onloadend = $.proxy(function(event) {
-        var binary = '';
-            var bytes = new Uint8Array(event.currentTarget.result);
-            var len = bytes.byteLength;
-            for (var i = 0; i < len; i++) {
-                binary += String.fromCharCode(bytes[i]);
-            }
-        window.btoa(binary);
-        getImage = "data:image/jpg;base64," + btoa(binary);
-        var img_src = $('<img>').attr('src', getImage).addClass('thumbnail');
-        $('#infoThumbnail').html(img_src);
-    }, this);
-    reader.readAsArrayBuffer(image[0]);
-    $('#clearImgButton')[0].style.display = '';
-
-  })
-  .fail(function() {
-    alert('記事の取得に失敗しました\n\n' + err.join('\n'));
-  });
+    .fail(function() {
+      alert('記事の取得に失敗しました\n\n' + err.join('\n'));
+    });
+  }, id);
 }
 
 function showDeleteArticleConfirm(id) {
@@ -700,80 +705,82 @@ function showDeleteArticleConfirm(id) {
 
 function deleteArticle(id) {
 
-  var base = 'https://demo.personium.io';
-  var box = 'fst-community-organization';
-  var cell = 'app-fst-community-user';
-  var oData = 'test_article';
-  var entityType = 'provide_information';
-  var DAV = 'test_article_image';
+  callArticleFunction(function(token) {
+    var base = 'https://demo.personium.io';
+    var box = 'fst-community-organization';
+    var cell = 'app-fst-community-user';
+    var oData = 'test_article';
+    var entityType = 'provide_information';
+    var DAV = 'test_article_image';
 
-  var err = [];
+    var err = [];
 
-  var deleteImage = function(){
-    return $.ajax({
-      type: 'DELETE',
-      url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
-      headers: {
-        'Authorization': 'Bearer ' + Common.getToken()
-      }
+    var deleteImage = function(){
+      return $.ajax({
+        type: 'DELETE',
+        url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(
+        function(res) {
+          return res;
+        },
+        function(XMLHttpRequest, textStatus, errorThrown) {
+          err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+          return Promise.reject();
+        }
+      );
+    }
+
+    var deleteText = function() {
+      return $.ajax({
+        type: 'DELETE',
+        url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(
+        function(res) {
+          return res;
+        },
+        function(XMLHttpRequest, textStatus, errorThrown) {
+          err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
+
+          // save image if delete text failed
+          var img = dataURLtoBlob(getImage);
+          $.ajax({
+            type : 'PUT',
+            url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+            processData: false,
+            headers : {
+              'Authorization': 'Bearer ' + token,
+              'Content-Type' : 'image/jpeg'
+            },
+            data : img
+          })
+          .fail(function() {
+            alert('rollback error');
+          })
+
+          return Promise.reject();
+        }
+      );
+    }
+
+
+    deleteImage().then(deleteText)
+    .done(function() {
+      alert('記事の削除が完了しました');
+      $("#modal-infoEditor").modal('hide');
+      getArticleList();
     })
-    .then(
-      function(res) {
-        return res;
-      },
-      function(XMLHttpRequest, textStatus, errorThrown) {
-        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
-        return Promise.reject();
-      }
-    );
-  }
-
-  var deleteText = function() {
-    return $.ajax({
-      type: 'DELETE',
-      url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
-      headers: {
-        'Authorization': 'Bearer ' + Common.getToken()
-      }
-    })
-    .then(
-      function(res) {
-        return res;
-      },
-      function(XMLHttpRequest, textStatus, errorThrown) {
-        err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
-
-        // save image if delete text failed
-        var img = dataURLtoBlob(getImage);
-        $.ajax({
-          type : 'PUT',
-          url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
-          processData: false,
-          headers : {
-            'Authorization': 'Bearer ' + Common.getToken(),
-            'Content-Type' : 'image/jpeg'
-          },
-          data : img
-        })
-        .fail(function() {
-          alert('rollback error');
-        })
-
-        return Promise.reject();
-      }
-    );
-  }
-
-
-  deleteImage().then(deleteText)
-  .done(function() {
-    alert('記事の削除が完了しました');
-    $("#modal-infoEditor").modal('hide');
-    getArticleList('infoList');
-  })
-  .fail(function() {
-    alert('記事の削除に失敗しました\n\n' + err.join('\n'));
-  });
+    .fail(function() {
+      alert('記事の削除に失敗しました\n\n' + err.join('\n'));
+    });
+  }, id);
 }
 
 function debug_getToken(){
@@ -784,4 +791,22 @@ function debug_getToken(){
     }, 300000);
   }
   return debug_token;
+}
+
+function callArticleFunction(callback, id) {
+  if(Common.getCellUrl() == ORGANIZATION_CELL_URL) {
+    callback(Common.getToken(), id);
+  } else {
+    $.when(Common.getTranscellToken(ORGANIZATION_CELL_URL), Common.getAppAuthToken(ORGANIZATION_CELL_URL))
+      .done(function (result1, result2) {
+        let tempTCAT = result1[0].access_token; // Transcell Access Token
+        let tempAAAT = result2[0].access_token; // App Authentication Access Token
+        Common.perpareToCellInfo(ORGANIZATION_CELL_URL, tempTCAT, tempAAAT, function (cellUrl, boxUrl, token) {
+          callback(token, id);
+        });
+      })
+      .fail(function () {
+        alert('failed to get token');
+      });
+  }
 }
