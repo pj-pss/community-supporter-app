@@ -449,8 +449,8 @@ function saveArticle(editId) {
     }
 
     var base = 'https://demo.personium.io';
-    var box = 'fst-community-organization';
-    var cell = 'app-fst-community-user';
+    var cell = 'fst-community-organization';
+    var box = 'app-fst-community-user';
     var oData = 'test_article';
     var entityType = 'provide_information';
 
@@ -459,7 +459,7 @@ function saveArticle(editId) {
     // save text
     var saveText = function(){
       var method = 'POST';
-      var url = base + '/' + box + '/' + cell + '/' + oData + '/' + entityType;
+      var url = base + '/' + cell + '/' + box + '/' + oData + '/' + entityType;
       if(editId){
         method = 'PUT';
         url += "('" + editId + "')";
@@ -504,7 +504,7 @@ function saveArticle(editId) {
 
       return $.ajax({
         type : 'PUT',
-        url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+        url : base + '/' + cell + '/' + box + '/' + DAV + '/' + id,
         processData: false,
         headers : {
           'Authorization': 'Bearer ' + token,
@@ -519,17 +519,18 @@ function saveArticle(editId) {
           err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
 
           // delete text
-          $.ajax({
-            type : 'DELETE',
-            url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
-            headers : {
-              'Authorization': 'Bearer ' + token
-            }
-          })
-          .fail(function(XMLHttpRequest, textStatus, errorThrown){
-            alert('delete failed');
-            // err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
-          });
+          if (!editId){
+            $.ajax({
+              type : 'DELETE',
+              url : base + '/' + cell + '/' + box + '/' + oData + '/' + entityType + "('" + id + "')",
+              headers : {
+                'Authorization': 'Bearer ' + token
+              }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown){
+              alert('delete failed');
+            });
+          }
 
           return Promise.reject();
         }
@@ -567,15 +568,15 @@ function getArticleList() {
 
   callArticleFunction(function(token) {
     var base = 'https://demo.personium.io';
-    var box = 'fst-community-organization';
-    var cell = 'app-fst-community-user';
+    var cell = 'fst-community-organization';
+    var box = 'app-fst-community-user';
     var oData = 'test_article';
     var entityType = 'provide_information';
 
     $('#infoList').empty();
     $.ajax({
         type: "GET",
-        url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType,
+        url : base + '/' + cell + '/' + box + '/' + oData + '/' + entityType,
         headers: {
             "Authorization": "Bearer " + token,
             "Accept" : "application/json"
@@ -611,8 +612,8 @@ function getArticleDetail(id) {
 
   callArticleFunction(function(token) {
     var base = 'https://demo.personium.io';
-    var box = 'fst-community-organization';
-    var cell = 'app-fst-community-user';
+    var cell = 'fst-community-organization';
+    var box = 'app-fst-community-user';
     var oData = 'test_article';
     var entityType = 'provide_information';
     var DAV = 'test_article_image';
@@ -623,7 +624,7 @@ function getArticleDetail(id) {
       // get text
       $.ajax({
         type: 'GET',
-        url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+        url : base + '/' + cell + '/' + box + '/' + oData + '/' + entityType + "('" + id + "')",
         headers: {
           'Authorization': 'Bearer ' + token,
             'Accept' : 'application/json'
@@ -639,7 +640,7 @@ function getArticleDetail(id) {
       // get image
       $.ajax({
         type: 'GET',
-        url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+        url : base + '/' + cell + '/' + box + '/' + DAV + '/' + id,
         dataType: 'binary',
         processData: false,
         responseType: 'blob',
@@ -707,8 +708,8 @@ function deleteArticle(id) {
 
   callArticleFunction(function(token) {
     var base = 'https://demo.personium.io';
-    var box = 'fst-community-organization';
-    var cell = 'app-fst-community-user';
+    var cell = 'fst-community-organization';
+    var box = 'app-fst-community-user';
     var oData = 'test_article';
     var entityType = 'provide_information';
     var DAV = 'test_article_image';
@@ -718,7 +719,7 @@ function deleteArticle(id) {
     var deleteImage = function(){
       return $.ajax({
         type: 'DELETE',
-        url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+        url : base + '/' + cell + '/' + box + '/' + DAV + '/' + id,
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -737,7 +738,7 @@ function deleteArticle(id) {
     var deleteText = function() {
       return $.ajax({
         type: 'DELETE',
-        url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+        url : base + '/' + cell + '/' + box + '/' + oData + '/' + entityType + "('" + id + "')",
         headers: {
           'Authorization': 'Bearer ' + token
         }
@@ -753,7 +754,7 @@ function deleteArticle(id) {
           var img = dataURLtoBlob(getImage);
           $.ajax({
             type : 'PUT',
-            url : base + '/' + box + '/' + cell + '/' + DAV + '/' + id,
+            url : base + '/' + cell + '/' + box + '/' + DAV + '/' + id,
             processData: false,
             headers : {
               'Authorization': 'Bearer ' + token,
@@ -781,16 +782,6 @@ function deleteArticle(id) {
       alert('記事の削除に失敗しました\n\n' + err.join('\n'));
     });
   }, id);
-}
-
-function debug_getToken(){
-  if(!debug_token) {
-    debug_token = window.prompt('input access token');
-    setTimeout(function(){
-      debug_token = '';
-    }, 300000);
-  }
-  return debug_token;
 }
 
 function callArticleFunction(callback, id) {
