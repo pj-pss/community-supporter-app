@@ -519,17 +519,18 @@ function saveArticle(editId) {
           err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
 
           // delete text
-          $.ajax({
-            type : 'DELETE',
-            url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
-            headers : {
-              'Authorization': 'Bearer ' + token
-            }
-          })
-          .fail(function(XMLHttpRequest, textStatus, errorThrown){
-            alert('delete failed');
-            // err.push(XMLHttpRequest.status + ' ' + textStatus + ' ' + errorThrown);
-          });
+          if (!editId){
+            $.ajax({
+              type : 'DELETE',
+              url : base + '/' + box + '/' + cell + '/' + oData + '/' + entityType + "('" + id + "')",
+              headers : {
+                'Authorization': 'Bearer ' + token
+              }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown){
+              alert('delete failed');
+            });
+          }
 
           return Promise.reject();
         }
@@ -781,16 +782,6 @@ function deleteArticle(id) {
       alert('記事の削除に失敗しました\n\n' + err.join('\n'));
     });
   }, id);
-}
-
-function debug_getToken(){
-  if(!debug_token) {
-    debug_token = window.prompt('input access token');
-    setTimeout(function(){
-      debug_token = '';
-    }, 300000);
-  }
-  return debug_token;
 }
 
 function callArticleFunction(callback, id) {
