@@ -185,26 +185,6 @@ function initInfoEdit(){
   });
 }
 
-function openComment(id){
-  $("#modal-situationAggregate").load("comment.html #modal-situationAggregate_" + id, null, function(){
-
-    $(function() {
-      // pop over action
-      $("[data-toggle=popover]").popover({
-        trigger: 'hover',
-        html: true,
-      });
-    });
-
-    // If it does not exist, the parent window can not be scrolled.
-    $('#modal-confirm-delete').on('hidden.bs.modal', function () {
-      $('body').addClass('modal-open');
-    });
-
-    $('#modal-situationAggregate').modal('show');
-  });
-}
-
 // load personal data and show modal window
 function openEditModal(name) {
   $("#editModal").load("personalData.html #modal-edit_" + name, function(){
@@ -588,8 +568,8 @@ function getArticleList() {
                     '</td><td>' + result.post_place +
                     '</td><td class="flushleft">' +
                     '<a href="javascript:openInfoEdit(\'' + result.__id + '\')">' + result.title +
-                    '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
-                    '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
+                    '</a></td><td><a href="javascript:dummyFunction(\'' + result.__id + '\')">-' +
+                    '</a></td><td><a href="javascript:dummyFunction(\'' + result.__id + '\')">-' +
                     '</a></td></tr>';
 
             list.push(row);
