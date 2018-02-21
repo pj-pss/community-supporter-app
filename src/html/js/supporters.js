@@ -133,6 +133,16 @@ function initInfoEdit(){
       startDate: Date()
   });
 
+  // click radio button
+  $('#modal-infoEditor input[name="articleType"]:radio').on('change', function () {
+    var val = $(this).val();
+    if (parseInt(val) == TYPE.INFO) {
+      $("#modal-infoEditor .venue .editorItem").removeClass('must');
+    } else {
+      $("#modal-infoEditor .venue .editorItem").addClass('must');
+    }
+  });
+
   // select upload file
   $('#inputFileImg').on('change', function() {
     var file = $(this).prop('files')[0];
@@ -650,13 +660,8 @@ function getArticleDetail(id) {
       $('#editor').val(article.detail);
       $('#editorAge').val(article.target_age);
       $('#editorSex').val(article.target_sex);
-
-      if(parseInt(article.type) == TYPE.EVENT){
-        $("#modal-infoEditor .date").prop('disabled', false);
-        $("#modal-infoEditor .time").prop('disabled', false);
-        $("#modal-infoEditor .selectDate .editorItem").addClass('must');
-        $("#modal-infoEditor .venue .editorItem").addClass('must');
-      }
+      $("#modal-infoEditor .selectDate .editorItem").addClass('must');
+      $("#modal-infoEditor .venue .editorItem").addClass('must');
 
       var reader = new FileReader();
       reader.onloadend = $.proxy(function(event) {
