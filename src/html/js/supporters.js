@@ -133,22 +133,6 @@ function initInfoEdit(){
       startDate: Date()
   });
 
-  // click radio button
-  $('#modal-infoEditor input[name="articleType"]:radio').on('change', function() {
-    var val = $(this).val();
-    if(parseInt(val) == TYPE.INFO){
-      $("#modal-infoEditor .date").prop('disabled', true);
-      $("#modal-infoEditor .time").prop('disabled', true);
-      $("#modal-infoEditor .selectDate .editorItem").removeClass('must');
-      $("#modal-infoEditor .venue .editorItem").removeClass('must');
-    } else {
-      $("#modal-infoEditor .date").prop('disabled', false);
-      $("#modal-infoEditor .time").prop('disabled', false);
-      $("#modal-infoEditor .selectDate .editorItem").addClass('must');
-      $("#modal-infoEditor .venue .editorItem").addClass('must');
-    }
-  });
-
   // select upload file
   $('#inputFileImg').on('change', function() {
     var file = $(this).prop('files')[0];
@@ -278,7 +262,7 @@ function showInfoPreview() {
       return;
     }
 
-    if(article.type == TYPE.EVENT && article.startDate && article.endDate) {
+    if(article.startDate && article.endDate) {
       var term = article.startDate + ' ' + article.startTime + ' ~ ' + (article.endDate == article.startDate ? '' : article.endDate) + ' ' + article.endTime;
     }
 
@@ -325,17 +309,14 @@ function validateArticle() {
   var age = $('#editorAge').val();
   var sex = $('#editorSex').val();
   var img = $('#inputFileImg').prop('files')[0];
+  var startDate = $('#infoStartDate').val();
+  var startTime = $('#infoStartTime').val();
+  var endDate = $('#infoEndDate').val();
+  var endTime = $('#infoEndTime').val();
   var errMsg = [];
 
-  if(type == TYPE.EVENT){
-    var startDate = $('#infoStartDate').val();
-    var startTime = $('#infoStartTime').val();
-    var endDate = $('#infoEndDate').val();
-    var endTime = $('#infoEndTime').val();
-  }
-
   // required items
-  if(!(title && text)) {
+  if (!(title && text && startDate && endDate && startTime && endTime)) {
     errMsg.push('<span class="must"></span> は必須項目です');
   } else {
     switch (parseInt(type)) {
@@ -343,23 +324,24 @@ function validateArticle() {
         break;
 
       case TYPE.EVENT:
-        if(!(startDate && endDate && startTime && endTime) || !venue){
+        if(!venue){
           errMsg.push('<span class="must"></span> は必須項目です');
-        }
-
-        // check startDate is before endDate
-        var start = moment(startDate + startTime);
-        var end = moment(endDate + endTime);
-        if(start > end) {
-          errMsg.push('終了日時は開始日時の後に設定してください');
         }
         break;
 
       default:
-        errMsg.push('終了日時は開始日時の後に設定してください');
+        errMsg.push('記事区分が不正です');
         break;
+
     }
   }
+
+    // check startDate is before endDate
+    var start = moment(startDate + startTime);
+    var end = moment(endDate + endTime);
+    if(start > end) {
+      errMsg.push('終了日時は開始日時の後に設定してください');
+    }
 
   // check url
   pUrl = $.url(url);
