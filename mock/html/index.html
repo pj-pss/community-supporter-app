@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="glossary:title"></title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,200" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-te/1.4.0/jquery-te.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" />
+
+  <link href="./css/pc.css" rel="stylesheet">
+  <link href="./css/supporter.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/8.4.3/i18next.min.js"></script>
+  <script src="https://unpkg.com/i18next-xhr-backend/i18nextXHRBackend.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/2.0.0/i18nextBrowserLanguageDetector.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.0/jquery-i18next.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-te/1.4.0/jquery-te.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.ja.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jdenticon@1.8.0" async></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.js"></script>
+  <script src="./js/supporters.js"></script>
+
+</head>
+<body>
+  <header>
+    <h1 data-i18n="glossary:title">運用者ポータル</h1>
+    <div>
+      <button id="logout">ログアウト</button>
+    </div>
+  </header>
+  <div class="contents">
+    <nav class="side-nav">
+      <ul>
+        <li id="menu_proviedInfoList" class="current">
+          <a onclick="view('proviedInfoList');">提供情報一覧</a>
+        </li>
+        <li id="menu_tenantList">
+          <a onclick="view('tenantList');">入居者一覧</a>
+        </li>
+        <li id="menu_disclosureInfotList">
+          <a onclick="view('disclosureInfotList');">緊急時情報開示先登録</a>
+        </li>
+        <li id="menu_operationHistory">
+          <a onclick="view('operationHistory');">操作履歴</a>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <!-- expand destination of html. -->
+      <div id="proviedInfoList" class="functionArea">
+      </div>
+      <div id="tenantList" class="functionArea hidden">
+      </div>
+      <div id="disclosureInfotList" class="functionArea hidden">
+      </div>
+      <div id="operationHistory" class="functionArea hidden">
+      </div>
+      <div id="editModal">
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,290 @@
+html, body, .contents, main { height:100%; }
+
+button#logout {
+  margin: 0 16px 0 0;
+}
+
+.functionArea {
+  border: 1px solid #f2f2f2;
+  width: 100%;
+  height: 100%;
+}
+
+.searchIcon {
+  float: left;
+  position: relative;
+  padding-left: 7px;
+  margin-right: -40px;
+  margin-top: 5px;
+  font-size: 24px;
+}
+
+.refleshIcon {
+  float: right;
+  position: relative;
+  margin-top: 4px;
+  font-size: 30px;
+}
+
+#createInfo {
+  color: #FFFFFF;
+  background-color: #00B0F0;
+  margin: 2px;
+  float: right;
+}
+
+.borderTable .description {
+  width: 70%;
+}
+.borderTable {
+  width: 100%;
+  margin: 2px;
+}
+.borderTable thead th {
+  text-align: center;
+}
+.borderTable .flushleft {
+  text-align: left;
+}
+.borderTable .head th {
+  background-color: #d7e2f4;
+}
+.borderTable th,
+.borderTable td {
+  text-align: center;
+  vertical-align: middle;
+  border: 2px #eeeeee solid;
+  padding: 5px 15px 5px 15px;
+}
+.borderTable tr:nth-child(odd) {
+  background-color: #f7fbff;
+}
+
+.bottomMarginBox {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.leftFloatBox {
+  float: left;
+  margin-left: 5%;
+  margin-bottom: 20px;
+}
+
+.rightFloatBox {
+  float: right;
+  margin-right: 5%;
+  margin-bottom: 20px;
+}
+
+#modal-situationAggregate table td{
+  padding: 5px 5px 5px 5px;
+}
+
+#modal-infoEditor select,
+#modal-infoEditor .radio {
+  margin-left: 10px;
+}
+
+#editModal ul li {
+  list-style-type: square;
+  padding-top: 10px;
+  padding-bottom: 2px;
+}
+
+#editModal table {
+  width: 100%;
+  background-color: #ffffff;
+  border: 0px;
+}
+#editModal th {
+  width: 50%;
+  background-color: #ffffff;
+  border: 0px;
+}
+
+
+#searchKeywordBox {
+  background-size: contain;
+  padding-left: 32px;
+  margin: 2px;
+  border-radius: 10px;
+}
+
+#infoDatepicker {
+  vertical-align: middle;
+}
+
+.inputFileForm {
+  margin: 15px;
+}
+
+.inputFileForm p {
+  display: inline;
+}
+
+#fileNameCsv,
+#fileNameImg {
+  font-size: 12px;
+  font-weight: bolder;
+}
+
+#errorMessageCsv i,
+#errorMessageImg i {
+  color: red;
+  margin-bottom: 15px;
+}
+
+.loadingIcon {
+  text-align: center;
+  font-size: 30px;
+}
+
+.confirmMessage {
+  text-align: center;
+  font-size: 20px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.successMessage {
+  text-align: center;
+  font-size: 24px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  color: blue;
+}
+
+.faildMessage {
+  text-align: center;
+  font-size: 24px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  color: red;
+}
+
+.stealthTable {
+  width: 100%;
+  margin: 2px;
+  border: 0px;
+}
+.stealthTable th,
+.stealthTable td {
+  text-align: center;
+  vertical-align: middle;
+  border: 0px;
+  padding: 0px 0px 10px 0px;
+}
+
+#editor {
+  width: 100%;
+  height: 300px;
+  resize: vertical;
+}
+
+.editorItem {
+  margin: 10px 0 5px 0;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.wideModal {
+  width: 80%;
+}
+
+#infoThumbnail {
+  width: 100%;
+}
+
+#infoThumbnail img {
+  width: 100%;
+}
+
+#modal-infoEditor .date {
+  width: 170px;
+  text-indent: 1.5em;
+}
+
+.calendarIcon {
+  margin: 10px -28px 0px 20px;
+  font-size: 18px;
+}
+
+.article_box {
+  background-color: #bddbbc;
+  border-radius: 10px;
+  margin: 0px 20px;
+  padding: 5px;
+}
+
+.article_body {
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.centering {
+  text-align: center;
+}
+
+#modal-preview img,
+#modal-preview canvas {
+  margin:0 auto;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 500px;
+}
+
+#modal-preview .title {
+  position:absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 30px;
+  display: inline-block;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow:  2px  2px 25px black,
+               -2px  2px 25px black,
+                2px -2px 25px black,
+               -2px -2px 25px black;
+}
+
+#modal-preview .term {
+  border-radius: 10px;
+  background-color: #ebebeb;
+  color: #6e6e6e;
+  padding: 10px 0 10px 0;
+  margin-top: 10px;
+}
+
+#modal-preview .url {
+  word-break: break-all;
+  margin: 20px 0;
+}
+
+#modal-preview .imgBox {
+  position: relative;
+}
+
+.must:after {
+  font-family: FontAwesome;
+  color: red;
+  content: "\f069";
+  font-size: 8px;
+  margin: 0px 0px 0px 5px;
+}
+
+pre.text {
+  background-color: white;
+  border: none;
+  font-size: 18px;
+  white-space: pre-wrap;
+  padding-top: 0;
+}
+
