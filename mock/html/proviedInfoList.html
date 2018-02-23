@@ -1,0 +1,56 @@
+<div>
+  <input id="searchKeywordBox" type="text" name="searchKeywordBox" size="32"><i class="fa fa-search fa-2x searchIcon" aria-hidden="true"></i>
+  <button id="createInfo" onclick="openInfoEdit(0)">新規作成</button>
+  <i class="fa fa-repeat fa-2x fa-fw refleshIcon" aria-hidden="true"></i>
+</div>
+<div>
+  <table class="borderTable">
+    <thead>
+      <tr class="head"><th>日時</th><th>掲載先</th><th>タイトル</th><th>参加する!</th><th>検討中</th><th>コメント</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2017/11/07 13:46:48</td><td>みんなの掲示板</td><td class="flushleft"><a href="javascript:openInfoEdit(1)">共有フロアの清掃を次の日程で実施します。</a></td><td><a href="javascript:openComment(1)">-</a></td><td><a href="javascript:openComment(1)">-</a></td><td><a href="javascript:openComment(1)">0</a></td></tr>
+      <tr><td>2017/11/08 13:23:50</td><td>みんなの掲示板</td><td class="flushleft"><a href="javascript:openInfoEdit(2)">まちのみんなでお祝いしよう！ UDCK設立11周年記念パーティ</a></td><td><a href="javascript:openComment(2)">3</a></td><td><a href="javascript:openComment(2)">2</a></td><td><a href="javascript:openComment(2)">3</a></td></tr>
+      <tr><td>2017/11/07 13:24:18</td><td>みんなの掲示板</td><td class="flushleft"><a href="javascript:openInfoEdit(3)">【配信協力】留学⽣×市⺠ みんなで楽しもう！INTERNATIONAL CURRY PARTY</a></td><td><a href="javascript:openComment(3)">11</a></td><td><a href="javascript:openComment(3)">4</a></td><td><a href="javascript:openComment(3)">1</a></td></tr>
+      <tr><td>2017/11/07 13:23:48</td><td>みんなの掲示板</td><td class="flushleft"><a href="javascript:openInfoEdit(4)">11月のレストランメニューが決まりました</a></td><td><a href="javascript:openComment(4)">-</a></td><td><a href="javascript:openComment(4)">-</a></td><td><a href="javascript:openComment(4)">13</a></td></tr>
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+</div>
+
+<div id="modal-infoEditor" class="modal fade">
+</div>
+
+<div id="modal-situationAggregate" class="modal fade">
+</div>
+
+<div id="modal-confirm-delete" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="confirmMessage">本当に削除してよろしいですか?</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="deleteComment()">はい</button>
+        <button class="btn btn-default" onclick="deleteComment()">いいえ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-preview" class="modal fade">
+</div>
+
+<div id="modal-infoEditor-alert" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ul id="articleError"></ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal">はい</button>
+      </div>
+    </div>
+  </div>
+</div>
