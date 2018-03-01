@@ -54,6 +54,114 @@ function view(functionId) {
   $('#menu_' + functionId).addClass('current');
 }
 
+function formatDate(date) {
+	var yyyymmdd =  date.getFullYear() + '/' +
+	          ('0' + (date.getMonth() + 1)).slice(-2) + '/' +
+	          ('0' + (date.getDate())).slice(-2);
+	var hhmmss =  ('0' + date.getHours()).slice(-2) + ':' +
+	          ('0' + date.getMinutes()).slice(-2) + ':' +
+	          ('0' + date.getSeconds()).slice(-2);
+	return yyyymmdd + ' ' + hhmmss;
+}
+
+function openComment(id){
+  $("#modal-situationAggregate").load("replyHistory.html #modal-situationAggregate", null, $.proxy(function(){
+
+    var base = 'https://demo.personium.io';
+    var cell = 'fst-community-organization';
+    var box = 'app-fst-community-user';
+	var collection = 'test_reply';
+    var entity = 'reply_history';
+
+    $(function() {
+      // pop over action
+      $("[data-toggle=popover]").popover({
+        trigger: 'hover',
+        html: true,
+      });
+    });
+
+    // If it does not exist, the parent window can not be scrolled.
+    $('#modal-confirm-delete').on('hidden.bs.modal', function () {
+      $('body').addClass('modal-open');
+    });
+
+	callArticleFunction($.proxy(function(token) {
+	    var base = 'https://demo.personium.io';
+	    var cell = 'fst-community-organization';
+	    var box = 'app-fst-community-user';
+		var collection1 = 'test_article';
+	    var entity1 = 'provide_information';
+		var collection2 = 'test_reply';
+	    var entity2 = 'reply_history';
+		var displayData = [
+		    $.ajax({
+		        type: "GET",
+		        url : base + '/' + cell + '/' + box + '/' + collection1 + '/' + entity1 + '(\'' + id + '\')',
+		        headers: {
+		            "Authorization": "Bearer " + token,
+		            "Accept" : "application/json"
+		        }
+	    	}),
+			$.ajax({
+		        type: "GET",
+		        url : base + '/' + cell + '/' + box + '/' + collection2 + '/' + entity2 + '?\$select=user_cell_url,entry_flag&\$filter=provide_id eq \'' + id + '\'&\$orderby=__updated desc',
+		        headers: {
+		            "Authorization": "Bearer " + token,
+		            "Accept" : "application/json"
+		        }
+	    	}),
+		];
+
+		$.when.apply($, displayData).done($.proxy(function () {
+		    this.rDatas = arguments[1][0].d.results;
+		    $('#modal-situationAggregate #title').text(arguments[0][0].d.results.title);
+			var list = [];
+			_.each(this.rDatas, $.proxy(function(rData){
+			    list.push($.ajax({
+			        type: "GET",
+					dataType: 'json',
+			        url : rData.user_cell_url + '__/profile.json',
+			        headers: {
+			            "Authorization": "Bearer " + token,
+			            "Accept" : "application/json"
+			        }
+		    	}));
+			},this));
+			this.multi = list.length !== 1 ? true : false;
+
+			$.when.apply($, list).done($.proxy(function () {
+				var left = $('#modal-situationAggregate .leftFloatBox tbody');
+				var right = $('#modal-situationAggregate .rightFloatBox tbody');
+				left.children().remove();
+				right.children().remove();
+				var arg = arguments;
+				if(!this.multi){
+					arg = {0:arguments}
+				}
+				var rcnt = lcnt = 1;
+				for(var i = 0; i < this.rDatas.length; i++){
+					var fDate = formatDate(new Date(parseInt(this.rDatas[i].__updated.match(/\/Date\((.*)\)\//i)[1],10)));
+					var dName = arg[i][0].DisplayName;
+					if(this.rDatas[i].entry_flag === 0){
+						right.append('<tr><td>' + rcnt.toString() + '</td><td>' + fDate + '</td><td>' + dName + '</td></tr>')
+						rcnt++;
+					}else{
+						left.append('<tr><td>' + lcnt.toString() + '</td><td>' + fDate + '</td><td>' + dName + '</td></tr>')
+						lcnt++;
+					}
+				}
+				$('#modal-situationAggregate').modal('show');
+			},this)).fail(function() {
+				console.log('error');
+			});
+		},this)).fail(function() {
+			console.log('error');
+		});
+	},this));
+  },this));
+}
+
 // load html
 $(function() {
   $("#proviedInfoList").load("proviedInfoList.html");
@@ -188,26 +296,6 @@ function initInfoEdit(){
   });
   $('#modal-confirm-delete').on('hidden.bs.modal', function () {
     $('body').addClass('modal-open');
-  });
-}
-
-function openComment(id){
-  $("#modal-situationAggregate").load("comment.html #modal-situationAggregate_" + id, null, function(){
-
-    $(function() {
-      // pop over action
-      $("[data-toggle=popover]").popover({
-        trigger: 'hover',
-        html: true,
-      });
-    });
-
-    // If it does not exist, the parent window can not be scrolled.
-    $('#modal-confirm-delete').on('hidden.bs.modal', function () {
-      $('body').addClass('modal-open');
-    });
-
-    $('#modal-situationAggregate').modal('show');
   });
 }
 
@@ -570,40 +658,68 @@ function getArticleList() {
     var base = 'https://demo.personium.io';
     var cell = 'fst-community-organization';
     var box = 'app-fst-community-user';
-    var oData = 'test_article';
-    var entityType = 'provide_information';
+	var collection1 = 'test_article';
+    var entity1 = 'provide_information';
+	var collection2 = 'test_reply';
+    var entity2 = 'reply_history';
+	var displayData = [
+	    $.ajax({
+	        type: "GET",
+	        url : base + '/' + cell + '/' + box + '/' + collection1 + '/' + entity1,
+	        headers: {
+	            "Authorization": "Bearer " + token,
+	            "Accept" : "application/json"
+	        }
+    	}),
+		$.ajax({
+	        type: "GET",
+	        url : base + '/' + cell + '/' + box + '/' + collection2 + '/' + entity2,
+	        headers: {
+	            "Authorization": "Bearer " + token,
+	            "Accept" : "application/json"
+	        }
+    	}),
+	];
 
     $('#infoList').empty();
-    $.ajax({
-        type: "GET",
-        url : base + '/' + cell + '/' + box + '/' + oData + '/' + entityType,
-        headers: {
-            "Authorization": "Bearer " + token,
-            "Accept" : "application/json"
-        }
-    }).done(function(data) {
-        var list = [];
-        for(result of data.d.results){
-          // format datetime (yyyy/mm/dd hh:mm:ss)
-          var dateTime = new Date(parseInt(result.__updated.substr(6)));
-          var date =  dateTime.getFullYear() + '/' +
-                      ('0' + (dateTime.getMonth() + 1)).slice(-2) + '/' +
-                      ('0' + (dateTime.getDate())).slice(-2);
-          var time =  ('0' + dateTime.getHours()).slice(-2) + ':' +
-                      ('0' + dateTime.getMinutes()).slice(-2) + ':' +
-                      ('0' + dateTime.getSeconds()).slice(-2);
-          var row = '<tr><td>' + date + ' ' + time +
-                    '</td><td>' + result.post_place +
-                    '</td><td class="flushleft">' +
-                    '<a href="javascript:openInfoEdit(\'' + result.__id + '\')">' + result.title +
-                    '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
-                    '</a></td><td><a href="javascript:openComment(\'' + result.__id + '\')">-' +
-                    '</a></td></tr>';
+	$.when.apply($, displayData).done($.proxy(function () {
+	    var pDatas = arguments[0][0].d.results;
+	    var rDatas = arguments[1][0].d.results;
+		var list = [];
+		_.each(pDatas,$.proxy(function(pData){
+			var appendDatas = _.filter(rDatas, $.proxy(function(rData){
+				return pData.__id === rData.provide_id;
+			}),this);
+			var appendEntryFlags = {};
+			appendEntryFlags = _.countBy(appendDatas, $.proxy(function(appendData){
+				return appendData.entry_flag === 0 ? "0" : "1";
+			}),this);
 
-            list.push(row);
-        }
-        $('#infoList').html(list.join(''));
-    });
+			var underCons = '<td>-</td>';
+			var parti = '<td>-</td>';
+			if(appendEntryFlags.hasOwnProperty("0")){
+				underCons = '<td><a href="javascript:openComment(\'' + pData.__id + '\')">' + appendEntryFlags["0"].toString() + '</a></td>';
+			}
+			if(appendEntryFlags.hasOwnProperty("1")){
+				parti = '<td><a href="javascript:openComment(\'' + pData.__id + '\')">' + appendEntryFlags["1"].toString() + '</a></td>';
+			}
+
+			var dateTime = new Date(parseInt(pData.__updated.match(/\/Date\((.*)\)\//i)[1]));
+			var date =  dateTime.getFullYear() + '/' +
+			          ('0' + (dateTime.getMonth() + 1)).slice(-2) + '/' +
+			          ('0' + (dateTime.getDate())).slice(-2);
+			var time =  ('0' + dateTime.getHours()).slice(-2) + ':' +
+			          ('0' + dateTime.getMinutes()).slice(-2) + ':' +
+			          ('0' + dateTime.getSeconds()).slice(-2);
+			var row = '<tr><td>' + date + ' ' + time +
+			        '</td><td>' + pData.post_place +
+			        '</td><td class="flushleft">' +
+			        '<a href="javascript:openInfoEdit(\'' + pData.__id + '\')">' + pData.title +
+			        '</a></td>' + parti + underCons + '</tr>';
+			list.push(row);
+		},this));
+		$('#infoList').html(list.join(''));
+	},this));
   });
 }
 
