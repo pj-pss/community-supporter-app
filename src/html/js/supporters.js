@@ -96,7 +96,7 @@ function openComment(id){
 	    	}),
 			$.ajax({
 		        type: "GET",
-		        url : Common.getToCellBoxUrl() + collection2 + '/' + entity2 + '?\$select=user_cell_url,entry_flag&\$filter=provide_id eq \'' + id + '\'&\$orderby=__updated desc',
+		        url : Common.getToCellBoxUrl() + collection2 + '/' + entity2 + '?\$select=user_cell_url,entry_flag,anonymous&\$filter=provide_id eq \'' + id + '\'&\$orderby=__updated desc',
 		        headers: {
 		            "Authorization": "Bearer " + token,
 		            "Accept" : "application/json"
@@ -122,6 +122,7 @@ function openComment(id){
 			this.multi = list.length !== 1 ? true : false;
 
 			$.when.apply($, list).done($.proxy(function () {
+				var annonElm = '<i class=\'fa fa-check\'></i>';
 				var left = $('#modal-situationAggregate .leftFloatBox tbody');
 				var right = $('#modal-situationAggregate .rightFloatBox tbody');
 				left.children().remove();
@@ -130,15 +131,20 @@ function openComment(id){
 				if(!this.multi){
 					arg = {0:arguments}
 				}
+
 				var rcnt = lcnt = 1;
 				for(var i = 0; i < this.rDatas.length; i++){
+					var annonTd = "";
+					if(this.rDatas[i].anonymous){
+						annonTd = annonElm;
+					}
 					var fDate = formatDate(new Date(parseInt(this.rDatas[i].__updated.match(/\/Date\((.*)\)\//i)[1],10)));
 					var dName = arg[i][0].DisplayName;
 					if(this.rDatas[i].entry_flag === 0){
-						right.append('<tr><td>' + rcnt.toString() + '</td><td>' + fDate + '</td><td>' + dName + '</td></tr>')
+						right.append('<tr><td>' + rcnt.toString() + '</td><td>' + fDate + '</td><td>' + dName + '</td><td>' + annonTd + '</td></tr>')
 						rcnt++;
 					}else{
-						left.append('<tr><td>' + lcnt.toString() + '</td><td>' + fDate + '</td><td>' + dName + '</td></tr>')
+						left.append('<tr><td>' + lcnt.toString() + '</td><td>' + fDate + '</td><td>' + dName + '</td><td>' + annonTd + '</td></tr>')
 						lcnt++;
 					}
 				}
