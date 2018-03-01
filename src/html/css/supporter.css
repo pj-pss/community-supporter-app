@@ -78,6 +78,26 @@ button#logout {
   margin-bottom: 20px;
 }
 
+#modal-situationAggregate .leftFloatBox .borderTable .head th:nth-of-type(1),
+#modal-situationAggregate .rightFloatBox .borderTable .head th:nth-of-type(1){
+  width: 53px;
+}
+
+#modal-situationAggregate .leftFloatBox .borderTable .head th:nth-of-type(2),
+#modal-situationAggregate .rightFloatBox .borderTable .head th:nth-of-type(2){
+  width: 176px;
+}
+
+#modal-situationAggregate .leftFloatBox .borderTable .head th:nth-of-type(3),
+#modal-situationAggregate .rightFloatBox .borderTable .head th:nth-of-type(3){
+  width: 84px;
+}
+
+#modal-situationAggregate .leftFloatBox .borderTable .head th:nth-of-type(4),
+#modal-situationAggregate .rightFloatBox .borderTable .head th:nth-of-type(4){
+  width: 63px;
+}
+
 #modal-situationAggregate table td{
   padding: 5px 5px 5px 5px;
 }
