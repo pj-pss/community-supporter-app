@@ -67,12 +67,6 @@ function formatDate(date) {
 function openComment(id){
   $("#modal-situationAggregate").load("replyHistory.html #modal-situationAggregate", null, $.proxy(function(){
 
-    var base = 'https://demo.personium.io';
-    var cell = 'fst-community-organization';
-    var box = 'app-fst-community-user';
-	var collection = 'test_reply';
-    var entity = 'reply_history';
-
     $(function() {
       // pop over action
       $("[data-toggle=popover]").popover({
@@ -87,9 +81,6 @@ function openComment(id){
     });
 
 	callArticleFunction($.proxy(function(token) {
-	    var base = 'https://demo.personium.io';
-	    var cell = 'fst-community-organization';
-	    var box = 'app-fst-community-user';
 		var collection1 = 'test_article';
 	    var entity1 = 'provide_information';
 		var collection2 = 'test_reply';
@@ -97,7 +88,7 @@ function openComment(id){
 		var displayData = [
 		    $.ajax({
 		        type: "GET",
-		        url : base + '/' + cell + '/' + box + '/' + collection1 + '/' + entity1 + '(\'' + id + '\')',
+		        url : Common.getToCellBoxUrl() + collection1 + '/' + entity1 + '(\'' + id + '\')',
 		        headers: {
 		            "Authorization": "Bearer " + token,
 		            "Accept" : "application/json"
@@ -105,7 +96,7 @@ function openComment(id){
 	    	}),
 			$.ajax({
 		        type: "GET",
-		        url : base + '/' + cell + '/' + box + '/' + collection2 + '/' + entity2 + '?\$select=user_cell_url,entry_flag&\$filter=provide_id eq \'' + id + '\'&\$orderby=__updated desc',
+		        url : Common.getToCellBoxUrl() + collection2 + '/' + entity2 + '?\$select=user_cell_url,entry_flag&\$filter=provide_id eq \'' + id + '\'&\$orderby=__updated desc',
 		        headers: {
 		            "Authorization": "Bearer " + token,
 		            "Accept" : "application/json"
@@ -655,9 +646,6 @@ function dataURLtoBlob(dataURL) {
 function getArticleList() {
 
   callArticleFunction(function(token) {
-    var base = 'https://demo.personium.io';
-    var cell = 'fst-community-organization';
-    var box = 'app-fst-community-user';
 	var collection1 = 'test_article';
     var entity1 = 'provide_information';
 	var collection2 = 'test_reply';
@@ -665,7 +653,7 @@ function getArticleList() {
 	var displayData = [
 	    $.ajax({
 	        type: "GET",
-	        url : base + '/' + cell + '/' + box + '/' + collection1 + '/' + entity1,
+	        url : Common.getToCellBoxUrl() + collection1 + '/' + entity1 + '?\$orderby=__updated desc',
 	        headers: {
 	            "Authorization": "Bearer " + token,
 	            "Accept" : "application/json"
@@ -673,7 +661,7 @@ function getArticleList() {
     	}),
 		$.ajax({
 	        type: "GET",
-	        url : base + '/' + cell + '/' + box + '/' + collection2 + '/' + entity2,
+	        url : Common.getToCellBoxUrl() + collection2 + '/' + entity2,
 	        headers: {
 	            "Authorization": "Bearer " + token,
 	            "Accept" : "application/json"
